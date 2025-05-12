@@ -10,7 +10,7 @@ module.exports = {
 			},
 			colors: {
 				terminal: '#0f0f0f',
-				neon: '#00ffe0',
+				neon: '#8cf4d7',
 				pipgreen: '#00ff99',
 			},
 			boxShadow: {
@@ -18,7 +18,7 @@ module.exports = {
 				pipgreen: '0 0 10px #00ff99',
 			},
 			fontFamily: {
-				mono: ['Courier New', 'Courier', 'monospace'],
+				mono: ['"IBM Plex Mono"', 'Courier New', 'monospace'],
 			},
 			animation: {
 				flicker: 'flicker 2s infinite',

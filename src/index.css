@@ -12,8 +12,8 @@
 }
 
     .glow-text {
-    color: #00ffe0;
-    text-shadow: 0 0 5px rgb(0, 255, 224), 0 0 10px #00ffe0;
+    color: #8cf4d7;
+    text-shadow: 0 0 5px #8cf4d7, 0 0 10px #8cf4d7;
     }
     
 .pipboy-terminal::before {
