@@ -7,6 +7,10 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+pnpm-lock.yaml
+npm-lock.yaml
+yarn.lock
+
 node_modules
 dist
 dist-ssr
