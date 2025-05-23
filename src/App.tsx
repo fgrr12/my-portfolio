@@ -2,6 +2,7 @@ import gsap from 'gsap'
 import 'lenis/dist/lenis.css'
 import ReactLenis from 'lenis/react'
 import { useEffect, useRef } from 'react'
+
 import { Terminal } from './components/Terminal/Terminal.component'
 import { TopBar } from './components/TopBar/TopBar.component'
 
