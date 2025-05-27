@@ -15,7 +15,7 @@ interface ProjectsTerminalProps {
 export default function ProjectsTerminal({ projects, onClose }: ProjectsTerminalProps) {
 	return (
 		<div className="lg:w-1/2 w-full">
-			<div className="bg-slate-900 rounded-lg border border-teal-500/40 shadow-2xl shadow-teal-500/20 h-full flex flex-col overflow-hidden terminal-glow pipboy-screen">
+			<div className="bg-slate-900 rounded-xl border border-teal-500/40 shadow-2xl shadow-teal-500/20 h-full flex flex-col overflow-hidden terminal-glow pipboy-screen">
 				<TerminalHeader
 					title="projects@terminal:~"
 					subtitle="PROJECT_DB"
