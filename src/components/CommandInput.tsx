@@ -13,7 +13,7 @@ const CommandInput = forwardRef<HTMLInputElement, CommandInputProps>(
 	({ value, onChange, onKeyDown, disabled, placeholder }, ref) => {
 		return (
 			<div className="flex items-center space-x-2 mb-4">
-				<span className="text-teal-400 glow flicker">luk:-+</span>
+				<span className="text-teal-400 glow flicker">FabricioR:-+</span>
 				<input
 					ref={ref}
 					type="text"

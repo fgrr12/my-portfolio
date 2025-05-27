@@ -48,7 +48,7 @@ export default function MainTerminal({
 		if (terminalRef.current) {
 			terminalRef.current.scrollTop = terminalRef.current.scrollHeight
 		}
-	}, [])
+	}, [commandHistory])
 
 	useEffect(() => {
 		if (inputRef.current && !isProcessing) {
@@ -61,7 +61,7 @@ export default function MainTerminal({
 	return (
 		<div className={`${showProjects ? 'lg:w-1/2' : 'w-full'} transition-all duration-500`}>
 			<div className="bg-slate-900 rounded-xl border border-teal-500/40 shadow-2xl shadow-teal-500/20 h-full flex flex-col overflow-hidden terminal-glow pipboy-screen">
-				<TerminalHeader title="luk@terminal:~" subtitle="MAIN_TERMINAL" />
+				<TerminalHeader title="FabricioR@terminal:~" subtitle="MAIN_TERMINAL" />
 
 				<div className="flex-1 flex flex-col p-4 relative min-h-0">
 					{/* Scanlines effect */}

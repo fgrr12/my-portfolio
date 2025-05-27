@@ -19,7 +19,7 @@ const CommandHistory = forwardRef<HTMLDivElement, CommandHistoryProps>(({ comman
 			{commands.map((cmd, index) => (
 				<div key={index} className="space-y-1">
 					<div className="flex items-center space-x-2">
-						<span className="text-teal-400 glow flicker">luk:-+</span>
+						<span className="text-teal-400 glow flicker">FabricioR:-+</span>
 						<span className="text-teal-300 flicker">{cmd.input}</span>
 					</div>
 					{cmd.isLoading ? (
@@ -29,7 +29,7 @@ const CommandHistory = forwardRef<HTMLDivElement, CommandHistoryProps>(({ comman
 					) : (
 						cmd.output.map((line, lineIndex) => (
 							<div key={lineIndex} className="text-teal-400 ml-4 glow flicker">
-								{line}
+								<pre>{line}</pre>
 							</div>
 						))
 					)}
