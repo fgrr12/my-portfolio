@@ -158,6 +158,7 @@ export function useTerminal() {
 		}
 	}, [currentInput, getCommandSuggestions])
 
+	//biome-ignore lint:ignore commands
 	const executeCommand = useCallback(
 		async (input: string) => {
 			if (isProcessing) return

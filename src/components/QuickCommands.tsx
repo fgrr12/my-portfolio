@@ -11,6 +11,7 @@ export default function QuickCommands({ commands, onExecute, disabled }: QuickCo
 			<div className="grid grid-cols-2 gap-2">
 				{commands.map((cmd) => (
 					<button
+						type="button"
 						key={cmd}
 						onClick={() => onExecute(cmd)}
 						disabled={disabled}

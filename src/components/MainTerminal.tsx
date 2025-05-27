@@ -44,6 +44,7 @@ export default function MainTerminal({
 	const inputRef = useRef<HTMLInputElement>(null)
 	const terminalRef = useRef<HTMLDivElement>(null)
 
+	//biome-ignore lint:call by command history
 	useEffect(() => {
 		if (terminalRef.current) {
 			terminalRef.current.scrollTop = terminalRef.current.scrollHeight

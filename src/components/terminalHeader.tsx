@@ -16,6 +16,7 @@ export default function TerminalHeader({
 			<div className="flex items-center space-x-2">
 				{showCloseButton ? (
 					<button
+						type="button"
 						onClick={onClose}
 						className="w-3 h-3 bg-red-500 rounded-full hover:bg-red-400 transition-colors cursor-pointer"
 						title="Close terminal"
