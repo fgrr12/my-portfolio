@@ -12,15 +12,13 @@ export default function WelcomeMessage() {
 			const elements = welcomeRef.current.querySelectorAll('.animate-text')
 
 			if (elements.length > 0) {
-				// Set initial state
 				gsap.set(elements, {
 					opacity: 0,
 					y: 20,
 					scale: 0.9,
 				})
 
-				// Create timeline
-				const tl = gsap.timeline({ delay: 1.3 }) // Delay after terminal startup
+				const tl = gsap.timeline({ delay: 1.3 })
 
 				elements.forEach((element, index) => {
 					tl.to(

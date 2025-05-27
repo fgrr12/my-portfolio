@@ -9,7 +9,6 @@ export function useLenis() {
 		const initLenis = async () => {
 			const Lenis = (await import('lenis')).default
 
-			// Buscar todas las áreas de scroll de terminal
 			const terminalScrollAreas = document.querySelectorAll('.terminal-scroll-area')
 
 			terminalScrollAreas.forEach((element) => {
@@ -40,7 +39,6 @@ export function useLenis() {
 			})
 		}
 
-		// Delay para asegurar que los elementos estén en el DOM
 		const timer = setTimeout(() => {
 			initLenis()
 		}, 1000)
@@ -56,7 +54,6 @@ export function useLenis() {
 		}
 	}, [])
 
-	// Función para reinicializar cuando se agregan nuevas terminales
 	const reinitializeLenis = async () => {
 		const Lenis = (await import('lenis')).default
 		const terminalScrollAreas = document.querySelectorAll(

@@ -48,6 +48,7 @@ export default function ProjectDetail({ project, onBack }: ProjectDetailProps) {
 		<div ref={detailRef} className="relative z-10">
 			<div className="flex items-center justify-between mb-4">
 				<button
+					type="button"
 					onClick={onBack}
 					className="flex items-center space-x-2 text-teal-500 hover:text-teal-300 transition-colors glow flicker"
 					onMouseEnter={handleMouseEnter}
@@ -59,7 +60,6 @@ export default function ProjectDetail({ project, onBack }: ProjectDetailProps) {
 				<div className="text-teal-600 text-xs glow flicker">PROJECT_DETAIL</div>
 			</div>
 
-			{/* Project header */}
 			<div className="mb-6">
 				<div className="flex items-center justify-between mb-2">
 					<h1 className="text-2xl font-bold text-teal-300 glow flicker project-title">
@@ -86,6 +86,7 @@ export default function ProjectDetail({ project, onBack }: ProjectDetailProps) {
 			<div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
 				{project.github && (
 					<button
+						type="button"
 						onClick={() => handleLinkClick(project.github!)}
 						onMouseEnter={handleMouseEnter}
 						onMouseLeave={handleMouseLeave}
@@ -97,6 +98,7 @@ export default function ProjectDetail({ project, onBack }: ProjectDetailProps) {
 				)}
 				{project.demo && (
 					<button
+						type="button"
 						onClick={() => handleLinkClick(project.demo!)}
 						onMouseEnter={handleMouseEnter}
 						onMouseLeave={handleMouseLeave}
@@ -108,6 +110,7 @@ export default function ProjectDetail({ project, onBack }: ProjectDetailProps) {
 				)}
 				{project.store && (
 					<button
+						type="button"
 						onClick={() => handleLinkClick(project.store!)}
 						onMouseEnter={handleMouseEnter}
 						onMouseLeave={handleMouseLeave}

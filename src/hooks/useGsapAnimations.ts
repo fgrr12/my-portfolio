@@ -3,7 +3,6 @@ import { TextPlugin } from 'gsap/TextPlugin'
 import type React from 'react'
 import { useEffect, useRef } from 'react'
 
-// Register GSAP plugins
 if (typeof window !== 'undefined') {
 	gsap.registerPlugin(TextPlugin)
 }
@@ -13,7 +12,6 @@ export function useGSAPAnimations() {
 	const hasAnimatedStartup = useRef(false)
 
 	useEffect(() => {
-		// Create main timeline
 		timelineRef.current = gsap.timeline()
 
 		return () => {
@@ -30,14 +28,12 @@ export function useGSAPAnimations() {
 
 		const tl = gsap.timeline()
 
-		// Set initial state
 		gsap.set(terminalRef.current, {
 			scale: 0.8,
 			opacity: 0,
 			rotationX: -15,
 		})
 
-		// Terminal container animation
 		tl.to(terminalRef.current, {
 			scale: 1,
 			opacity: 1,
@@ -46,7 +42,6 @@ export function useGSAPAnimations() {
 			ease: 'power3.out',
 		})
 
-		// Animate terminal glow
 		tl.to(
 			terminalRef.current,
 			{
@@ -68,7 +63,6 @@ export function useGSAPAnimations() {
 
 		const tl = gsap.timeline()
 
-		// Set initial state for all elements
 		gsap.set(elements, {
 			opacity: 0,
 			y: 20,
@@ -97,13 +91,11 @@ export function useGSAPAnimations() {
 
 		const tl = gsap.timeline()
 
-		// Set initial state
 		gsap.set(commandRef.current, {
 			opacity: 0,
 			x: -20,
 		})
 
-		// Animate command input
 		tl.to(commandRef.current, {
 			opacity: 1,
 			x: 0,
@@ -111,7 +103,6 @@ export function useGSAPAnimations() {
 			ease: 'power2.out',
 		})
 
-		// Animate output lines
 		const outputLines = commandRef.current.querySelectorAll('.command-output')
 		if (outputLines.length > 0) {
 			gsap.set(outputLines, {
@@ -141,7 +132,6 @@ export function useGSAPAnimations() {
 
 		const tl = gsap.timeline()
 
-		// Set initial state
 		gsap.set(cardRef.current, {
 			opacity: 0,
 			y: 30,
@@ -164,13 +154,11 @@ export function useGSAPAnimations() {
 
 		const tl = gsap.timeline()
 
-		// Set initial state
 		gsap.set(detailRef.current, {
 			opacity: 0,
 			x: 50,
 		})
 
-		// Animate main container
 		tl.to(detailRef.current, {
 			opacity: 1,
 			x: 0,
@@ -178,7 +166,6 @@ export function useGSAPAnimations() {
 			ease: 'power3.out',
 		})
 
-		// Animate title with typewriter effect
 		const title = detailRef.current.querySelector('.project-title')
 		if (title && title.textContent) {
 			const originalText = title.textContent
@@ -195,7 +182,6 @@ export function useGSAPAnimations() {
 			)
 		}
 
-		// Animate action buttons
 		const buttons = detailRef.current.querySelectorAll('.action-button')
 		if (buttons.length > 0) {
 			gsap.set(buttons, {
@@ -219,7 +205,6 @@ export function useGSAPAnimations() {
 			})
 		}
 
-		// Animate features list
 		const features = detailRef.current.querySelectorAll('.feature-item')
 		if (features.length > 0) {
 			gsap.set(features, {

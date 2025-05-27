@@ -81,7 +81,6 @@ export default function ProjectsTerminal({
 				/>
 
 				<div className="flex-1 p-4 overflow-y-auto relative">
-					{/* Scanlines effect */}
 					<div className="absolute inset-0 pointer-events-none scanlines" />
 
 					{selectedProject ? (
