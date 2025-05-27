@@ -50,7 +50,7 @@ export default function ProjectDetail({ project, onBack }: ProjectDetailProps) {
 				<button
 					type="button"
 					onClick={onBack}
-					className="flex items-center space-x-2 text-teal-500 hover:text-teal-300 transition-colors glow flicker"
+					className="flex items-center space-x-2 text-teal-500 hover:text-teal-300 transition-colors glow flicker cursor-pointer"
 					onMouseEnter={handleMouseEnter}
 					onMouseLeave={handleMouseLeave}
 				>
@@ -90,7 +90,7 @@ export default function ProjectDetail({ project, onBack }: ProjectDetailProps) {
 						onClick={() => handleLinkClick(project.github!)}
 						onMouseEnter={handleMouseEnter}
 						onMouseLeave={handleMouseLeave}
-						className="flex items-center justify-center space-x-2 bg-teal-500/10 border border-teal-500/30 rounded-lg px-4 py-3 hover:bg-teal-500/20 hover:border-teal-400/50 transition-all duration-300 glow flicker action-button"
+						className="flex items-center justify-center space-x-2 bg-teal-500/10 border border-teal-500/30 rounded-xl px-4 py-3 hover:bg-teal-500/20 hover:border-teal-400/50 transition-all duration-300 glow flicker action-button  cursor-pointer"
 					>
 						<Github size={18} />
 						<span>View Code</span>
@@ -102,7 +102,7 @@ export default function ProjectDetail({ project, onBack }: ProjectDetailProps) {
 						onClick={() => handleLinkClick(project.demo!)}
 						onMouseEnter={handleMouseEnter}
 						onMouseLeave={handleMouseLeave}
-						className="flex items-center justify-center space-x-2 bg-blue-500/10 border border-blue-500/30 rounded-lg px-4 py-3 hover:bg-blue-500/20 hover:border-blue-400/50 transition-all duration-300 glow flicker action-button"
+						className="flex items-center justify-center space-x-2 bg-blue-500/10 border border-blue-500/30 rounded-xl px-4 py-3 hover:bg-blue-500/20 hover:border-blue-400/50 transition-all duration-300 glow flicker action-button  cursor-pointer"
 					>
 						<Play size={18} />
 						<span>Live Demo</span>
@@ -114,7 +114,7 @@ export default function ProjectDetail({ project, onBack }: ProjectDetailProps) {
 						onClick={() => handleLinkClick(project.store!)}
 						onMouseEnter={handleMouseEnter}
 						onMouseLeave={handleMouseLeave}
-						className="flex items-center justify-center space-x-2 bg-purple-500/10 border border-purple-500/30 rounded-lg px-4 py-3 hover:bg-purple-500/20 hover:border-purple-400/50 transition-all duration-300 glow flicker action-button"
+						className="flex items-center justify-center space-x-2 bg-purple-500/10 border border-purple-500/30 rounded-xl px-4 py-3 hover:bg-purple-500/20 hover:border-purple-400/50 transition-all duration-300 glow flicker action-button  cursor-pointer"
 					>
 						<ShoppingBag size={18} />
 						<span>App Store</span>
@@ -137,7 +137,7 @@ export default function ProjectDetail({ project, onBack }: ProjectDetailProps) {
 				</div>
 			</div>
 
-			<div className="border border-teal-500/30 rounded-lg p-4 pipboy-card">
+			<div className="border rounded-xl border-teal-500/30 p-4 pipboy-card">
 				<h3 className="text-lg font-semibold text-teal-300 mb-3 glow flicker">Technical Stack</h3>
 				<div className="text-teal-400/80 glow flicker">
 					<div className="mb-2">
