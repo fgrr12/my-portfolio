@@ -73,7 +73,7 @@ export function useTerminal() {
 			'║ Role: Full Stack Developer           ║',
 			'║ Specialization: React, Angular       ║',
 			'║ Database: Firebase, PostgreSQL       ║',
-			'║ Status: Available for projects       ║',
+			'║ Status: Available                    ║',
 			'╚══════════════════════════════════════╝',
 			'',
 			'💡 Passionate about creating innovative web solutions',
