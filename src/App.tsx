@@ -1,5 +1,6 @@
 import MainTerminal from './components/MainTerminal'
 import ProjectsTerminal from './components/ProjectsTerminal'
+import { useLenis } from './hooks/useLenis'
 import { useTerminal } from './hooks/useTerminal'
 
 export default function FunctionalTerminal() {
@@ -20,6 +21,8 @@ export default function FunctionalTerminal() {
 		selectProject,
 		goBackToProjects,
 	} = useTerminal()
+
+	useLenis()
 
 	return (
 		<div className="h-screen bg-gray-950 p-4 font-mono pipboy-bg">

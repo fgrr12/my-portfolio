@@ -1,3 +1,5 @@
+import { useEffect } from 'react'
+
 import ProjectDetail from './ProjectDetail'
 import TerminalHeader from './terminalHeader'
 
@@ -31,6 +33,43 @@ export default function ProjectsTerminal({
 	onSelectProject,
 	onBackToProjects,
 }: ProjectsTerminalProps) {
+	useEffect(() => {
+		const reInitLenis = async () => {
+			const Lenis = (await import('lenis')).default
+			const terminalArea = document.querySelector('.projects-terminal-scroll')
+
+			if (
+				terminalArea instanceof HTMLElement &&
+				!terminalArea.hasAttribute('data-lenis-initialized')
+			) {
+				terminalArea.setAttribute('data-lenis-initialized', 'true')
+
+				const lenis = new Lenis({
+					wrapper: terminalArea,
+					content: terminalArea.firstElementChild as HTMLElement,
+					duration: 1.2,
+					easing: (t: number) => Math.min(1, 1.001 - 2 ** (-10 * t)),
+					orientation: 'vertical',
+					smoothWheel: true,
+					syncTouch: false,
+					touchMultiplier: 2,
+					infinite: false,
+				})
+
+				function raf(time: number) {
+					lenis.raf(time)
+					requestAnimationFrame(raf)
+				}
+
+				requestAnimationFrame(raf)
+
+				console.log('Lenis initialized for projects terminal')
+			}
+		}
+
+		const timer = setTimeout(reInitLenis, 500)
+		return () => clearTimeout(timer)
+	}, [])
 	return (
 		<div className="lg:w-1/2 w-full">
 			<div className="bg-slate-900 rounded-xl border border-teal-500/40 shadow-2xl shadow-teal-500/20 h-full flex flex-col overflow-hidden terminal-glow pipboy-screen">
