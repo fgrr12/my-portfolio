@@ -27,7 +27,6 @@ export default function ProjectDetail({ project, onBack }: ProjectDetailProps) {
 
 	return (
 		<div className="relative z-10">
-			{/* Header with back button */}
 			<div className="flex items-center justify-between mb-4">
 				<button
 					type="button"
@@ -39,8 +38,6 @@ export default function ProjectDetail({ project, onBack }: ProjectDetailProps) {
 				</button>
 				<div className="text-teal-600 text-xs glow flicker">PROJECT_DETAIL</div>
 			</div>
-
-			{/* Project header */}
 			<div className="mb-6">
 				<div className="flex items-center justify-between mb-2">
 					<h1 className="text-2xl font-bold text-teal-300 glow flicker">{project.title}</h1>
@@ -61,8 +58,6 @@ export default function ProjectDetail({ project, onBack }: ProjectDetailProps) {
 				</div>
 				<p className="text-teal-400/90 leading-relaxed glow flicker">{project.fullDescription}</p>
 			</div>
-
-			{/* Action buttons */}
 			<div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
 				{project.github && (
 					<button
@@ -95,8 +90,6 @@ export default function ProjectDetail({ project, onBack }: ProjectDetailProps) {
 					</button>
 				)}
 			</div>
-
-			{/* Features */}
 			<div className="mb-6">
 				<h3 className="text-lg font-semibold text-teal-300 mb-3 glow flicker">Key Features</h3>
 				<div className="grid grid-cols-1 gap-2">
@@ -108,8 +101,6 @@ export default function ProjectDetail({ project, onBack }: ProjectDetailProps) {
 					))}
 				</div>
 			</div>
-
-			{/* Technical details */}
 			<div className="border border-teal-500/30 rounded-xl p-4 pipboy-card">
 				<h3 className="text-lg font-semibold text-teal-300 mb-3 glow flicker">Technical Stack</h3>
 				<div className="text-teal-400/80 glow flicker">
@@ -124,8 +115,6 @@ export default function ProjectDetail({ project, onBack }: ProjectDetailProps) {
 					</div>
 				</div>
 			</div>
-
-			{/* Command hint */}
 			<div className="mt-6 text-teal-600 text-xs glow flicker">
 				◆ Use 'back' command to close the terminal or click the back button to return to projects
 			</div>
