@@ -65,7 +65,6 @@ export default function MainTerminal({
 				<TerminalHeader title="FabricioR@terminal:~" subtitle="MAIN_TERMINAL" />
 
 				<div className="flex-1 flex flex-col p-4 relative min-h-0">
-					{/* Scanlines effect */}
 					<div className="absolute inset-0 pointer-events-none scanlines" />
 
 					<WelcomeMessage />
