@@ -9,10 +9,18 @@ interface Command {
 }
 
 interface Project {
+	id: string
 	title: string
 	description: string
 	tech: string
 	status: string
+	fullDescription: string
+	features: string[]
+	github?: string
+	demo?: string
+	store?: string
+	images?: string[]
+	year: string
 }
 
 export function useTerminal() {
@@ -21,37 +29,104 @@ export function useTerminal() {
 	const [inputHistory, setInputHistory] = useState<string[]>([])
 	const [historyIndex, setHistoryIndex] = useState(-1)
 	const [showProjects, setShowProjects] = useState(false)
+	const [selectedProject, setSelectedProject] = useState<Project | null>(null)
 	const [isProcessing, setIsProcessing] = useState(false)
 	const [suggestions, setSuggestions] = useState<string[]>([])
 
 	const projects: Project[] = [
 		{
+			id: 'livestock',
 			title: 'Livestock Management System',
 			description:
 				'A web application designed for managing livestock on farms, built with React and Firebase.',
 			tech: 'React, Firebase',
 			status: 'Production',
+			fullDescription:
+				'A comprehensive livestock management system that helps farmers track their animals, monitor health records, manage breeding cycles, and optimize feed distribution. The system includes real-time analytics and reporting features.',
+			features: [
+				'Animal tracking and identification',
+				'Health record management',
+				'Breeding cycle monitoring',
+				'Feed optimization algorithms',
+				'Real-time analytics dashboard',
+				'Mobile-responsive design',
+				'Multi-farm support',
+			],
+			github: 'https://github.com/luk/livestock-management',
+			demo: 'https://livestock-demo.luk.dev',
+			year: '2023',
 		},
 		{
+			id: 'marketplace',
 			title: 'Home Maintenance Services Marketplace',
 			description:
 				'A service for connecting users with home maintenance providers, developed using Angular.',
 			tech: 'Angular, TypeScript',
 			status: 'Beta',
+			fullDescription:
+				'A comprehensive marketplace platform that connects homeowners with verified maintenance service providers. Features include real-time booking, payment processing, review systems, and service tracking.',
+			features: [
+				'Service provider verification',
+				'Real-time booking system',
+				'Integrated payment processing',
+				'Review and rating system',
+				'Service tracking and notifications',
+				'Multi-language support',
+				'Advanced search and filtering',
+			],
+			github: 'https://github.com/luk/home-services',
+			demo: 'https://homeservices-demo.luk.dev',
+			store: 'https://play.google.com/store/apps/homeservices',
+			year: '2024',
 		},
 		{
+			id: 'serena',
 			title: 'Serena',
 			description: 'An innovative project focused on user experience and modern web technologies.',
 			tech: 'Next.js, Tailwind CSS',
 			status: 'Development',
+			fullDescription:
+				'Serena is an AI-powered personal assistant web application that helps users organize their daily tasks, schedule meetings, and manage personal projects with intelligent suggestions and automation.',
+			features: [
+				'AI-powered task suggestions',
+				'Smart calendar integration',
+				'Voice command support',
+				'Cross-platform synchronization',
+				'Advanced analytics',
+				'Customizable workflows',
+				'Third-party integrations',
+			],
+			github: 'https://github.com/luk/serena',
+			demo: 'https://serena-demo.luk.dev',
+			year: '2024',
 		},
 	]
 
-	const availableCommands = ['show projects', 'about me', 'open contact', 'help', 'clear']
+	const availableCommands = [
+		'show projects',
+		'show project',
+		'about me',
+		'open contact',
+		'help',
+		'clear',
+		'back',
+	]
+
+	const findProjectByName = (name: string): Project | null => {
+		const searchTerm = name.toLowerCase()
+		return (
+			projects.find(
+				(project) =>
+					project.title.toLowerCase().includes(searchTerm) ||
+					project.id.toLowerCase().includes(searchTerm)
+			) || null
+		)
+	}
 
 	const commands = {
 		'show projects': () => {
 			setShowProjects(true)
+			setSelectedProject(null)
 			return [
 				'Initializing project database...',
 				'Scanning repositories...',
@@ -62,6 +137,58 @@ export function useTerminal() {
 				'',
 				'Projects displayed in secondary terminal →',
 			]
+		},
+		'show project': (projectName?: string) => {
+			if (!projectName) {
+				return [
+					'Usage: show project <name>',
+					'',
+					'Available projects:',
+					'• livestock (Livestock Management System)',
+					'• marketplace (Home Maintenance Services)',
+					'• serena (Serena AI Assistant)',
+					'',
+					'Example: show project livestock',
+				]
+			}
+
+			const project = findProjectByName(projectName)
+			if (!project) {
+				return [
+					`Project "${projectName}" not found.`,
+					'',
+					'Available projects:',
+					'• livestock',
+					'• marketplace',
+					'• serena',
+					'',
+					'Try: show project <name>',
+				]
+			}
+
+			setShowProjects(true)
+			setSelectedProject(project)
+			return [
+				`Loading project: ${project.title}...`,
+				'Fetching detailed information...',
+				'Initializing project viewer...',
+				'',
+				'✓ Project loaded successfully',
+				'✓ Detailed view activated',
+				'',
+				'Project details displayed in secondary terminal →',
+			]
+		},
+		back: () => {
+			if (selectedProject) {
+				setSelectedProject(null)
+				return ['Returning to projects overview...', '✓ Back to project list']
+			}
+			if (showProjects) {
+				setShowProjects(false)
+				return ['Closing projects terminal...', '✓ Projects terminal closed']
+			}
+			return ['Nothing to go back to.', "Use 'show projects' to view projects."]
 		},
 		'about me': () => [
 			'Loading developer profile...',
@@ -128,7 +255,34 @@ export function useTerminal() {
 
 	const getCommandSuggestions = useCallback((input: string) => {
 		if (!input.trim()) return []
-		return availableCommands.filter((cmd) => cmd.toLowerCase().startsWith(input.toLowerCase()))
+
+		const trimmedInput = input.trim().toLowerCase()
+
+		if (trimmedInput.startsWith('show project')) {
+			const projectName = trimmedInput.slice(13)
+			if (projectName) {
+				const matchingProjects = projects.filter(
+					(project) =>
+						project.title.toLowerCase().includes(projectName) ||
+						project.id.toLowerCase().includes(projectName)
+				)
+				return matchingProjects.map((project) => `show project ${project.id}`)
+			}
+			return projects.map((project) => `show project ${project.id}`)
+		}
+
+		const matchingCommands = availableCommands.filter((cmd) =>
+			cmd.toLowerCase().includes(trimmedInput)
+		)
+
+		const wordStartMatches = availableCommands.filter((cmd) => {
+			const words = cmd.toLowerCase().split(' ')
+			return words.some((word) => word.startsWith(trimmedInput))
+		})
+
+		const allMatches = [...new Set([...matchingCommands, ...wordStartMatches])]
+
+		return allMatches
 	}, [])
 
 	const handleTabCompletion = useCallback(() => {
@@ -163,7 +317,8 @@ export function useTerminal() {
 		async (input: string) => {
 			if (isProcessing) return
 
-			const trimmedInput = input.trim().toLowerCase()
+			const trimmedInput = input.trim()
+			const lowerInput = trimmedInput.toLowerCase()
 			setIsProcessing(true)
 			setSuggestions([])
 
@@ -176,7 +331,7 @@ export function useTerminal() {
 			setHistoryIndex(-1)
 
 			const loadingCommand: Command = {
-				input,
+				input: trimmedInput,
 				output: [],
 				timestamp: new Date(),
 				isLoading: true,
@@ -191,29 +346,47 @@ export function useTerminal() {
 
 			setCommandHistory((prev) => prev.slice(0, -1))
 
-			const command = commands[trimmedInput as keyof typeof commands]
+			// Handle "show project <name>" command
+			if (lowerInput.startsWith('show project ')) {
+				const projectName = trimmedInput.slice(13).trim()
+				const output = commands['show project'](projectName)
+				setCommandHistory((prev) => [
+					...prev,
+					{
+						input: trimmedInput,
+						output,
+						timestamp: new Date(),
+					},
+				])
+			} else {
+				const command = commands[lowerInput as keyof typeof commands]
 
-			if (command) {
-				const output = command()
-				if (output.length > 0) {
+				if (command) {
+					const output = command()
+					if (output.length > 0) {
+						setCommandHistory((prev) => [
+							...prev,
+							{
+								input: trimmedInput,
+								output,
+								timestamp: new Date(),
+							},
+						])
+					}
+				} else if (trimmedInput) {
 					setCommandHistory((prev) => [
 						...prev,
 						{
-							input,
-							output,
+							input: trimmedInput,
+							output: [
+								`bash: ${trimmedInput}: command not found`,
+								"Type 'help' for available commands",
+								'',
+							],
 							timestamp: new Date(),
 						},
 					])
 				}
-			} else if (trimmedInput) {
-				setCommandHistory((prev) => [
-					...prev,
-					{
-						input,
-						output: [`bash: ${input}: command not found`, "Type 'help' for available commands", ''],
-						timestamp: new Date(),
-					},
-				])
 			}
 
 			setIsProcessing(false)
@@ -289,6 +462,15 @@ export function useTerminal() {
 
 	const closeProjects = useCallback(() => {
 		setShowProjects(false)
+		setSelectedProject(null)
+	}, [])
+
+	const selectProject = useCallback((project: Project) => {
+		setSelectedProject(project)
+	}, [])
+
+	const goBackToProjects = useCallback(() => {
+		setSelectedProject(null)
 	}, [])
 
 	return {
@@ -298,6 +480,7 @@ export function useTerminal() {
 		suggestions,
 		isProcessing,
 		showProjects,
+		selectedProject,
 		projects,
 		availableCommands,
 
@@ -307,5 +490,7 @@ export function useTerminal() {
 		handleQuickCommand,
 		selectSuggestion,
 		closeProjects,
+		selectProject,
+		goBackToProjects,
 	}
 }

@@ -1,8 +1,8 @@
 import type React from 'react'
 import { useEffect, useRef } from 'react'
 
-import CommandHistory from './commandHistory'
-import CommandInput from './commandInput'
+import CommandHistory from './CommandHistory'
+import CommandInput from './CommandInput'
 import QuickCommands from './QuickCommands'
 import StatusBar from './StatusBar'
 import Suggestions from './Suggestions'

@@ -15,7 +15,7 @@ export default function Suggestions({ suggestions, onSelect }: SuggestionsProps)
 						type="button"
 						key={index}
 						onClick={() => onSelect(suggestion)}
-						className="text-teal-500 hover:text-teal-300 hover:bg-teal-400/10 px-2 py-1 rounded text-sm border border-teal-500/30 hover:border-teal-400/50 transition-colors glow flicker"
+						className="text-teal-500 hover:text-teal-300 hover:bg-teal-400/10 px-2 py-1 rounded text-sm border border-teal-500/30 hover:border-teal-400/50 transition-colors glow flicker cursor-pointer"
 					>
 						{suggestion}
 					</button>

@@ -9,6 +9,7 @@ export default function FunctionalTerminal() {
 		suggestions,
 		isProcessing,
 		showProjects,
+		selectedProject,
 		projects,
 		availableCommands,
 		handleInputChange,
@@ -16,6 +17,8 @@ export default function FunctionalTerminal() {
 		handleQuickCommand,
 		selectSuggestion,
 		closeProjects,
+		selectProject,
+		goBackToProjects,
 	} = useTerminal()
 
 	return (
@@ -34,7 +37,15 @@ export default function FunctionalTerminal() {
 					showProjects={showProjects}
 				/>
 
-				{showProjects && <ProjectsTerminal projects={projects} onClose={closeProjects} />}
+				{showProjects && (
+					<ProjectsTerminal
+						projects={projects}
+						selectedProject={selectedProject}
+						onClose={closeProjects}
+						onSelectProject={selectProject}
+						onBackToProjects={goBackToProjects}
+					/>
+				)}
 			</div>
 		</div>
 	)
