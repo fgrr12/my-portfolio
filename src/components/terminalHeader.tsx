@@ -5,12 +5,12 @@ interface TerminalHeaderProps {
 	showCloseButton?: boolean
 }
 
-export default function TerminalHeader({
+export const TerminalHeader = ({
 	title,
 	subtitle,
 	onClose,
 	showCloseButton = false,
-}: TerminalHeaderProps) {
+}: TerminalHeaderProps) => {
 	return (
 		<div className="bg-slate-800 px-4 py-2 flex justify-between items-center border-b border-teal-500/30">
 			<div className="flex items-center space-x-2">

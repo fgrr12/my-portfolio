@@ -23,7 +23,7 @@ interface Project {
 	year: string
 }
 
-export function useTerminal() {
+export const useTerminal = () => {
 	const [currentInput, setCurrentInput] = useState('')
 	const [commandHistory, setCommandHistory] = useState<Command[]>([])
 	const [inputHistory, setInputHistory] = useState<string[]>([])

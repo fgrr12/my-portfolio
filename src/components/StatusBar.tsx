@@ -2,7 +2,7 @@ interface StatusBarProps {
 	isProcessing: boolean
 }
 
-export default function StatusBar({ isProcessing }: StatusBarProps) {
+export const StatusBar = ({ isProcessing }: StatusBarProps) => {
 	return (
 		<div className="pt-2 border-t border-teal-500/20 text-xs text-teal-600">
 			{isProcessing ? (

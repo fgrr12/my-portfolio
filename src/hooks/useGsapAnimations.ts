@@ -7,7 +7,7 @@ if (typeof window !== 'undefined') {
 	gsap.registerPlugin(TextPlugin)
 }
 
-export function useGSAPAnimations() {
+export const useGSAPAnimations = () => {
 	const timelineRef = useRef<gsap.core.Timeline | null>(null)
 	const hasAnimatedStartup = useRef(false)
 

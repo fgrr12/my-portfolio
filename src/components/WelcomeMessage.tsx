@@ -1,7 +1,7 @@
 import { gsap } from 'gsap'
 import { useEffect, useRef } from 'react'
 
-export default function WelcomeMessage() {
+export const WelcomeMessage = () => {
 	const welcomeRef = useRef<HTMLDivElement>(null)
 	const hasAnimated = useRef(false)
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-export default function LoadingDots() {
+export const LoadingDots = () => {
 	const [dots, setDots] = useState('')
 
 	useEffect(() => {

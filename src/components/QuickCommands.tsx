@@ -4,7 +4,7 @@ interface QuickCommandsProps {
 	disabled: boolean
 }
 
-export default function QuickCommands({ commands, onExecute, disabled }: QuickCommandsProps) {
+export const QuickCommands = ({ commands, onExecute, disabled }: QuickCommandsProps) => {
 	return (
 		<div className="text-sm mb-4">
 			<div className="text-teal-600 mb-2 glow flicker">◆ Quick commands:</div>

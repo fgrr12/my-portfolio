@@ -3,7 +3,7 @@ interface SuggestionsProps {
 	onSelect: (suggestion: string) => void
 }
 
-export default function Suggestions({ suggestions, onSelect }: SuggestionsProps) {
+export const Suggestions = ({ suggestions, onSelect }: SuggestionsProps) => {
 	if (suggestions.length === 0) return null
 
 	return (

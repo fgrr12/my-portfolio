@@ -9,7 +9,7 @@ interface CommandInputProps {
 	placeholder: string
 }
 
-const CommandInput = forwardRef<HTMLInputElement, CommandInputProps>(
+export const CommandInput = forwardRef<HTMLInputElement, CommandInputProps>(
 	({ value, onChange, onKeyDown, disabled, placeholder }, ref) => {
 		return (
 			<div className="flex items-center space-x-2 mb-4">
@@ -29,7 +29,3 @@ const CommandInput = forwardRef<HTMLInputElement, CommandInputProps>(
 		)
 	}
 )
-
-CommandInput.displayName = 'CommandInput'
-
-export default CommandInput

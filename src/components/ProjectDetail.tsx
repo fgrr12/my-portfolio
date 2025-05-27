@@ -1,6 +1,6 @@
 import { ArrowLeft, Github, Play, ShoppingBag } from 'lucide-react'
 import type React from 'react'
-import { useEffect, useRef } from 'react'
+import { memo, useEffect, useRef } from 'react'
 
 import { useGSAPAnimations } from '@/hooks/useGsapAnimations'
 
@@ -24,13 +24,14 @@ interface ProjectDetailProps {
 	onBack: () => void
 }
 
-export default function ProjectDetail({ project, onBack }: ProjectDetailProps) {
+export const ProjectDetail = memo(function ProjectDetail({ project, onBack }: ProjectDetailProps) {
 	const detailRef: any = useRef<HTMLDivElement>(null)
 	const { animateProjectDetail, animateHoverEffect, animateHoverOut } = useGSAPAnimations()
 
+	// biome-ignore lint:call by project id
 	useEffect(() => {
 		animateProjectDetail(detailRef)
-	}, [animateProjectDetail])
+	}, [project.id, animateProjectDetail])
 
 	const handleLinkClick = (url: string) => {
 		window.open(url, '_blank', 'noopener,noreferrer')
@@ -153,8 +154,8 @@ export default function ProjectDetail({ project, onBack }: ProjectDetailProps) {
 			</div>
 
 			<div className="mt-6 text-teal-600 text-xs glow flicker">
-				◆ Use 'back' command or click the back button to return to projects
+				◆ Use 'back' command to close the terminal or click the back button to return to projects
 			</div>
 		</div>
 	)
-}
+})

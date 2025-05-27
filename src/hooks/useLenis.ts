@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-export function useLenis() {
+export const useLenis = () => {
 	useEffect(() => {
 		const lenisInstances: any[] = []
 

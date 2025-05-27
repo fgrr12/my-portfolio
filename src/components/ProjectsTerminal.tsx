@@ -1,7 +1,7 @@
-import { useEffect } from 'react'
+import { memo, useEffect } from 'react'
 
-import ProjectDetail from './ProjectDetail'
-import TerminalHeader from './terminalHeader'
+import { ProjectDetail } from './ProjectDetail'
+import { TerminalHeader } from './terminalHeader'
 
 interface Project {
 	id: string
@@ -26,13 +26,48 @@ interface ProjectsTerminalProps {
 	onBackToProjects: () => void
 }
 
-export default function ProjectsTerminal({
+const ProjectCard = memo(function ProjectCard({
+	project,
+	onSelect,
+}: {
+	project: Project
+	onSelect: (project: Project) => void
+}) {
+	return (
+		<button
+			type="button"
+			onClick={() => onSelect(project)}
+			className="border border-teal-500/50 rounded-lg p-4 hover:bg-teal-400/5 transition-all duration-300 hover:border-teal-400 hover:shadow-lg hover:shadow-teal-500/20 cursor-pointer pipboy-card"
+		>
+			<div className="flex justify-between items-start mb-2">
+				<h3 className="text-lg font-semibold text-teal-300 glow flicker">{project.title}</h3>
+				<span
+					className={`text-xs px-2 py-1 rounded flicker ${
+						project.status === 'Production'
+							? 'bg-green-500/20 text-green-400'
+							: project.status === 'Beta'
+								? 'bg-yellow-500/20 text-yellow-400'
+								: 'bg-blue-500/20 text-blue-400'
+					} glow`}
+				>
+					{project.status}
+				</span>
+			</div>
+			<p className="text-teal-400/80 text-sm leading-relaxed mb-3 flicker">{project.description}</p>
+			<div className="text-teal-500 text-xs">
+				<span className="glow flicker">Tech Stack: {project.tech}</span>
+			</div>
+		</button>
+	)
+})
+
+export const ProjectsTerminal = ({
 	projects,
 	selectedProject,
 	onClose,
 	onSelectProject,
 	onBackToProjects,
-}: ProjectsTerminalProps) {
+}: ProjectsTerminalProps) => {
 	useEffect(() => {
 		const reInitLenis = async () => {
 			const Lenis = (await import('lenis')).default
@@ -90,36 +125,8 @@ export default function ProjectsTerminal({
 							<div className="text-teal-300 glow text-lg mb-4 flicker">◆ PROJECT DATABASE ◆</div>
 
 							<div className="space-y-4">
-								{projects.map((project, index) => (
-									<button
-										key={index}
-										type="button"
-										onClick={() => onSelectProject(project)}
-										className="border border-teal-500/50 rounded-xl p-4 hover:bg-teal-400/5 transition-all duration-300 hover:border-teal-400 hover:shadow-lg hover:shadow-teal-500/20 cursor-pointer pipboy-card"
-									>
-										<div className="flex justify-between items-start mb-2">
-											<h3 className="text-lg font-semibold text-teal-300 glow flicker">
-												{project.title}
-											</h3>
-											<span
-												className={`text-xs px-2 py-1 rounded flicker ${
-													project.status === 'Production'
-														? 'bg-green-500/20 text-green-400'
-														: project.status === 'Beta'
-															? 'bg-yellow-500/20 text-yellow-400'
-															: 'bg-blue-500/20 text-blue-400'
-												} glow`}
-											>
-												{project.status}
-											</span>
-										</div>
-										<p className="text-teal-400/80 text-sm leading-relaxed mb-3 flicker">
-											{project.description}
-										</p>
-										<div className="text-teal-500 text-xs">
-											<span className="glow flicker">Tech Stack: {project.tech}</span>
-										</div>
-									</button>
+								{projects.map((project) => (
+									<ProjectCard key={project.id} project={project} onSelect={onSelectProject} />
 								))}
 							</div>
 

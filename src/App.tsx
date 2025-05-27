@@ -1,5 +1,5 @@
-import MainTerminal from './components/MainTerminal'
-import ProjectsTerminal from './components/ProjectsTerminal'
+import { MainTerminal } from './components/MainTerminal'
+import { ProjectsTerminal } from './components/ProjectsTerminal'
 import { useLenis } from './hooks/useLenis'
 import { useTerminal } from './hooks/useTerminal'
 
