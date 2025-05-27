@@ -1,50 +1,201 @@
 @import "tailwindcss";
-@plugin "daisyui";
 @tailwind utilities;
 @config "../tailwind.config.js";
 
+@layer base {
+	body {
+		@apply bg-gray-950 font-mono;
+	}
+}
+
 @layer utilities {
-	@keyframes blink {
-		0%,
-		50%,
-		100% {
-			opacity: 1;
-		}
-		25%,
-		75% {
-			opacity: 0;
-		}
-	}
-
-	.glow-text {
-		color: #8cf4d7;
+	.glow {
 		text-shadow:
-			0 0 5px #8cf4d7,
-			0 0 10px #8cf4d7;
+			0 0 2px currentColor,
+			0 0 4px currentColor;
 	}
 
-	.pipboy-terminal::before {
-		content: "";
-		position: absolute;
-		inset: 0;
-		background: repeating-linear-gradient(
-			to bottom,
-			rgba(0, 255, 224, 0.05),
-			rgba(0, 255, 224, 0.05) 2px,
-			transparent 2px,
-			transparent 4px
+	.terminal-glow {
+		box-shadow:
+			0 0 30px rgba(20, 184, 166, 0.3),
+			inset 0 0 30px rgba(20, 184, 166, 0.1);
+	}
+
+	.pipboy-bg {
+		background: radial-gradient(ellipse at center, #0f172a 0%, #020617 100%);
+	}
+
+	.pipboy-screen {
+		background: linear-gradient(145deg, #0f172a 0%, #1e293b 100%);
+		position: relative;
+	}
+
+	.pipboy-card {
+		background: linear-gradient(145deg, rgba(20, 184, 166, 0.05) 0%, rgba(20, 184, 166, 0.02) 100%);
+	}
+
+	.scanlines {
+		background: linear-gradient(
+			transparent 50%,
+			rgba(20, 184, 166, 0.03) 50%,
+			rgba(20, 184, 166, 0.03) 51%,
+			transparent 51%
 		);
-		animation: scanlines 1s linear infinite;
-		pointer-events: none;
-		z-index: 0;
+		background-size: 100% 4px;
+		animation: scanlines 0.1s linear infinite;
 	}
 
-	.pipboy-terminal::after {
-		content: "";
-		position: absolute;
-		inset: 0;
-		background: radial-gradient(circle, rgba(0, 255, 224, 0.1) 0%, transparent 70%);
-		pointer-events: none;
-		z-index: 0;
+	.flicker {
+		animation: flicker 4s infinite;
+		animation-delay: calc(var(--random) * 1s);
 	}
+
+	/* Flicker random delays */
+	.flicker:nth-child(1) {
+		--random: 0.1;
+	}
+	.flicker:nth-child(2) {
+		--random: 0.3;
+	}
+	.flicker:nth-child(3) {
+		--random: 0.7;
+	}
+	.flicker:nth-child(4) {
+		--random: 0.9;
+	}
+	.flicker:nth-child(5) {
+		--random: 0.2;
+	}
+	.flicker:nth-child(6) {
+		--random: 0.8;
+	}
+	.flicker:nth-child(7) {
+		--random: 0.4;
+	}
+	.flicker:nth-child(8) {
+		--random: 0.6;
+	}
+	.flicker:nth-child(9) {
+		--random: 0.5;
+	}
+	.flicker:nth-child(10) {
+		--random: 0.15;
+	}
+	.flicker:nth-child(11) {
+		--random: 0.25;
+	}
+	.flicker:nth-child(12) {
+		--random: 0.75;
+	}
+	.flicker:nth-child(13) {
+		--random: 0.35;
+	}
+	.flicker:nth-child(14) {
+		--random: 0.65;
+	}
+	.flicker:nth-child(15) {
+		--random: 0.45;
+	}
+	.flicker:nth-child(16) {
+		--random: 0.55;
+	}
+	.flicker:nth-child(17) {
+		--random: 0.85;
+	}
+	.flicker:nth-child(18) {
+		--random: 0.95;
+	}
+	.flicker:nth-child(19) {
+		--random: 0.05;
+	}
+	.flicker:nth-child(20) {
+		--random: 0.12;
+	}
+	.flicker:nth-child(21) {
+		--random: 0.33;
+	}
+	.flicker:nth-child(22) {
+		--random: 0.67;
+	}
+	.flicker:nth-child(23) {
+		--random: 0.77;
+	}
+	.flicker:nth-child(24) {
+		--random: 0.88;
+	}
+	.flicker:nth-child(25) {
+		--random: 0.44;
+	}
+	.flicker:nth-child(26) {
+		--random: 0.22;
+	}
+	.flicker:nth-child(27) {
+		--random: 0.11;
+	}
+	.flicker:nth-child(28) {
+		--random: 0.99;
+	}
+	.flicker:nth-child(29) {
+		--random: 0.66;
+	}
+	.flicker:nth-child(30) {
+		--random: 0.13;
+	}
+}
+
+@keyframes flicker {
+	0%,
+	97% {
+		text-shadow:
+			0 0 2px currentColor,
+			0 0 4px currentColor;
+		opacity: 1;
+	}
+	98% {
+		text-shadow:
+			0 0 3px currentColor,
+			0 0 6px currentColor,
+			0 0 9px currentColor;
+		opacity: 1.3;
+	}
+	99% {
+		text-shadow:
+			0 0 4px currentColor,
+			0 0 8px currentColor,
+			0 0 12px currentColor;
+		opacity: 1.5;
+	}
+	100% {
+		text-shadow:
+			0 0 2px currentColor,
+			0 0 4px currentColor;
+		opacity: 1;
+	}
+}
+
+@keyframes scanlines {
+	0% {
+		background-position: 0 0;
+	}
+	100% {
+		background-position: 0 4px;
+	}
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+	width: 8px;
+}
+
+::-webkit-scrollbar-track {
+	background: rgba(15, 23, 42, 0.5);
+}
+
+::-webkit-scrollbar-thumb {
+	background: rgba(20, 184, 166, 0.3);
+	border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: rgba(20, 184, 166, 0.5);
 }
