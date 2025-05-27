@@ -118,7 +118,7 @@ export const MainTerminal = memo(
 			return () => clearTimeout(timer)
 		}, [])
 
-		const quickCommands = availableCommands.filter((cmd) => cmd !== 'clear')
+		const quickCommands = availableCommands.filter((cmd) => cmd !== 'clear' && cmd !== 'back')
 
 		return (
 			<div className={`${showProjects ? 'lg:w-1/2' : 'w-full'} transition-all duration-500`}>
