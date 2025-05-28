@@ -38,7 +38,6 @@ export const useEasterEggs = () => {
 	)
 
 	const easterEggCommands = {
-		// Digital rain effect (better than matrix)
 		'digital rain': () => {
 			setDigitalRainMode(true)
 			setTimeout(() => setDigitalRainMode(false), 12000)
@@ -56,7 +55,6 @@ export const useEasterEggs = () => {
 			]
 		},
 
-		// Better coffee with proper ASCII
 		brew: () => {
 			playDiscoverySound()
 			return [
@@ -83,7 +81,6 @@ export const useEasterEggs = () => {
 			]
 		},
 
-		// Snow effect
 		snow: () => {
 			setIsSnowing(true)
 			setTimeout(() => setIsSnowing(false), 20000)
@@ -103,7 +100,6 @@ export const useEasterEggs = () => {
 			]
 		},
 
-		// Glitch effect
 		glitch: () => {
 			setIsGlitching(true)
 			setTimeout(() => setIsGlitching(false), 8000)
@@ -123,7 +119,6 @@ export const useEasterEggs = () => {
 			]
 		},
 
-		// Secret developer mode
 		'dev mode': () => {
 			playDiscoverySound()
 			return [
@@ -150,7 +145,6 @@ export const useEasterEggs = () => {
 			]
 		},
 
-		// Rubber duck debugging
 		'rubber duck': () => {
 			const responses = [
 				'🦆 *Quack* Have you tried turning it off and on again?',
@@ -189,7 +183,6 @@ export const useEasterEggs = () => {
 			]
 		},
 
-		// Stack Overflow simulator
 		'stack overflow': () => {
 			const questions = [
 				'How to center a div?',

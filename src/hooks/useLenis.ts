@@ -31,8 +31,6 @@ export const useLenis = () => {
 					}
 
 					requestAnimationFrame(raf)
-
-					console.log('Lenis initialized for terminal area:', element)
 				}
 			})
 		}
@@ -48,7 +46,6 @@ export const useLenis = () => {
 					lenis.destroy()
 				}
 			})
-			console.log('All Lenis instances destroyed')
 		}
 	}, [])
 
@@ -80,8 +77,6 @@ export const useLenis = () => {
 				}
 
 				requestAnimationFrame(raf)
-
-				console.log('Lenis reinitialized for new terminal area:', element)
 			}
 		})
 	}
