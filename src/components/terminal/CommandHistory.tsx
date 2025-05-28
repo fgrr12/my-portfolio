@@ -18,19 +18,19 @@ export const CommandHistory = forwardRef<HTMLDivElement, CommandHistoryProps>(
 					overflowY: 'auto',
 				}}
 			>
-				<div className="space-y-2">
+				<div className="space-y-2 max-w-full">
 					{commands.map((cmd, index) => (
-						<div key={index} className="space-y-1">
+						<div key={index} className="space-y-1 max-w-full">
 							<div className="flex items-center space-x-2">
 								<span className="text-teal-400 glow flicker">fabricio:-+</span>
-								<span className="text-teal-300 flicker">{cmd.input}</span>
+								<span className="text-teal-300 flicker break-all">{cmd.input}</span>
 							</div>
 							{cmd.isLoading ? (
 								<div className="ml-4">
 									<LoadingDots />
 								</div>
 							) : (
-								<div className="ml-4">
+								<div className="ml-4 max-w-full overflow-hidden">
 									<CommandOutputRenderer output={cmd.output} />
 								</div>
 							)}

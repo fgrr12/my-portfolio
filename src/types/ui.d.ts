@@ -48,3 +48,8 @@ export interface ProjectsTerminalProps {
 	onSelectProject: (project: Project) => void
 	onBackToProjects: () => void
 }
+
+export interface TableRendererProps {
+	data: TableData
+	className?: string
+}

@@ -83,6 +83,11 @@ export function useTerminal() {
 			return terminalContent.aboutMe
 		},
 
+		'skills': () => {
+			if (shouldPlaySound(soundEnabled)) playSuccessSound()
+			return terminalContent.skills
+		},
+
 		'open contact': () => {
 			if (shouldPlaySound(soundEnabled)) playSuccessSound()
 			return terminalContent.contact

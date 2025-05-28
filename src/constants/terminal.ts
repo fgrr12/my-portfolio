@@ -17,8 +17,8 @@ export const TERMINAL_CONFIG = {
 } as const
 
 export const COMMANDS = {
-	AVAILABLE: ['show projects', 'show project', 'about me', 'open contact', 'help', 'clear'],
-	HIDDEN: ['back', 'sound on', 'sound off', 'lang en', 'lang es'],
+	AVAILABLE: ['show projects', 'show project', 'about me', 'skills', 'open contact', 'help'],
+	HIDDEN: ['clear', 'back', 'sound on', 'sound off', 'lang en', 'lang es'],
 	EASTER_EGGS: [
 		'digital rain',
 		'brew',

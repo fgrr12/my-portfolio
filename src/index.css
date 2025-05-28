@@ -185,6 +185,7 @@
 /* Custom scrollbar */
 ::-webkit-scrollbar {
 	width: 8px;
+	height: 8px;
 }
 
 ::-webkit-scrollbar-track {
@@ -198,4 +199,22 @@
 
 ::-webkit-scrollbar-thumb:hover {
 	background: rgba(20, 184, 166, 0.5);
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+	.ascii-table {
+		font-size: 0.75rem;
+		min-width: 100%;
+	}
+
+	.ascii-table-cell,
+	.ascii-table-header {
+		padding: 0.5rem 0.75rem;
+	}
+
+	.ascii-table-title {
+		padding: 0.5rem 1rem;
+		font-size: 0.875rem;
+	}
 }

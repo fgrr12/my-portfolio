@@ -61,3 +61,9 @@ interface TerminalConfig {
 		max: number
 	}
 }
+
+interface TableData {
+	title: string
+	headers?: string[]
+	rows: string[][]
+}
