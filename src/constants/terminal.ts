@@ -14,7 +14,7 @@ export const TERMINAL_CONFIG = {
 		REPEAT_DELAY_MAX: 3,
 		REPEAT_DELAY_MIN: 2,
 	},
-} as const
+}
 
 export const COMMANDS = {
 	AVAILABLE: ['show projects', 'show project', 'about me', 'open contact', 'help', 'clear'],
@@ -29,7 +29,7 @@ export const COMMANDS = {
 		'stack overflow',
 		'konami',
 	],
-} as const
+}
 
 export const KONAMI_CODE = [
 	'ArrowUp',
@@ -42,15 +42,15 @@ export const KONAMI_CODE = [
 	'ArrowRight',
 	'KeyB',
 	'KeyA',
-] as const
+]
 
 export const LANGUAGES = {
 	EN: 'en',
 	ES: 'es',
-} as const
+}
 
 export const PROJECT_STATUS = {
 	PRODUCTION: 'Production',
 	BETA: 'Beta',
 	DEVELOPMENT: 'Development',
-} as const
+}
