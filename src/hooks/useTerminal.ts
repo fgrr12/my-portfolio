@@ -1,5 +1,7 @@
 import type React from 'react'
 import { useCallback, useState } from 'react'
+import { useSoundEffects } from './useSoundEffects'
+import { useEasterEggs } from './useEasterEggs'
 
 interface Command {
 	input: string
@@ -32,6 +34,18 @@ export const useTerminal = () => {
 	const [selectedProject, setSelectedProject] = useState<Project | null>(null)
 	const [isProcessing, setIsProcessing] = useState(false)
 	const [suggestions, setSuggestions] = useState<string[]>([])
+	const [soundEnabled, setSoundEnabled] = useState(true)
+
+	const {
+		playTypingSound,
+		playButtonSound,
+		playCommandSound,
+		playSuccessSound,
+		playErrorSound,
+		playStartupSound,
+	} = useSoundEffects()
+	const { easterEggCommands, digitalRainMode, isSnowing, isGlitching, checkKonamiCode } =
+		useEasterEggs()
 
 	const projects: Project[] = [
 		{
@@ -102,14 +116,22 @@ export const useTerminal = () => {
 		},
 	]
 
-	const availableCommands = [
-		'show projects',
-		'show project',
-		'about me',
-		'open contact',
-		'help',
+	const availableCommands = ['show projects', 'show project', 'about me', 'open contact', 'help']
+
+	const allCommands = [
+		...availableCommands,
 		'clear',
 		'back',
+		'sound on',
+		'sound off',
+		'digital rain',
+		'brew',
+		'snow',
+		'glitch',
+		'dev mode',
+		'rubber duck',
+		'stack overflow',
+		'konami',
 	]
 
 	const findProjectByName = (name: string): Project | null => {
@@ -127,6 +149,7 @@ export const useTerminal = () => {
 		'show projects': () => {
 			setShowProjects(true)
 			setSelectedProject(null)
+			if (soundEnabled) playSuccessSound()
 			return [
 				'Initializing project database...',
 				'Scanning repositories...',
@@ -154,6 +177,7 @@ export const useTerminal = () => {
 
 			const project = findProjectByName(projectName)
 			if (!project) {
+				if (soundEnabled) playErrorSound()
 				return [
 					`Project "${projectName}" not found.`,
 					'',
@@ -168,6 +192,7 @@ export const useTerminal = () => {
 
 			setShowProjects(true)
 			setSelectedProject(project)
+			if (soundEnabled) playSuccessSound()
 			return [
 				`Loading project: ${project.title}...`,
 				'Fetching detailed information...',
@@ -182,78 +207,109 @@ export const useTerminal = () => {
 		back: () => {
 			if (selectedProject) {
 				setSelectedProject(null)
+				if (soundEnabled) playCommandSound()
 				return ['Returning to projects overview...', '✓ Back to project list']
-			}
-			if (showProjects) {
+			} else if (showProjects) {
 				setShowProjects(false)
+				if (soundEnabled) playCommandSound()
 				return ['Closing projects terminal...', '✓ Projects terminal closed']
+			} else {
+				if (soundEnabled) playErrorSound()
+				return ['Nothing to go back to.', "Use 'show projects' to view projects."]
 			}
-			return ['Nothing to go back to.', "Use 'show projects' to view projects."]
 		},
-		'about me': () => [
-			'Loading developer profile...',
-			'',
-			'╔══════════════════════════════════════╗',
-			'║            DEVELOPER PROFILE         ║',
-			'╠══════════════════════════════════════╣',
-			'║ Name: Fabricio Rojas                 ║',
-			'║ Role: Full Stack Developer           ║',
-			'║ Specialization: React, Angular       ║',
-			'║ Database: Firebase, PostgreSQL       ║',
-			'║ Status: Available                    ║',
-			'╚══════════════════════════════════════╝',
-			'',
-			'💡 Passionate about creating innovative web solutions',
-			'🚀 Building the future, one line of code at a time',
-			'',
-		],
-		'open contact': () => [
-			'Retrieving contact protocols...',
-			'',
-			'╔══════════════════════════════════════════════════╗',
-			'║                 CONTACT INFORMATION              ║',
-			'╠══════════════════════════════════════════════════╣',
-			'║ Country: Costa Rica                              ║',
-			'║ Email: fgrr12@gmail.com                          ║',
-			'║ GitHub: github.com/fgrr12                        ║',
-			'║ LinkedIn: linkedin.com/in/fabricio-rojas/        ║',
-			'╚══════════════════════════════════════════════════╝',
-			'',
-			'Feel free to reach out for collaborations!',
-			'',
-		],
-		help: () => [
-			'Loading command database...',
-			'',
-			'╔═══════════════════════════════════════════════════════╗',
-			'║                    COMMAND MANUAL                     ║',
-			'╠═══════════════════════════════════════════════════════╣',
-			'║  COMMAND              │  DESCRIPTION                  ║',
-			'║                                                       ║',
-			'║  ─────────────────────────────────────────────────    ║',
-			'║  show projects        │  Display project portfolio    ║',
-			'║  show project <name>  │  View detailed project info   ║',
-			'║  about me             │  Show developer information   ║',
-			'║  open contact         │  Display contact details      ║',
-			'║  back                 │  Go back to previous view     ║',
-			'║  help                 │  Show this manual             ║',
-			'║  clear                │  Clear terminal screen        ║',
-			'║                                                       ║',
-			'╠═══════════════════════════════════════════════════════╣',
-			'║                    NAVIGATION                         ║',
-			'╠═══════════════════════════════════════════════════════╣',
-			'║  ↑/↓ arrows           │  Browse command history       ║',
-			'║  Tab                  │  Auto-complete commands       ║',
-			'║  Enter                │  Execute command              ║',
-			'║  Esc                  │  Clear suggestions            ║',
-			'╚═══════════════════════════════════════════════════════╝',
-			'',
-		],
+		'about me': () => {
+			if (soundEnabled) playSuccessSound()
+			return [
+				'Loading developer profile...',
+				'',
+				'╔══════════════════════════════════════╗',
+				'║            DEVELOPER PROFILE         ║',
+				'╠══════════════════════════════════════╣',
+				'║ Name: Fabricio Rojas                 ║',
+				'║ Role: Full Stack Developer           ║',
+				'║ Specialization: React, Angular       ║',
+				'║ Database: Firebase, PostgreSQL       ║',
+				'║ Status: Available                    ║',
+				'╚══════════════════════════════════════╝',
+				'',
+				'💡 Passionate about creating innovative web solutions',
+				'🚀 Building the future, one line of code at a time',
+				'',
+			]
+		},
+		'open contact': () => {
+			if (soundEnabled) playSuccessSound()
+			return [
+				'Retrieving contact protocols...',
+				'',
+				'╔══════════════════════════════════════════════════╗',
+				'║                 CONTACT INFORMATION              ║',
+				'╠══════════════════════════════════════════════════╣',
+				'║ Country: Costa Rica                              ║',
+				'║ Email: fgrr12@gmail.com                          ║',
+				'║ GitHub: github.com/fgrr12                        ║',
+				'║ LinkedIn: linkedin.com/in/fabricio-rojas/        ║',
+				'╚══════════════════════════════════════════════════╝',
+				'',
+				'Feel free to reach out for collaborations!',
+				'',
+			]
+		},
+		help: () => {
+			if (soundEnabled) playSuccessSound()
+			return [
+				'Loading command database...',
+				'',
+				'╔═══════════════════════════════════════════════════════╗',
+				'║                    COMMAND MANUAL                     ║',
+				'╠═══════════════════════════════════════════════════════╣',
+				'║  COMMAND              │  DESCRIPTION                  ║',
+				'║                                                       ║',
+				'║  ─────────────────────────────────────────────────    ║',
+				'║  show projects        │  Display project portfolio    ║',
+				'║  show project <name>  │  View detailed project info   ║',
+				'║  about me             │  Show developer information   ║',
+				'║  open contact         │  Display contact details      ║',
+				'║  back                 │  Go back to previous view     ║',
+				'║  help                 │  Show this manual             ║',
+				'║  clear                │  Clear terminal screen        ║',
+				'║                                                       ║',
+				'╠═══════════════════════════════════════════════════════╣',
+				'║                    NAVIGATION                         ║',
+				'╠═══════════════════════════════════════════════════════╣',
+				'║  ↑/↓ arrows           │  Browse command history       ║',
+				'║  Tab                  │  Auto-complete commands       ║',
+				'║  Enter                │  Execute command              ║',
+				'║  Esc                  │  Clear suggestions            ║',
+				'╚═══════════════════════════════════════════════════════╝',
+				'',
+			]
+		},
 		clear: () => {
 			setCommandHistory([])
 			setShowProjects(false)
+			if (soundEnabled) playCommandSound()
 			return []
 		},
+		'sound on': () => {
+			setSoundEnabled(true)
+			playSuccessSound()
+			return ['🔊 Sound effects enabled!', 'All terminal sounds are now active.']
+		},
+		'sound off': () => {
+			setSoundEnabled(false)
+			return ['🔇 Sound effects disabled.', 'Terminal is now in silent mode.']
+		},
+		// Easter egg commands (hidden from quick commands)
+		'digital rain': easterEggCommands['digital rain'],
+		brew: easterEggCommands.brew,
+		snow: easterEggCommands.snow,
+		glitch: easterEggCommands.glitch,
+		'dev mode': easterEggCommands['dev mode'],
+		'rubber duck': easterEggCommands['rubber duck'],
+		'stack overflow': easterEggCommands['stack overflow'],
+		konami: easterEggCommands.konami,
 	}
 
 	const getCommandSuggestions = useCallback((input: string) => {
@@ -270,21 +326,19 @@ export const useTerminal = () => {
 						project.id.toLowerCase().includes(projectName)
 				)
 				return matchingProjects.map((project) => `show project ${project.id}`)
+			} else {
+				return projects.map((project) => `show project ${project.id}`)
 			}
-			return projects.map((project) => `show project ${project.id}`)
 		}
 
-		const matchingCommands = availableCommands.filter((cmd) =>
-			cmd.toLowerCase().includes(trimmedInput)
-		)
-
-		const wordStartMatches = availableCommands.filter((cmd) => {
+		// Use allCommands for suggestions but only show matching ones
+		const matchingCommands = allCommands.filter((cmd) => cmd.toLowerCase().includes(trimmedInput))
+		const wordStartMatches = allCommands.filter((cmd) => {
 			const words = cmd.toLowerCase().split(' ')
 			return words.some((word) => word.startsWith(trimmedInput))
 		})
 
 		const allMatches = [...new Set([...matchingCommands, ...wordStartMatches])]
-
 		return allMatches
 	}, [])
 
@@ -294,6 +348,7 @@ export const useTerminal = () => {
 		if (matches.length === 1) {
 			setCurrentInput(matches[0])
 			setSuggestions([])
+			if (soundEnabled) playButtonSound()
 		} else if (matches.length > 1) {
 			setSuggestions(matches)
 
@@ -311,9 +366,10 @@ export const useTerminal = () => {
 
 			if (commonPrefix.length > currentInput.length) {
 				setCurrentInput(commonPrefix)
+				if (soundEnabled) playButtonSound()
 			}
 		}
-	}, [currentInput, getCommandSuggestions])
+	}, [currentInput, getCommandSuggestions, soundEnabled, playButtonSound])
 
 	//biome-ignore lint:ignore commands
 	const executeCommand = useCallback(
@@ -324,6 +380,8 @@ export const useTerminal = () => {
 			const lowerInput = trimmedInput.toLowerCase()
 			setIsProcessing(true)
 			setSuggestions([])
+
+			if (soundEnabled) playCommandSound()
 
 			if (
 				trimmedInput &&
@@ -344,12 +402,10 @@ export const useTerminal = () => {
 			setCurrentInput('')
 
 			const processingTime = Math.random() * 800 + 400
-
 			await new Promise((resolve) => setTimeout(resolve, processingTime))
 
 			setCommandHistory((prev) => prev.slice(0, -1))
 
-			// Handle "show project <name>" command
 			if (lowerInput.startsWith('show project ')) {
 				const projectName = trimmedInput.slice(13).trim()
 				const output = commands['show project'](projectName)
@@ -377,6 +433,7 @@ export const useTerminal = () => {
 						])
 					}
 				} else if (trimmedInput) {
+					if (soundEnabled) playErrorSound()
 					setCommandHistory((prev) => [
 						...prev,
 						{
@@ -394,11 +451,25 @@ export const useTerminal = () => {
 
 			setIsProcessing(false)
 		},
-		[isProcessing, inputHistory]
+		[isProcessing, inputHistory, soundEnabled, playCommandSound, playErrorSound]
 	)
 
 	const handleKeyDown = useCallback(
 		(e: React.KeyboardEvent) => {
+			// Check for Konami code
+			if (checkKonamiCode(e.code)) {
+				const output = easterEggCommands.konami()
+				setCommandHistory((prev) => [
+					...prev,
+					{
+						input: '🎮 KONAMI CODE',
+						output,
+						timestamp: new Date(),
+					},
+				])
+				return
+			}
+
 			if (e.key === 'Enter' && !isProcessing) {
 				executeCommand(currentInput)
 			} else if (e.key === 'ArrowUp') {
@@ -430,7 +501,16 @@ export const useTerminal = () => {
 				setSuggestions([])
 			}
 		},
-		[currentInput, isProcessing, inputHistory, historyIndex, executeCommand, handleTabCompletion]
+		[
+			currentInput,
+			isProcessing,
+			inputHistory,
+			historyIndex,
+			executeCommand,
+			handleTabCompletion,
+			checkKonamiCode,
+			easterEggCommands,
+		]
 	)
 
 	const handleInputChange = useCallback(
@@ -438,14 +518,19 @@ export const useTerminal = () => {
 			setCurrentInput(value)
 			setHistoryIndex(-1)
 
+			// Play typing sound
+			if (soundEnabled && value.length > currentInput.length) {
+				playTypingSound()
+			}
+
 			if (value.trim()) {
 				const matches = getCommandSuggestions(value)
-				setSuggestions(matches.length > 1 ? matches : [])
+				setSuggestions(matches.length > 0 ? matches : [])
 			} else {
 				setSuggestions([])
 			}
 		},
-		[getCommandSuggestions]
+		[getCommandSuggestions, soundEnabled, playTypingSound, currentInput.length]
 	)
 
 	const handleQuickCommand = useCallback(
@@ -458,10 +543,14 @@ export const useTerminal = () => {
 		[isProcessing, executeCommand]
 	)
 
-	const selectSuggestion = useCallback((suggestion: string) => {
-		setCurrentInput(suggestion)
-		setSuggestions([])
-	}, [])
+	const selectSuggestion = useCallback(
+		(suggestion: string) => {
+			setCurrentInput(suggestion)
+			setSuggestions([])
+			if (soundEnabled) playButtonSound()
+		},
+		[soundEnabled, playButtonSound]
+	)
 
 	const closeProjects = useCallback(() => {
 		setShowProjects(false)
@@ -476,6 +565,13 @@ export const useTerminal = () => {
 		setSelectedProject(null)
 	}, [])
 
+	// Play startup sound on mount
+	const playStartup = useCallback(() => {
+		if (soundEnabled) {
+			setTimeout(() => playStartupSound(), 1000)
+		}
+	}, [soundEnabled, playStartupSound])
+
 	return {
 		// State
 		currentInput,
@@ -486,6 +582,10 @@ export const useTerminal = () => {
 		selectedProject,
 		projects,
 		availableCommands,
+		soundEnabled,
+		digitalRainMode,
+		isSnowing,
+		isGlitching,
 
 		// Handlers
 		handleInputChange,
@@ -495,5 +595,6 @@ export const useTerminal = () => {
 		closeProjects,
 		selectProject,
 		goBackToProjects,
+		playStartup,
 	}
 }

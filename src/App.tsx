@@ -1,9 +1,14 @@
-import { MainTerminal } from './components/MainTerminal'
-import { ProjectsTerminal } from './components/ProjectsTerminal'
+import { useEffect } from 'react'
+
+import DigitalRain from './components/effects/DigitalRain'
+import { GlitchEffect } from './components/effects/GlitchEffect'
+import { SnowEffect } from './components/effects/SnowEffect'
+import { MainTerminal } from './components/terminal/MainTerminal'
+import { ProjectsTerminal } from './components/terminal/ProjectsTerminal'
 import { useLenis } from './hooks/useLenis'
 import { useTerminal } from './hooks/useTerminal'
 
-export default function FunctionalTerminal() {
+export const App = () => {
 	const {
 		currentInput,
 		commandHistory,
@@ -13,6 +18,10 @@ export default function FunctionalTerminal() {
 		selectedProject,
 		projects,
 		availableCommands,
+		soundEnabled,
+		digitalRainMode,
+		isSnowing,
+		isGlitching,
 		handleInputChange,
 		handleKeyDown,
 		handleQuickCommand,
@@ -20,12 +29,25 @@ export default function FunctionalTerminal() {
 		closeProjects,
 		selectProject,
 		goBackToProjects,
+		playStartup,
 	} = useTerminal()
 
 	useLenis()
 
+	useEffect(() => {
+		playStartup()
+	}, [playStartup])
+
 	return (
 		<div className="h-screen bg-gray-950 p-4 font-mono pipboy-bg">
+			<DigitalRain isActive={digitalRainMode} />
+			<SnowEffect isActive={isSnowing} />
+			<GlitchEffect isActive={isGlitching} />
+
+			<div className="fixed top-4 right-4 z-30 text-teal-500 text-xs glow flicker">
+				🔊 Sound: {soundEnabled ? 'ON' : 'OFF'}
+			</div>
+
 			<div className="max-w-7xl mx-auto h-full flex flex-col lg:flex-row gap-4">
 				<MainTerminal
 					commandHistory={commandHistory}
