@@ -83,7 +83,7 @@ export const ProjectsTerminal = ({
 		return () => clearTimeout(timer)
 	}, [])
 	return (
-		<div className="lg:w-1/2 w-full">
+		<div className="lg:w-1/2 w-full pb-20 sm:pb-0">
 			<div className="bg-slate-900 rounded-xl border border-teal-500/40 shadow-2xl shadow-teal-500/20 h-full flex flex-col overflow-hidden terminal-glow pipboy-screen">
 				<TerminalHeader
 					title="projects@terminal:~"
