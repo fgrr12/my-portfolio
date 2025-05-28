@@ -15,7 +15,6 @@ import { useEasterEggs } from './useEasterEggs'
 import { useSoundEffects } from './useSoundEffects'
 
 export function useTerminal() {
-	// State
 	const [currentInput, setCurrentInput] = useState('')
 	const [commandHistory, setCommandHistory] = useState<Command[]>([])
 	const [inputHistory, setInputHistory] = useState<string[]>([])
@@ -27,7 +26,6 @@ export function useTerminal() {
 	const [soundEnabled, setSoundEnabled] = useState(true)
 	const [language, setLanguage] = useState<'en' | 'es'>('en')
 
-	// Hooks
 	const soundEffects = useSoundEffects()
 	const { easterEggCommands, digitalRainMode, isSnowing, isGlitching, checkKonamiCode } =
 		useEasterEggs()
@@ -40,7 +38,6 @@ export function useTerminal() {
 		playTypingSound,
 	} = soundEffects
 
-	// Commands
 	const commands = {
 		'show projects': () => {
 			setShowProjects(true)
@@ -124,11 +121,10 @@ export function useTerminal() {
 			return terminalMessages.commands.language.spanish
 		},
 
-		// Easter egg commands
 		...easterEggCommands,
 	}
 
-	// Execute command
+	// biome-ignore lint:call by commands
 	const executeCommand = useCallback(
 		async (input: string) => {
 			if (isProcessing) return
@@ -140,7 +136,6 @@ export function useTerminal() {
 
 			if (shouldPlaySound(soundEnabled)) playCommandSound()
 
-			// Add to input history
 			if (
 				trimmedInput &&
 				(inputHistory.length === 0 || inputHistory[inputHistory.length - 1] !== trimmedInput)
@@ -149,7 +144,6 @@ export function useTerminal() {
 			}
 			setHistoryIndex(-1)
 
-			// Show loading command
 			const loadingCommand: Command = {
 				input: trimmedInput,
 				output: [],
@@ -160,14 +154,11 @@ export function useTerminal() {
 			setCommandHistory((prev) => [...prev, loadingCommand])
 			setCurrentInput('')
 
-			// Simulate processing time
 			const processingTime = generateProcessingTime()
 			await new Promise((resolve) => setTimeout(resolve, processingTime))
 
-			// Remove loading command
 			setCommandHistory((prev) => prev.slice(0, -1))
 
-			// Execute command
 			if (lowerInput.startsWith('show project ')) {
 				const projectName = trimmedInput.slice(13).trim()
 				const output = commands['show project'](projectName)
@@ -241,11 +232,9 @@ export function useTerminal() {
 			playErrorSound,
 			commands.back,
 			commands['show project'],
-			commands[lowerInput as keyof typeof commands],
 		]
 	)
 
-	// Handle tab completion
 	const handleTabCompletion = useCallback(() => {
 		const matches = getCommandSuggestions(currentInput)
 
@@ -275,10 +264,8 @@ export function useTerminal() {
 		}
 	}, [currentInput, soundEnabled, playButtonSound])
 
-	// Handle key down
 	const handleKeyDown = useCallback(
 		(e: React.KeyboardEvent) => {
-			// Check for Konami code
 			if (checkKonamiCode(e.code)) {
 				const output = easterEggCommands.konami()
 				setCommandHistory((prev) => [
@@ -335,13 +322,11 @@ export function useTerminal() {
 		]
 	)
 
-	// Handle input change
 	const handleInputChange = useCallback(
 		(value: string) => {
 			setCurrentInput(value)
 			setHistoryIndex(-1)
 
-			// Play typing sound
 			if (soundEnabled && value.length > currentInput.length) {
 				playTypingSound()
 			}
@@ -356,7 +341,6 @@ export function useTerminal() {
 		[soundEnabled, playTypingSound, currentInput.length]
 	)
 
-	// Quick command handler
 	const handleQuickCommand = useCallback(
 		async (cmd: string) => {
 			if (isProcessing) return
@@ -367,7 +351,6 @@ export function useTerminal() {
 		[isProcessing, executeCommand]
 	)
 
-	// Suggestion selection
 	const selectSuggestion = useCallback(
 		(suggestion: string) => {
 			setCurrentInput(suggestion)
@@ -377,7 +360,6 @@ export function useTerminal() {
 		[soundEnabled, playButtonSound]
 	)
 
-	// Project handlers
 	const closeProjects = useCallback(() => {
 		setShowProjects(false)
 		setSelectedProject(null)
@@ -391,7 +373,6 @@ export function useTerminal() {
 		setSelectedProject(null)
 	}, [])
 
-	// Settings handlers
 	const toggleSound = useCallback(() => {
 		const newSoundState = !soundEnabled
 		setSoundEnabled(newSoundState)
