@@ -1,4 +1,5 @@
 import { memo } from 'react'
+
 import { TableRenderer } from './tableRenderer'
 
 interface CommandOutputRendererProps {

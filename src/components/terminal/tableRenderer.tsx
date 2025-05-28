@@ -1,5 +1,6 @@
-import { TableRendererProps } from '@/types/ui'
 import { memo } from 'react'
+
+import type { TableRendererProps } from '@/types/ui'
 
 export const TableRenderer = memo(function TableRenderer({
 	data,
