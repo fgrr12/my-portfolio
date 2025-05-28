@@ -5,7 +5,7 @@ export const terminalContent = {
 		'Hi! I am Fabricio Rojas, a Full Stack Developer with over 5 years of experience building web and mobile solutions that truly make a difference. I am passionate about combining clean, user-friendly design with robust functionality, and I genuinely enjoy every step of the development process, from the first idea to the final product.',
 		'Throughout my career, I have worked with technologies like React, Angular, React Native, Express.js, Firebase, and PostgreSQL. I have had the opportunity to lead projects, improve UI/UX, optimize backends, and even communicate directly with clients to better understand their needs. I am not just a coder, I am a problem-solver who cares about the people using what I build.',
 		'Outside of work, I dedicate time to personal projects that mean a lot to me. One of them is an app I built to help my family manage animals on our farm, it includes features for tracking species, daily production, and even family relationships between animals. Another is a home maintenance services marketplace, where I am building everything from the ground up.',
-		'I am always learning, always growing, and always looking for meaningful collaborations. If you would like to connect, chat, or work together — I would love to hear from you!'
+		'I am always learning, always growing, and always looking for meaningful collaborations. If you would like to connect, chat, or work together — I would love to hear from you!',
 	],
 
 	skills: [

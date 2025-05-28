@@ -92,7 +92,7 @@ export const ProjectsTerminal = ({
 					showCloseButton={true}
 				/>
 
-				<div className="flex-1 p-4 overflow-y-auto relative">
+				<div className="flex-1 p-4 relative sm:overflow-y-auto">
 					<div className="absolute inset-0 pointer-events-none scanlines" />
 
 					{selectedProject ? (
@@ -101,7 +101,7 @@ export const ProjectsTerminal = ({
 						<div className="relative z-10">
 							<div className="text-teal-300 glow text-lg mb-4 flicker">◆ PROJECT DATABASE ◆</div>
 
-							<div className="space-y-4">
+							<div className="space-y-4 max-h-120 sm:max-h-full overflow-y-auto sm:overflow-y-hidden">
 								{projects.map((project) => (
 									<ProjectCard key={project.id} project={project} onSelect={onSelectProject} />
 								))}

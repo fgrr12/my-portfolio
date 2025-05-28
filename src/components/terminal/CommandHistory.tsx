@@ -18,7 +18,7 @@ export const CommandHistory = forwardRef<HTMLDivElement, CommandHistoryProps>(
 					overflowY: 'auto',
 				}}
 			>
-				<div className="space-y-2 max-w-full">
+				<div className="space-y-2 max-w-full max-h-80 sm:max-h-full">
 					{commands.map((cmd, index) => (
 						<div key={index} className="space-y-1 max-w-full">
 							<div className="flex items-center space-x-2">
