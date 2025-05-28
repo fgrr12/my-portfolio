@@ -1,13 +1,15 @@
-import { useRef, useEffect, useState, memo } from 'react'
 import { gsap } from 'gsap'
-import { StatusBar } from './StatusBar'
-import { QuickCommands } from './QuickCommands'
-import { CommandInput } from './CommandInput'
-import { Suggestions } from './Suggestions'
+import { memo, useEffect, useRef, useState } from 'react'
+
+import type { MainTerminalProps } from '@/types/ui'
+
 import { CommandHistory } from './CommandHistory'
-import { WelcomeMessage } from './WelcomeMessage'
+import { CommandInput } from './CommandInput'
+import { QuickCommands } from './QuickCommands'
+import { StatusBar } from './StatusBar'
+import { Suggestions } from './Suggestions'
 import { TerminalHeader } from './terminalHeader'
-import { MainTerminalProps } from '@/types/ui'
+import { WelcomeMessage } from './WelcomeMessage'
 
 export const MainTerminal = memo(function MainTerminal({
 	commandHistory,
@@ -62,7 +64,7 @@ export const MainTerminal = memo(function MainTerminal({
 		if (terminalRef.current) {
 			terminalRef.current.scrollTop = terminalRef.current.scrollHeight
 		}
-	}, [commandHistory])
+	}, [])
 
 	useEffect(() => {
 		if (inputRef.current && !isProcessing) {

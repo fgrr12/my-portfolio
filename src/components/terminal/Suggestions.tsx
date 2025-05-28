@@ -1,12 +1,6 @@
-import type React from 'react'
+import { useEffect, useRef } from 'react'
 
-import { useRef, useEffect } from 'react'
-
-interface SuggestionsProps {
-	suggestions: string[]
-	onSelect: (suggestion: string) => void
-	inputRef?: React.RefObject<HTMLInputElement>
-}
+import type { SuggestionsProps } from '@/types/ui'
 
 export const Suggestions = ({ suggestions, onSelect, inputRef }: SuggestionsProps) => {
 	const suggestionsRef = useRef<HTMLDivElement>(null)
@@ -23,6 +17,7 @@ export const Suggestions = ({ suggestions, onSelect, inputRef }: SuggestionsProp
 		}, 0)
 	}
 
+	//biome-ignore lint:call by suggestions
 	useEffect(() => {
 		const handleKeyDown = (e: KeyboardEvent) => {
 			if (!suggestionsRef.current || suggestions.length === 0) return
@@ -67,6 +62,7 @@ export const Suggestions = ({ suggestions, onSelect, inputRef }: SuggestionsProp
 				{suggestions.map((suggestion, index) => (
 					<button
 						key={index}
+						type="button"
 						onClick={() => handleSelect(suggestion)}
 						className="text-teal-500 hover:text-teal-300 hover:bg-teal-400/10 px-2 py-1 rounded text-sm border border-teal-500/30 hover:border-teal-400/50 transition-colors glow flicker focus:outline-none focus:ring-2 focus:ring-teal-400/50"
 					>

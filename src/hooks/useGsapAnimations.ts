@@ -1,6 +1,5 @@
 import { gsap } from 'gsap'
 import { TextPlugin } from 'gsap/TextPlugin'
-import type React from 'react'
 import { useEffect, useRef } from 'react'
 
 if (typeof window !== 'undefined') {

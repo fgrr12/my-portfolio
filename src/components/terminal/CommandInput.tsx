@@ -1,14 +1,6 @@
-import type React from 'react'
-
 import { forwardRef, useEffect } from 'react'
 
-interface CommandInputProps {
-	value: string
-	onChange: (value: string) => void
-	onKeyDown: (e: React.KeyboardEvent) => void
-	disabled: boolean
-	placeholder: string
-}
+import type { CommandInputProps } from '@/types/ui'
 
 export const CommandInput = forwardRef<HTMLInputElement, CommandInputProps>(
 	({ value, onChange, onKeyDown, disabled, placeholder }, ref) => {

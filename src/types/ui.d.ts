@@ -1,19 +1,19 @@
 import type React from 'react'
 
-interface ControlPanelProps {
+export interface ControlPanelProps {
 	soundEnabled: boolean
 	language: 'en' | 'es'
 	onToggleSound: () => void
 	onToggleLanguage: () => void
 }
 
-interface SuggestionsProps {
+export interface SuggestionsProps {
 	suggestions: string[]
 	onSelect: (suggestion: string) => void
 	inputRef?: React.RefObject<HTMLInputElement>
 }
 
-interface CommandInputProps {
+export interface CommandInputProps {
 	value: string
 	onChange: (value: string) => void
 	onKeyDown: (e: React.KeyboardEvent) => void
@@ -21,14 +21,14 @@ interface CommandInputProps {
 	placeholder: string
 }
 
-interface TerminalHeaderProps {
+export interface TerminalHeaderProps {
 	title: string
 	subtitle: string
 	onClose?: () => void
 	showCloseButton?: boolean
 }
 
-interface MainTerminalProps {
+export interface MainTerminalProps {
 	commandHistory: Command[]
 	currentInput: string
 	suggestions: string[]
@@ -41,7 +41,7 @@ interface MainTerminalProps {
 	showProjects: boolean
 }
 
-interface ProjectsTerminalProps {
+export interface ProjectsTerminalProps {
 	projects: Project[]
 	selectedProject: Project | null
 	onClose: () => void

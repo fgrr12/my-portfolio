@@ -1,16 +1,18 @@
-import { useState, useCallback } from 'react'
-import { COMMANDS, TERMINAL_CONFIG } from '../constants/terminal'
-import { useSoundEffects } from './useSoundEffects'
+import { useCallback, useState } from 'react'
+
 import {
 	findProjectByName,
 	generateProcessingTime,
 	getCommandSuggestions,
 	shouldPlaySound,
 } from '@/utils/terminalHelpers'
-import { terminalMessages } from '@/data/terminalMessages'
-import { terminalContent } from '@/data/terminalContent'
+
 import { projects } from '@/data/projects'
+import { terminalContent } from '@/data/terminalContent'
+import { terminalMessages } from '@/data/terminalMessages'
+import { COMMANDS, TERMINAL_CONFIG } from '../constants/terminal'
 import { useEasterEggs } from './useEasterEggs'
+import { useSoundEffects } from './useSoundEffects'
 
 export function useTerminal() {
 	// State
@@ -69,14 +71,14 @@ export function useTerminal() {
 				setSelectedProject(null)
 				if (shouldPlaySound(soundEnabled)) playCommandSound()
 				return terminalMessages.commands.back.toProjects
-			} else if (showProjects) {
+			}
+			if (showProjects) {
 				setShowProjects(false)
 				if (shouldPlaySound(soundEnabled)) playCommandSound()
 				return terminalMessages.commands.back.closeProjects
-			} else {
-				if (shouldPlaySound(soundEnabled)) playErrorSound()
-				return terminalMessages.commands.back.nothing
 			}
+			if (shouldPlaySound(soundEnabled)) playErrorSound()
+			return terminalMessages.commands.back.nothing
 		},
 
 		'about me': () => {
@@ -235,11 +237,11 @@ export function useTerminal() {
 			isProcessing,
 			inputHistory,
 			soundEnabled,
-			selectedProject,
-			showProjects,
 			playCommandSound,
 			playErrorSound,
-			playSuccessSound,
+			commands.back,
+			commands['show project'],
+			commands[lowerInput as keyof typeof commands],
 		]
 	)
 
@@ -329,6 +331,7 @@ export function useTerminal() {
 			executeCommand,
 			handleTabCompletion,
 			checkKonamiCode,
+			easterEggCommands.konami,
 		]
 	)
 
@@ -350,7 +353,7 @@ export function useTerminal() {
 				setSuggestions([])
 			}
 		},
-		[soundEnabled, playTypingSound]
+		[soundEnabled, playTypingSound, currentInput.length]
 	)
 
 	// Quick command handler

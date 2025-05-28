@@ -1,9 +1,4 @@
-interface TerminalHeaderProps {
-	title: string
-	subtitle: string
-	onClose?: () => void
-	showCloseButton?: boolean
-}
+import type { TerminalHeaderProps } from '@/types/ui'
 
 export const TerminalHeader = ({
 	title,

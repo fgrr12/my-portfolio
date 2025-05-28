@@ -1,11 +1,6 @@
-import { Volume2, VolumeX, Globe } from 'lucide-react'
+import { Globe, Volume2, VolumeX } from 'lucide-react'
 
-interface ControlPanelProps {
-	soundEnabled: boolean
-	language: 'en' | 'es'
-	onToggleSound: () => void
-	onToggleLanguage: () => void
-}
+import type { ControlPanelProps } from '@/types/ui'
 
 export const ControlPanel = ({
 	soundEnabled,

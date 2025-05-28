@@ -1,5 +1,4 @@
 import { ArrowLeft, Github, Play, ShoppingBag } from 'lucide-react'
-import type React from 'react'
 import { memo, useEffect, useRef } from 'react'
 
 import { useGSAPAnimations } from '@/hooks/useGsapAnimations'

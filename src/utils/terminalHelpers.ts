@@ -29,9 +29,8 @@ export const getCommandSuggestions = (input: string): string[] => {
 					project.id.toLowerCase().includes(projectName)
 			)
 			return matchingProjects.map((project) => `show project ${project.id}`)
-		} else {
-			return projects.map((project) => `show project ${project.id}`)
 		}
+		return projects.map((project) => `show project ${project.id}`)
 	}
 
 	// General command matching

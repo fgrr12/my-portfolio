@@ -1,4 +1,5 @@
-import { useState, useCallback } from 'react'
+import { useCallback, useState } from 'react'
+
 import { useSoundEffects } from './useSoundEffects'
 
 export const useEasterEggs = () => {
@@ -33,7 +34,7 @@ export const useEasterEggs = () => {
 			}
 			return false
 		},
-		[konamiSequence, konamiCode, playDiscoverySound]
+		[konamiSequence, playDiscoverySound]
 	)
 
 	const easterEggCommands = {
@@ -208,7 +209,7 @@ export const useEasterEggs = () => {
 				'Searching for solutions...',
 				'Found 47,382 similar questions...',
 				'',
-				"📚 Top result for: '" + randomQuestion + "'",
+				`📚 Top result for: '${randomQuestion}'`,
 				'',
 				'╔══════════════════════════════════════╗',
 				'║ ⬆️ 2,847  Question marked as duplicate ║',

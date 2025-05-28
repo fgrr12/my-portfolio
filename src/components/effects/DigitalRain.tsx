@@ -36,7 +36,7 @@ export default function DigitalRain({ isActive }: DigitalRainProps) {
 
 			// Set text properties
 			ctx.fillStyle = '#00ff41' // Bright green
-			ctx.font = fontSize + 'px monospace'
+			ctx.font = `${fontSize}px monospace`
 
 			for (let i = 0; i < drops.length; i++) {
 				// Pick a random character
