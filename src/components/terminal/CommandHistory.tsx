@@ -1,7 +1,7 @@
 import { forwardRef } from 'react'
 
-import { LoadingDots } from './LoadingDots'
 import { CommandOutputRenderer } from './CommandOutputRenderer'
+import { LoadingDots } from './LoadingDots'
 
 interface CommandHistoryProps {
 	commands: Command[]

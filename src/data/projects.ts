@@ -4,7 +4,8 @@ export const projects: Project[] = [
 	{
 		id: 'marketplace',
 		title: 'Home Maintenance Services Marketplace',
-		description: 'A service for connecting users with home maintenance providers, currently in development.',
+		description:
+			'A service for connecting users with home maintenance providers, currently in development.',
 		tech: 'Flutter, React, Express.js, PostgreSQL',
 		status: PROJECT_STATUS.DEVELOPMENT,
 		fullDescription:
@@ -15,18 +16,19 @@ export const projects: Project[] = [
 			'Real-time service availability',
 			'Admin management panel',
 			'Secure authentication and session control',
-			'Scalable PostgreSQL schema design'
+			'Scalable PostgreSQL schema design',
 		],
 		github: '',
 		demo: '',
 		store: '',
 		year: '2025',
-		company: 'Personal Project'
+		company: 'Personal Project',
 	},
 	{
 		id: 'cattle-tracker',
 		title: 'Cattle Tracker & Farm Management',
-		description: 'A responsive farm management system for tracking animals, employees, and productivity.',
+		description:
+			'A responsive farm management system for tracking animals, employees, and productivity.',
 		tech: 'React, Firebase',
 		status: PROJECT_STATUS.PRODUCTION,
 		fullDescription:
@@ -38,13 +40,13 @@ export const projects: Project[] = [
 			'Task management for employees',
 			'Responsive UI for mobile and desktop',
 			'Real-time updates with Firebase',
-			'Multi-species management'
+			'Multi-species management',
 		],
 		github: '',
 		demo: '',
 		store: '',
 		year: '2024',
-		company: 'Personal Project'
+		company: 'Personal Project',
 	},
 	{
 		id: 'condo-finances',
@@ -84,8 +86,7 @@ export const projects: Project[] = [
 	{
 		id: 'serena-app',
 		title: 'Serena: Nanny Service Platform',
-		description:
-			'A mobile and web platform for booking and managing nanny services.',
+		description: 'A mobile and web platform for booking and managing nanny services.',
 		tech: 'Angular, React Native, Firebase, Express.js',
 		status: PROJECT_STATUS.PRODUCTION,
 		fullDescription:
