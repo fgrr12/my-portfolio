@@ -153,7 +153,7 @@ export const ProjectDetail = memo(function ProjectDetail({ project, onBack }: Pr
 			</div>
 
 			<div className="mt-6 text-teal-600 text-xs glow flicker">
-				◆ Use 'back' command to close the terminal or click the back button to return to projects
+				◆ Use 'back' command or click the back button to return to projects
 			</div>
 		</div>
 	)
