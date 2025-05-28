@@ -1,17 +1,4 @@
-export interface Project {
-	id: string
-	title: string
-	description: string
-	tech: string
-	status: string
-	fullDescription: string
-	features: string[]
-	github?: string
-	demo?: string
-	store?: string
-	images?: string[]
-	year: string
-}
+import { PROJECT_STATUS } from '../constants/terminal'
 
 export const projects: Project[] = [
 	{
@@ -20,7 +7,7 @@ export const projects: Project[] = [
 		description:
 			'A web application designed for managing livestock on farms, built with React and Firebase.',
 		tech: 'React, Firebase',
-		status: 'Production',
+		status: PROJECT_STATUS.PRODUCTION,
 		fullDescription:
 			'A comprehensive livestock management system that helps farmers track their animals, monitor health records, manage breeding cycles, and optimize feed distribution. The system includes real-time analytics and reporting features.',
 		features: [
@@ -42,7 +29,7 @@ export const projects: Project[] = [
 		description:
 			'A service for connecting users with home maintenance providers, developed using Angular.',
 		tech: 'Angular, TypeScript',
-		status: 'Beta',
+		status: PROJECT_STATUS.BETA,
 		fullDescription:
 			'A comprehensive marketplace platform that connects homeowners with verified maintenance service providers. Features include real-time booking, payment processing, review systems, and service tracking.',
 		features: [
@@ -64,7 +51,7 @@ export const projects: Project[] = [
 		title: 'Serena',
 		description: 'An innovative project focused on user experience and modern web technologies.',
 		tech: 'Next.js, Tailwind CSS',
-		status: 'Development',
+		status: PROJECT_STATUS.DEVELOPMENT,
 		fullDescription:
 			'Serena is an AI-powered personal assistant web application that helps users organize their daily tasks, schedule meetings, and manage personal projects with intelligent suggestions and automation.',
 		features: [

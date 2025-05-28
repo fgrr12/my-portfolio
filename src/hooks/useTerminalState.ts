@@ -1,14 +1,17 @@
 import { useState } from 'react'
-import type { Project } from '../data/projects'
 
-export interface Command {
-	input: string
-	output: string[]
-	timestamp: Date
-	isLoading?: boolean
-}
-
-export function useTerminalState() {
+export const useTerminalState = (): TerminalState & {
+	setCurrentInput: (input: string) => void
+	setCommandHistory: (history: Command[] | ((prev: Command[]) => Command[])) => void
+	setInputHistory: (history: string[] | ((prev: string[]) => string[])) => void
+	setHistoryIndex: (index: number) => void
+	setShowProjects: (show: boolean) => void
+	setSelectedProject: (project: Project | null) => void
+	setIsProcessing: (processing: boolean) => void
+	setSuggestions: (suggestions: string[]) => void
+	setSoundEnabled: (enabled: boolean) => void
+	setLanguage: (language: 'en' | 'es') => void
+} => {
 	const [currentInput, setCurrentInput] = useState('')
 	const [commandHistory, setCommandHistory] = useState<Command[]>([])
 	const [inputHistory, setInputHistory] = useState<string[]>([])
@@ -23,24 +26,26 @@ export function useTerminalState() {
 	return {
 		// State
 		currentInput,
-		setCurrentInput,
 		commandHistory,
-		setCommandHistory,
 		inputHistory,
-		setInputHistory,
 		historyIndex,
-		setHistoryIndex,
 		showProjects,
-		setShowProjects,
 		selectedProject,
-		setSelectedProject,
 		isProcessing,
-		setIsProcessing,
 		suggestions,
-		setSuggestions,
 		soundEnabled,
-		setSoundEnabled,
 		language,
+
+		// Setters
+		setCurrentInput,
+		setCommandHistory,
+		setInputHistory,
+		setHistoryIndex,
+		setShowProjects,
+		setSelectedProject,
+		setIsProcessing,
+		setSuggestions,
+		setSoundEnabled,
 		setLanguage,
 	}
 }

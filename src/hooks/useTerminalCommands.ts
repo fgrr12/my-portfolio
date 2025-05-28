@@ -1,7 +1,7 @@
-import { useCallback } from 'react'
-import { projects, type Project } from '../data/projects'
+import { findProjectByName, shouldPlaySound } from '@/utils/terminalHelpers'
 import { useEasterEggs } from './useEasterEggs'
-import { terminalText } from '@/data/terminalText'
+import { terminalMessages } from '@/data/terminalMessages'
+import { terminalContent } from '@/data/terminalContent'
 
 interface UseTerminalCommandsProps {
 	soundEnabled: boolean
@@ -9,126 +9,105 @@ interface UseTerminalCommandsProps {
 	setLanguage: (lang: 'en' | 'es') => void
 	setShowProjects: (show: boolean) => void
 	setSelectedProject: (project: Project | null) => void
-	playSuccessSound: () => void
-	playErrorSound: () => void
-	playCommandSound: () => void
+	soundEffects: SoundEffects
 }
 
-export function useTerminalCommands({
+export const useTerminalCommands = ({
 	soundEnabled,
 	setSoundEnabled,
 	setLanguage,
 	setShowProjects,
 	setSelectedProject,
-	playSuccessSound,
-	playErrorSound,
-	playCommandSound,
-}: UseTerminalCommandsProps) {
+	soundEffects,
+}: UseTerminalCommandsProps) => {
 	const { easterEggCommands } = useEasterEggs()
-
-	const findProjectByName = useCallback((name: string): Project | null => {
-		const searchTerm = name.toLowerCase()
-		return (
-			projects.find(
-				(project) =>
-					project.title.toLowerCase().includes(searchTerm) ||
-					project.id.toLowerCase().includes(searchTerm)
-			) || null
-		)
-	}, [])
+	const { playSuccessSound, playErrorSound, playCommandSound } = soundEffects
 
 	const commands = {
 		'show projects': () => {
 			setShowProjects(true)
 			setSelectedProject(null)
-			if (soundEnabled) playSuccessSound()
-			return terminalText.commands.showProjects.success
+			if (shouldPlaySound(soundEnabled)) playSuccessSound()
+			return terminalMessages.commands.showProjects.success
 		},
 
 		'show project': (projectName?: string) => {
 			if (!projectName) {
-				return terminalText.commands.showProject.usage
+				return terminalMessages.commands.showProject.usage
 			}
 
 			const project = findProjectByName(projectName)
 			if (!project) {
-				if (soundEnabled) playErrorSound()
-				return terminalText.commands.showProject.notFound(projectName)
+				if (shouldPlaySound(soundEnabled)) playErrorSound()
+				return terminalMessages.commands.showProject.notFound(projectName)
 			}
 
 			setShowProjects(true)
 			setSelectedProject(project)
-			if (soundEnabled) playSuccessSound()
-			return terminalText.commands.showProject.success(project.title)
+			if (shouldPlaySound(soundEnabled)) playSuccessSound()
+			return terminalMessages.commands.showProject.success(project.title)
 		},
 
 		back: (selectedProject: Project | null, showProjects: boolean) => {
 			if (selectedProject) {
 				setSelectedProject(null)
-				if (soundEnabled) playCommandSound()
-				return terminalText.commands.back.toProjects
+				if (shouldPlaySound(soundEnabled)) playCommandSound()
+				return terminalMessages.commands.back.toProjects
 			} else if (showProjects) {
 				setShowProjects(false)
-				if (soundEnabled) playCommandSound()
-				return terminalText.commands.back.closeProjects
+				if (shouldPlaySound(soundEnabled)) playCommandSound()
+				return terminalMessages.commands.back.closeProjects
 			} else {
-				if (soundEnabled) playErrorSound()
-				return terminalText.commands.back.nothing
+				if (shouldPlaySound(soundEnabled)) playErrorSound()
+				return terminalMessages.commands.back.nothing
 			}
 		},
 
 		'about me': () => {
-			if (soundEnabled) playSuccessSound()
-			return terminalText.commands.aboutMe
+			if (shouldPlaySound(soundEnabled)) playSuccessSound()
+			return terminalContent.aboutMe
 		},
 
 		'open contact': () => {
-			if (soundEnabled) playSuccessSound()
-			return terminalText.commands.contact
+			if (shouldPlaySound(soundEnabled)) playSuccessSound()
+			return terminalContent.contact
 		},
 
 		help: () => {
-			if (soundEnabled) playSuccessSound()
-			return terminalText.commands.help
+			if (shouldPlaySound(soundEnabled)) playSuccessSound()
+			return terminalContent.help
 		},
 
 		clear: () => {
-			if (soundEnabled) playCommandSound()
+			if (shouldPlaySound(soundEnabled)) playCommandSound()
 			return []
 		},
 
 		'sound on': () => {
 			setSoundEnabled(true)
 			playSuccessSound()
-			return terminalText.commands.sound.on
+			return terminalMessages.commands.sound.on
 		},
 
 		'sound off': () => {
 			setSoundEnabled(false)
-			return terminalText.commands.sound.off
+			return terminalMessages.commands.sound.off
 		},
 
 		'lang en': () => {
 			setLanguage('en')
-			if (soundEnabled) playSuccessSound()
-			return terminalText.commands.language.eng
+			if (shouldPlaySound(soundEnabled)) playSuccessSound()
+			return terminalMessages.commands.language.english
 		},
 
 		'lang es': () => {
 			setLanguage('es')
-			if (soundEnabled) playSuccessSound()
-			return terminalText.commands.language.spa
+			if (shouldPlaySound(soundEnabled)) playSuccessSound()
+			return terminalMessages.commands.language.spanish
 		},
 
-		'digital rain': easterEggCommands['digital rain'],
-		brew: easterEggCommands.brew,
-		snow: easterEggCommands.snow,
-		glitch: easterEggCommands.glitch,
-		'dev mode': easterEggCommands['dev mode'],
-		'rubber duck': easterEggCommands['rubber duck'],
-		'stack overflow': easterEggCommands['stack overflow'],
-		konami: easterEggCommands.konami,
+		...easterEggCommands,
 	}
 
-	return { commands, findProjectByName }
+	return { commands }
 }

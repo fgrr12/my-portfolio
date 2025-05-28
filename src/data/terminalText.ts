@@ -137,12 +137,12 @@ export const terminalText = {
 			],
 		},
 		language: {
-			eng: [
+			english: [
 				'🇺🇸 Language changed to English',
 				'Interface language updated successfully.',
 				'Note: Full translation coming soon!',
 			],
-			spa: [
+			spanish: [
 				'🇪🇸 Idioma cambiado a Español',
 				'Idioma de la interfaz actualizado exitosamente.',
 				'Nota: ¡Traducción completa próximamente!',
