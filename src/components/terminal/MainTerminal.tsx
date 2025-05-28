@@ -1,5 +1,3 @@
-import type React from 'react'
-
 import { useRef, useEffect, useState, memo } from 'react'
 import { gsap } from 'gsap'
 import { StatusBar } from './StatusBar'
@@ -9,26 +7,7 @@ import { Suggestions } from './Suggestions'
 import { CommandHistory } from './CommandHistory'
 import { WelcomeMessage } from './WelcomeMessage'
 import { TerminalHeader } from './terminalHeader'
-
-interface Command {
-	input: string
-	output: string[]
-	timestamp: Date
-	isLoading?: boolean
-}
-
-interface MainTerminalProps {
-	commandHistory: Command[]
-	currentInput: string
-	suggestions: string[]
-	isProcessing: boolean
-	availableCommands: string[]
-	onInputChange: (value: string) => void
-	onKeyDown: (e: React.KeyboardEvent) => void
-	onSuggestionSelect: (suggestion: string) => void
-	onQuickCommand: (command: string) => void
-	showProjects: boolean
-}
+import { MainTerminalProps } from '@/types/ui'
 
 export const MainTerminal = memo(function MainTerminal({
 	commandHistory,
@@ -76,8 +55,6 @@ export const MainTerminal = memo(function MainTerminal({
 				},
 				'-=0.5'
 			)
-
-			console.log('Terminal startup animation started')
 		}
 	}, [hasInitialized])
 
@@ -93,38 +70,13 @@ export const MainTerminal = memo(function MainTerminal({
 		}
 	}, [isProcessing])
 
-	useEffect(() => {
-		const timer = setTimeout(() => {
-			const flickerElements = document.querySelectorAll('.flicker')
-			if (flickerElements.length > 0) {
-				flickerElements.forEach((element) => {
-					gsap.to(element, {
-						opacity: 1.3,
-						textShadow: '0 0 8px currentColor, 0 0 15px currentColor, 0 0 20px currentColor',
-						duration: 0.1,
-						repeat: -1,
-						yoyo: true,
-						delay: Math.random() * 4,
-						repeatDelay: Math.random() * 3 + 2,
-						ease: 'power2.inOut',
-					})
-				})
-				console.log('Flicker effects initialized')
-			}
-		}, 2000)
-
-		return () => clearTimeout(timer)
-	}, [])
-
-	const quickCommands = availableCommands.filter((cmd) => cmd !== 'clear')
-
 	return (
 		<div className={`${showProjects ? 'lg:w-1/2' : 'w-full'} transition-all duration-500`}>
 			<div
 				ref={containerRef}
-				className="bg-slate-900 rounded-lg border border-teal-500/40 shadow-2xl shadow-teal-500/20 h-full flex flex-col overflow-hidden terminal-glow pipboy-screen"
+				className="bg-slate-900 rounded-xl border border-teal-500/40 shadow-2xl shadow-teal-500/20 h-full flex flex-col overflow-hidden terminal-glow pipboy-screen"
 			>
-				<TerminalHeader title="luk@terminal:~" subtitle="MAIN_TERMINAL" />
+				<TerminalHeader title="fabricio@terminal:~" subtitle="MAIN_TERMINAL" />
 
 				<div className="flex-1 flex flex-col p-4 relative min-h-0">
 					<div className="absolute inset-0 pointer-events-none scanlines" />
@@ -150,7 +102,7 @@ export const MainTerminal = memo(function MainTerminal({
 						/>
 
 						<QuickCommands
-							commands={quickCommands}
+							commands={availableCommands}
 							onExecute={onQuickCommand}
 							disabled={isProcessing}
 						/>

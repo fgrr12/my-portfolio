@@ -5,11 +5,14 @@ interface QuickCommandsProps {
 }
 
 export const QuickCommands = ({ commands, onExecute, disabled }: QuickCommandsProps) => {
+	const filteredCommands = commands.filter(
+		(cmd) => !['clear', 'back', 'sound on', 'sound off'].includes(cmd)
+	)
 	return (
 		<div className="text-sm mb-4">
 			<div className="text-teal-600 mb-2 glow flicker">◆ Quick commands:</div>
 			<div className="grid grid-cols-2 gap-2">
-				{commands.map((cmd) => (
+				{filteredCommands.map((cmd) => (
 					<button
 						type="button"
 						key={cmd}

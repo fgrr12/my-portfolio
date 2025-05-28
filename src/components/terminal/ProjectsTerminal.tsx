@@ -2,29 +2,7 @@ import { memo, useEffect } from 'react'
 
 import { ProjectDetail } from './ProjectDetail'
 import { TerminalHeader } from './terminalHeader'
-
-interface Project {
-	id: string
-	title: string
-	description: string
-	tech: string
-	status: string
-	fullDescription: string
-	features: string[]
-	github?: string
-	demo?: string
-	store?: string
-	images?: string[]
-	year: string
-}
-
-interface ProjectsTerminalProps {
-	projects: Project[]
-	selectedProject: Project | null
-	onClose: () => void
-	onSelectProject: (project: Project) => void
-	onBackToProjects: () => void
-}
+import { ProjectsTerminalProps } from '@/types/ui'
 
 const ProjectCard = memo(function ProjectCard({
 	project,
@@ -97,8 +75,6 @@ export const ProjectsTerminal = ({
 				}
 
 				requestAnimationFrame(raf)
-
-				console.log('Lenis initialized for projects terminal')
 			}
 		}
 

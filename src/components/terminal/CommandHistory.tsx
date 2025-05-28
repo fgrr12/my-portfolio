@@ -2,13 +2,6 @@ import { forwardRef } from 'react'
 
 import { LoadingDots } from './LoadingDots'
 
-interface Command {
-	input: string
-	output: string[]
-	timestamp: Date
-	isLoading?: boolean
-}
-
 interface CommandHistoryProps {
 	commands: Command[]
 }
@@ -28,7 +21,7 @@ export const CommandHistory = forwardRef<HTMLDivElement, CommandHistoryProps>(
 					{commands.map((cmd, index) => (
 						<div key={index} className="space-y-1">
 							<div className="flex items-center space-x-2">
-								<span className="text-teal-400 glow flicker">FabricioR:-+</span>
+								<span className="text-teal-400 glow flicker">fabricio:-+</span>
 								<span className="text-teal-300 flicker">{cmd.input}</span>
 							</div>
 							{cmd.isLoading ? (
@@ -38,7 +31,7 @@ export const CommandHistory = forwardRef<HTMLDivElement, CommandHistoryProps>(
 							) : (
 								cmd.output.map((line, lineIndex) => (
 									<div key={lineIndex} className="text-teal-400 ml-4 glow flicker command-output">
-										{line}
+										<pre>{line}</pre>
 									</div>
 								))
 							)}

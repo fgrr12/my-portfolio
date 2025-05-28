@@ -14,8 +14,6 @@ export const WelcomeMessage = () => {
 			if (elements.length > 0) {
 				gsap.set(elements, {
 					opacity: 0,
-					y: 20,
-					scale: 0.9,
 				})
 
 				const tl = gsap.timeline({ delay: 1.3 })
@@ -25,7 +23,6 @@ export const WelcomeMessage = () => {
 						element,
 						{
 							opacity: 1,
-							y: 0,
 							scale: 1,
 							duration: 0.6,
 							ease: 'power2.out',
