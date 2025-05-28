@@ -1,6 +1,7 @@
 import { forwardRef } from 'react'
 
 import { LoadingDots } from './LoadingDots'
+import { CommandOutputRenderer } from './CommandOutputRenderer'
 
 interface CommandHistoryProps {
 	commands: Command[]
@@ -29,11 +30,9 @@ export const CommandHistory = forwardRef<HTMLDivElement, CommandHistoryProps>(
 									<LoadingDots />
 								</div>
 							) : (
-								cmd.output.map((line, lineIndex) => (
-									<div key={lineIndex} className="text-teal-400 ml-4 glow flicker command-output">
-										<pre>{line}</pre>
-									</div>
-								))
+								<div className="ml-4">
+									<CommandOutputRenderer output={cmd.output} />
+								</div>
 							)}
 						</div>
 					))}
