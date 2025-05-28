@@ -10,7 +10,7 @@ export const terminalContent = {
 		'║ Specialization: React, Angular       ║',
 		'║ Database: Firebase, PostgreSQL       ║',
 		'║ Tools: Git, GitHub, Figma            ║',
-		'║ Status: Available for projects       ║',
+		'║ Status: Available                    ║',
 		'╚══════════════════════════════════════╝',
 		'',
 		'💡 Passionate about creating innovative web solutions',
