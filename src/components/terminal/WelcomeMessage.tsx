@@ -30,8 +30,6 @@ export const WelcomeMessage = () => {
 						index * 0.2
 					)
 				})
-
-				console.log('Welcome message animation started')
 			}
 		}
 	}, [])
