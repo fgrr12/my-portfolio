@@ -23,9 +23,9 @@ export const MainTerminal = memo(function MainTerminal({
 	onQuickCommand,
 	showProjects,
 }: MainTerminalProps) {
-	const inputRef: any = useRef<HTMLInputElement>(null)
-	const terminalRef: any = useRef<HTMLDivElement>(null)
-	const containerRef: any = useRef<HTMLDivElement>(null)
+	const inputRef = useRef<HTMLInputElement>(null)
+	const terminalRef = useRef<HTMLDivElement>(null)
+	const containerRef = useRef<HTMLDivElement>(null)
 	const [hasInitialized, setHasInitialized] = useState(false)
 
 	useEffect(() => {
@@ -60,11 +60,12 @@ export const MainTerminal = memo(function MainTerminal({
 		}
 	}, [hasInitialized])
 
+	// biome-ignore lint:call by commandHistory
 	useEffect(() => {
 		if (terminalRef.current) {
 			terminalRef.current.scrollTop = terminalRef.current.scrollHeight
 		}
-	}, [])
+	}, [commandHistory])
 
 	useEffect(() => {
 		if (inputRef.current && !isProcessing) {
@@ -91,7 +92,7 @@ export const MainTerminal = memo(function MainTerminal({
 						<Suggestions
 							suggestions={suggestions}
 							onSelect={onSuggestionSelect}
-							inputRef={inputRef}
+							inputRef={inputRef as any}
 						/>
 
 						<CommandInput
