@@ -1,3 +1,5 @@
+import { projects } from "./projects";
+
 export const terminalMessages = {
 	commands: {
 		showProjects: {
@@ -6,7 +8,7 @@ export const terminalMessages = {
 				'Scanning repositories...',
 				'Loading project metadata...',
 				'',
-				'✓ Found 3 active projects',
+				`✓ Found ${projects.length} active projects`,
 				'✓ Project terminal initialized',
 				'',
 				'Projects displayed in secondary terminal →',
