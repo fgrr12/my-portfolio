@@ -1,5 +1,5 @@
 interface QuickCommandsProps {
-	commands: string[]
+	commands: readonly string[]
 	onExecute: (command: string) => void
 	disabled: boolean
 }
