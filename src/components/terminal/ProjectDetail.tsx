@@ -3,21 +3,6 @@ import { memo, useEffect, useRef } from 'react'
 
 import { useGSAPAnimations } from '@/hooks/useGsapAnimations'
 
-interface Project {
-	id: string
-	title: string
-	description: string
-	tech: string
-	status: string
-	fullDescription: string
-	features: string[]
-	github?: string
-	demo?: string
-	store?: string
-	images?: string[]
-	year: string
-}
-
 interface ProjectDetailProps {
 	project: Project
 	onBack: () => void
@@ -78,7 +63,7 @@ export const ProjectDetail = memo(function ProjectDetail({ project, onBack }: Pr
 					</span>
 				</div>
 				<div className="text-teal-500 text-sm mb-2 glow flicker">
-					{project.tech} • {project.year}
+					{project.company} • {project.tech} • {project.year} 
 				</div>
 				<p className="text-teal-400/90 leading-relaxed glow flicker">{project.fullDescription}</p>
 			</div>

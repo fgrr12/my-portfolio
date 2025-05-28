@@ -22,7 +22,7 @@ export const CommandOutputRenderer = memo(function CommandOutputRenderer({
 				}
 
 				return (
-					<div key={index} className="text-teal-400 glow flicker break-words">
+					<div key={index} className="text-teal-400 glow flicker break-words flex flex-col">
 						{line}
 					</div>
 				)

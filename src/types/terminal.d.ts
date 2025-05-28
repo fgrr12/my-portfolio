@@ -18,6 +18,7 @@ interface Project {
 	store?: string
 	images?: string[]
 	year: string
+	company: string
 }
 
 interface TerminalState {
