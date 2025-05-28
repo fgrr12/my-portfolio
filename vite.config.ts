@@ -5,6 +5,7 @@ import unocss from 'unocss/vite'
 import { defineConfig } from 'vite'
 
 export default defineConfig({
+	base: '/my-portfolio/',
 	root: './',
 	publicDir: './public',
 	resolve: {
