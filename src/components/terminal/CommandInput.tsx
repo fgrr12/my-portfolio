@@ -1,5 +1,6 @@
 import type React from 'react'
-import { forwardRef } from 'react'
+
+import { forwardRef, useEffect } from 'react'
 
 interface CommandInputProps {
 	value: string
@@ -11,6 +12,16 @@ interface CommandInputProps {
 
 export const CommandInput = forwardRef<HTMLInputElement, CommandInputProps>(
 	({ value, onChange, onKeyDown, disabled, placeholder }, ref) => {
+		useEffect(() => {
+			if (ref && typeof ref === 'object' && ref.current) {
+				const input = ref.current
+				if (document.activeElement === input) {
+					const length = value.length
+					input.setSelectionRange(length, length)
+				}
+			}
+		}, [value, ref])
+
 		return (
 			<div className="flex items-center space-x-2 mb-4">
 				<span className="text-teal-400 glow flicker">FabricioR:-+</span>

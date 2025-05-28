@@ -1,3 +1,4 @@
+import { useLenis } from 'lenis/react'
 import { useEffect } from 'react'
 
 import DigitalRain from './components/effects/DigitalRain'
@@ -5,7 +6,7 @@ import { GlitchEffect } from './components/effects/GlitchEffect'
 import { SnowEffect } from './components/effects/SnowEffect'
 import { MainTerminal } from './components/terminal/MainTerminal'
 import { ProjectsTerminal } from './components/terminal/ProjectsTerminal'
-import { useLenis } from './hooks/useLenis'
+import { ControlPanel } from './components/ui/ControlPanel'
 import { useTerminal } from './hooks/useTerminal'
 
 export const App = () => {
@@ -19,6 +20,7 @@ export const App = () => {
 		projects,
 		availableCommands,
 		soundEnabled,
+		language,
 		digitalRainMode,
 		isSnowing,
 		isGlitching,
@@ -30,6 +32,8 @@ export const App = () => {
 		selectProject,
 		goBackToProjects,
 		playStartup,
+		toggleSound,
+		toggleLanguage,
 	} = useTerminal()
 
 	useLenis()
@@ -39,16 +43,19 @@ export const App = () => {
 	}, [playStartup])
 
 	return (
-		<div className="h-screen bg-gray-950 p-4 font-mono pipboy-bg">
+		<div className="h-screen bg-gray-950 p-4 font-mono pipboy-bg relative">
 			<DigitalRain isActive={digitalRainMode} />
 			<SnowEffect isActive={isSnowing} />
 			<GlitchEffect isActive={isGlitching} />
 
-			<div className="fixed top-4 right-4 z-30 text-teal-500 text-xs glow flicker">
-				🔊 Sound: {soundEnabled ? 'ON' : 'OFF'}
-			</div>
+			<ControlPanel
+				soundEnabled={soundEnabled}
+				language={language}
+				onToggleSound={toggleSound}
+				onToggleLanguage={toggleLanguage}
+			/>
 
-			<div className="max-w-7xl mx-auto h-full flex flex-col lg:flex-row gap-4">
+			<div className="max-w-7xl mx-auto h-full flex flex-col lg:flex-row gap-4 relative z-10">
 				<MainTerminal
 					commandHistory={commandHistory}
 					currentInput={currentInput}
