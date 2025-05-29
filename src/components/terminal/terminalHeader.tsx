@@ -23,7 +23,7 @@ export const TerminalHeader = ({
 				<div className="w-3 h-3 bg-green-500 rounded-full" />
 				<span className="ml-4 text-teal-400 text-sm glow flicker">{title}</span>
 			</div>
-			<div className="text-teal-500 text-xs glow flicker">{subtitle}</div>
+			<div className="text-teal-500 text-xs glow flicker hidden sm:block">{subtitle}</div>
 		</div>
 	)
 }
