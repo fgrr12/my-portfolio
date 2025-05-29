@@ -139,6 +139,29 @@ export function useTerminal() {
 		...easterEggCommands,
 	}
 
+	const addCommandToHistory = async (output: string[], input: string) => {
+		const timestamp = new Date()
+		const baseCommand: Command = {
+			input,
+			output: [],
+			timestamp,
+		}
+
+		setCommandHistory((prev) => [...prev, baseCommand])
+
+		for (let i = 0; i < output.length; i++) {
+			await new Promise((resolve) => setTimeout(resolve, 150))
+
+			setCommandHistory((prev) => {
+				const updated = [...prev]
+				const last = { ...updated[updated.length - 1] }
+				last.output = [...last.output, output[i]]
+				updated[updated.length - 1] = last
+				return updated
+			})
+		}
+	}
+
 	// biome-ignore lint:call by commands
 	const executeCommand = useCallback(
 		async (input: string) => {
@@ -177,58 +200,18 @@ export function useTerminal() {
 			if (lowerInput.startsWith('show project ')) {
 				const projectName = trimmedInput.slice(13).trim()
 				const output = commands['show project'](projectName)
-				setCommandHistory(
-					(prev) =>
-						[
-							...prev,
-							{
-								input: trimmedInput,
-								output,
-								timestamp: new Date(),
-							},
-						] as Command[]
-				)
+				addCommandToHistory(output as string[], trimmedInput)
 			} else if (lowerInput === 'download resume') {
 				const output = commands['download resume']()
-				setCommandHistory(
-					(prev) =>
-						[
-							...prev,
-							{
-								input: trimmedInput,
-								output,
-								timestamp: new Date(),
-							},
-						] as Command[]
-				)
+				addCommandToHistory(output as readonly string[] as string[], trimmedInput)
 				window.open('/my-portfolio/public/assets/documents/CV%20-%20Fabricio%20Rojas.pdf', '_blank')
 			} else if (lowerInput === 'connect') {
 				const output = commands.connect()
-				setCommandHistory(
-					(prev) =>
-						[
-							...prev,
-							{
-								input: trimmedInput,
-								output,
-								timestamp: new Date(),
-							},
-						] as Command[]
-				)
+				addCommandToHistory(output as readonly string[] as string[], trimmedInput)
 				window.open('https://www.linkedin.com/in/fabricio-rojas/', '_blank')
 			} else if (lowerInput === 'back') {
 				const output = commands.back()
-				setCommandHistory(
-					(prev) =>
-						[
-							...prev,
-							{
-								input: trimmedInput,
-								output,
-								timestamp: new Date(),
-							},
-						] as Command[]
-				)
+				addCommandToHistory(output as readonly string[] as string[], trimmedInput)
 			} else if (lowerInput === 'clear') {
 				commands.clear()
 				setCommandHistory([])
@@ -240,28 +223,14 @@ export function useTerminal() {
 				if (command) {
 					const output = command()
 					if (output.length > 0) {
-						setCommandHistory(
-							(prev) =>
-								[
-									...prev,
-									{
-										input: trimmedInput,
-										output,
-										timestamp: new Date(),
-									},
-								] as Command[]
-						)
+						addCommandToHistory(output as string[], trimmedInput)
 					}
 				} else if (trimmedInput) {
 					if (shouldPlaySound(soundEnabled)) playErrorSound()
-					setCommandHistory((prev) => [
-						...prev,
-						{
-							input: trimmedInput,
-							output: terminalMessages.commands.error.notFound(trimmedInput),
-							timestamp: new Date(),
-						},
-					])
+					addCommandToHistory(
+						terminalMessages.commands.error.notFound(trimmedInput) as string[],
+						trimmedInput
+					)
 				}
 			}
 
