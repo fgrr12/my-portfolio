@@ -99,7 +99,7 @@ export function useTerminal() {
 			return terminalContent.help
 		},
 
-		clear: () => {
+		cls: () => {
 			if (shouldPlaySound(soundEnabled)) playCommandSound()
 			return []
 		},
@@ -213,8 +213,8 @@ export function useTerminal() {
 			} else if (lowerInput === 'back') {
 				const output = commands.back()
 				addCommandToHistory(output as readonly string[] as string[], trimmedInput)
-			} else if (lowerInput === 'clear') {
-				commands.clear()
+			} else if (lowerInput === 'cls') {
+				commands.cls()
 				setCommandHistory([])
 				setShowProjects(false)
 				setSelectedProject(null)

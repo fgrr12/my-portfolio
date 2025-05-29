@@ -51,7 +51,7 @@ export const terminalContent = {
 		'open contact|Display contact details',
 		'back|Go back to previous view',
 		'help|Show this manual',
-		'clear|Clear terminal screen',
+		'cls|Clear terminal screen',
 		'sound on|Toggle sound effects',
 		'lang en|Change language',
 		'END_TABLE',

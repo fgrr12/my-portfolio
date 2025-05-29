@@ -24,8 +24,8 @@ export const CommandInput = forwardRef<HTMLInputElement, CommandInputProps>(
 					onChange={(e) => onChange(e.target.value)}
 					onKeyDown={onKeyDown}
 					disabled={disabled}
-					className="flex-1 bg-transparent text-teal-300 outline-none glow caret-teal-400 disabled:opacity-50 flicker"
 					placeholder={placeholder}
+					className="flex-1 bg-transparent text-teal-300 outline-none glow caret-teal-400 disabled:opacity-50 flicker"
 				/>
 				<span className="text-teal-400 animate-pulse glow">|</span>
 			</div>

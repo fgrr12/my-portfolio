@@ -19,7 +19,7 @@ export const TERMINAL_CONFIG = {
 export const COMMANDS = {
 	AVAILABLE: ['show projects', 'show project', 'about me', 'skills', 'open contact', 'help'],
 	HIDDEN: [
-		'clear',
+		'cls',
 		'back',
 		'sound on',
 		'sound off',

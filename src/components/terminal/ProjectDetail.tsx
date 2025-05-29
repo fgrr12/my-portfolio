@@ -38,6 +38,7 @@ export const ProjectDetail = memo(function ProjectDetail({ project, onBack }: Pr
 					className="flex items-center space-x-2 text-teal-500 hover:text-teal-300 transition-colors glow flicker cursor-pointer"
 					onMouseEnter={handleMouseEnter}
 					onMouseLeave={handleMouseLeave}
+					tabIndex={-1}
 				>
 					<ArrowLeft size={16} />
 					<span>Back to Projects</span>
@@ -76,6 +77,7 @@ export const ProjectDetail = memo(function ProjectDetail({ project, onBack }: Pr
 						onMouseEnter={handleMouseEnter}
 						onMouseLeave={handleMouseLeave}
 						className="flex items-center justify-center space-x-2 bg-teal-500/10 border border-teal-500/30 rounded-xl px-4 py-3 hover:bg-teal-500/20 hover:border-teal-400/50 transition-all duration-300 glow flicker action-button  cursor-pointer"
+						tabIndex={-1}
 					>
 						<Github size={18} />
 						<span>View Code</span>
@@ -88,6 +90,7 @@ export const ProjectDetail = memo(function ProjectDetail({ project, onBack }: Pr
 						onMouseEnter={handleMouseEnter}
 						onMouseLeave={handleMouseLeave}
 						className="flex items-center justify-center space-x-2 bg-blue-500/10 border border-blue-500/30 rounded-xl px-4 py-3 hover:bg-blue-500/20 hover:border-blue-400/50 transition-all duration-300 glow flicker action-button  cursor-pointer"
+						tabIndex={-1}
 					>
 						<Play size={18} />
 						<span>Live Demo</span>
@@ -100,6 +103,7 @@ export const ProjectDetail = memo(function ProjectDetail({ project, onBack }: Pr
 						onMouseEnter={handleMouseEnter}
 						onMouseLeave={handleMouseLeave}
 						className="flex items-center justify-center space-x-2 bg-purple-500/10 border border-purple-500/30 rounded-xl px-4 py-3 hover:bg-purple-500/20 hover:border-purple-400/50 transition-all duration-300 glow flicker action-button  cursor-pointer"
+						tabIndex={-1}
 					>
 						<ShoppingBag size={18} />
 						<span>App Store</span>

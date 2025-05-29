@@ -15,6 +15,7 @@ export const TerminalHeader = ({
 						onClick={onClose}
 						className="w-3 h-3 bg-red-500 rounded-full hover:bg-red-400 transition-colors cursor-pointer"
 						title="Close terminal"
+						tabIndex={-1}
 					/>
 				) : (
 					<div className="w-3 h-3 bg-red-500 rounded-full" />

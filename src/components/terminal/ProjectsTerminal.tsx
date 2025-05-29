@@ -17,6 +17,7 @@ const ProjectCard = memo(function ProjectCard({
 			type="button"
 			onClick={() => onSelect(project)}
 			className="w-full border border-teal-500/50 rounded-xl p-4 hover:bg-teal-400/5 transition-all duration-300 hover:border-teal-400 hover:shadow-lg hover:shadow-teal-500/20 cursor-pointer pipboy-card"
+			tabIndex={-1}
 		>
 			<div className="flex justify-between items-start mb-2">
 				<h3 className="text-lg font-semibold text-teal-300 glow flicker">{project.title}</h3>

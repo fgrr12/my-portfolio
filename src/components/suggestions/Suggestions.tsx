@@ -65,6 +65,7 @@ export const Suggestions = ({ suggestions, onSelect, inputRef }: SuggestionsProp
 						type="button"
 						onClick={() => handleSelect(suggestion)}
 						className="text-teal-500 hover:text-teal-300 hover:bg-teal-400/10 px-2 py-1 rounded text-sm border border-teal-500/30 hover:border-teal-400/50 transition-colors glow flicker focus:outline-none focus:ring-2 focus:ring-teal-400/50"
+						tabIndex={0}
 					>
 						{suggestion}
 					</button>

@@ -64,7 +64,6 @@ export const CommandOutputRenderer = memo(function CommandOutputRenderer({
 		while (i < output.length) {
 			const line = output[i]
 
-			// Detectar si es una tabla
 			const tableData = detectTable(output, i)
 			if (tableData) {
 				result.push(<TableRenderer key={`table-${i}`} data={tableData.table} />)
@@ -72,7 +71,6 @@ export const CommandOutputRenderer = memo(function CommandOutputRenderer({
 				continue
 			}
 
-			// Línea normal
 			result.push(
 				<div key={`line-${i}`} className="text-teal-400 glow flicker break-words max-w-full">
 					{line}
