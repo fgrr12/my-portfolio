@@ -15,7 +15,7 @@ const makeLink = (text: string) => {
 	if (isEmail(text)) {
 		href = `mailto:${text}`
 	} else if (!/^https?:\/\//i.test(text)) {
-		href = 'https://' + text
+		href = `https://${text}`
 	}
 
 	return (
