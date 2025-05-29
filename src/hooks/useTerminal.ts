@@ -126,6 +126,16 @@ export function useTerminal() {
 			return terminalMessages.commands.language.spanish
 		},
 
+		'download resume': () => {
+			if (shouldPlaySound(soundEnabled)) playSuccessSound()
+			return terminalMessages.commands.download.resume
+		},
+
+		connect: () => {
+			if (shouldPlaySound(soundEnabled)) playSuccessSound()
+			return terminalMessages.commands.connect.linkedin
+		},
+
 		...easterEggCommands,
 	}
 
@@ -178,6 +188,34 @@ export function useTerminal() {
 							},
 						] as Command[]
 				)
+			} else if (lowerInput === 'download resume') {
+				const output = commands['download resume']()
+				setCommandHistory(
+					(prev) =>
+						[
+							...prev,
+							{
+								input: trimmedInput,
+								output,
+								timestamp: new Date(),
+							},
+						] as Command[]
+				)
+				window.open('/my-portfolio/public/assets/documents/CV%20-%20Fabricio%20Rojas.pdf', '_blank')
+			} else if (lowerInput === 'connect') {
+				const output = commands.connect()
+				setCommandHistory(
+					(prev) =>
+						[
+							...prev,
+							{
+								input: trimmedInput,
+								output,
+								timestamp: new Date(),
+							},
+						] as Command[]
+				)
+				window.open('https://www.linkedin.com/in/fabricio-rojas/', '_blank')
 			} else if (lowerInput === 'back') {
 				const output = commands.back()
 				setCommandHistory(

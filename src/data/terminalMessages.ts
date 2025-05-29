@@ -71,6 +71,29 @@ export const terminalMessages = {
 				'Nota: ¡Traducción completa próximamente!',
 			],
 		},
+		download: {
+			resume: [
+				'Initiating resume download protocol...',
+				'',
+				'Fetching file from /assets/Fabricio-Rojas-CV.pdf...',
+				'',
+				'✅ Resume ready. Opening download in 3... 2... 1...',
+				'',
+				'Tip: You can also find it in the "contact" section.',
+			],
+		},
+		connect: {
+			linkedin: [
+				'Initiating LinkedIn connection...',
+				'',
+				'Fetching user profile...',
+				'',
+				'✓ LinkedIn profile loaded successfully',
+				'✓ Username and profile URL added to contact database',
+				'',
+				'Tip: You can also find it in the "contact" section.',
+			],
+		},
 		error: {
 			notFound: (command: string) => [
 				`bash: ${command}: command not found`,

@@ -18,7 +18,16 @@ export const TERMINAL_CONFIG = {
 
 export const COMMANDS = {
 	AVAILABLE: ['show projects', 'show project', 'about me', 'skills', 'open contact', 'help'],
-	HIDDEN: ['clear', 'back', 'sound on', 'sound off', 'lang en', 'lang es'],
+	HIDDEN: [
+		'clear',
+		'back',
+		'sound on',
+		'sound off',
+		'lang en',
+		'lang es',
+		'download resume',
+		'connect',
+	],
 	EASTER_EGGS: [
 		'digital rain',
 		'brew',
