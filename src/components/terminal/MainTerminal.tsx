@@ -9,7 +9,7 @@ import { QuickCommands } from './QuickCommands'
 import { StatusBar } from './StatusBar'
 import { Suggestions } from './Suggestions'
 import { WelcomeMessage } from './WelcomeMessage'
-import { TerminalHeader } from './TterminalHeader'
+import { TerminalHeader } from './TerminalHeader'
 
 export const MainTerminal = memo(function MainTerminal({
 	commandHistory,

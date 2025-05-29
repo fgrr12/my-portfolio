@@ -3,7 +3,7 @@ import { memo, useEffect } from 'react'
 import type { ProjectsTerminalProps } from '@/types/ui'
 
 import { ProjectDetail } from './ProjectDetail'
-import { TerminalHeader } from './TterminalHeader'
+import { TerminalHeader } from './TerminalHeader'
 
 const ProjectCard = memo(function ProjectCard({
 	project,
