@@ -8,8 +8,8 @@ import { CommandInput } from './CommandInput'
 import { QuickCommands } from './QuickCommands'
 import { StatusBar } from './StatusBar'
 import { Suggestions } from './Suggestions'
-import { WelcomeMessage } from './WelcomeMessage'
 import { TerminalHeader } from './TerminalHeader'
+import { WelcomeMessage } from './WelcomeMessage'
 
 export const MainTerminal = memo(function MainTerminal({
 	commandHistory,
