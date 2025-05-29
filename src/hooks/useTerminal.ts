@@ -208,7 +208,7 @@ export function useTerminal() {
 			} else if (lowerInput === 'connect') {
 				const output = commands.connect()
 				addCommandToHistory(output as readonly string[] as string[], trimmedInput)
-				window.open('https://www.linkedin.com/in/fabricio-rojas/', '_blank')
+				window.open('https://www.linkedin.com/in/fabricio-rojas', '_blank')
 			} else if (lowerInput === 'back') {
 				const output = commands.back()
 				addCommandToHistory(output as readonly string[] as string[], trimmedInput)
