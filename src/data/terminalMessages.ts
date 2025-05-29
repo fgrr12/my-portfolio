@@ -1,4 +1,4 @@
-import { projects } from './projects'
+import { projects } from '@/data/projects'
 
 export const terminalMessages = {
 	commands: {

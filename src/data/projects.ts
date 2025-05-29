@@ -1,4 +1,4 @@
-import { PROJECT_STATUS } from '../constants/terminal'
+import { PROJECT_STATUS } from '@/constants/terminal'
 
 export const projects: Project[] = [
 	{

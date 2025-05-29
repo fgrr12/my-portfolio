@@ -1,13 +1,14 @@
 import { useLenis } from 'lenis/react'
 import { useEffect } from 'react'
 
-import DigitalRain from './components/effects/DigitalRain'
-import { GlitchEffect } from './components/effects/GlitchEffect'
-import { SnowEffect } from './components/effects/SnowEffect'
-import { MainTerminal } from './components/terminal/MainTerminal'
-import { ProjectsTerminal } from './components/terminal/ProjectsTerminal'
-import { ControlPanel } from './components/ui/ControlPanel'
-import { useTerminal } from './hooks/useTerminal'
+import DigitalRain from '@/components/effects/DigitalRain'
+import { GlitchEffect } from '@/components/effects/GlitchEffect'
+import { SnowEffect } from '@/components/effects/SnowEffect'
+import { MainTerminal } from '@/components/terminal/MainTerminal'
+import { ProjectsTerminal } from '@/components/terminal/ProjectsTerminal'
+import { ControlPanel } from '@/components/ui/ControlPanel'
+
+import { useTerminal } from '@/hooks/useTerminal'
 
 export const App = () => {
 	const {

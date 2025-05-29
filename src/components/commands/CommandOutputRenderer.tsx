@@ -1,6 +1,6 @@
 import { memo } from 'react'
 
-import { TableRenderer } from './TableRenderer'
+import { TableRenderer } from '@/components/ui/TableRenderer'
 
 interface CommandOutputRendererProps {
 	output: string[]

@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react'
 
-import { useSoundEffects } from './useSoundEffects'
+import { useSoundEffects } from '@/hooks/useSoundEffects'
 
 export const useEasterEggs = () => {
 	const [digitalRainMode, setDigitalRainMode] = useState(false)

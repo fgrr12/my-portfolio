@@ -1,9 +1,9 @@
 import { memo, useEffect } from 'react'
 
-import type { ProjectsTerminalProps } from '@/types/ui'
+import { ProjectDetail } from '@/components/terminal/ProjectDetail'
+import { TerminalHeader } from '@/components/ui/TerminalHeader'
 
-import { ProjectDetail } from './ProjectDetail'
-import { TerminalHeader } from './TerminalHeader'
+import type { ProjectsTerminalProps } from '@/types/ui'
 
 const ProjectCard = memo(function ProjectCard({
 	project,

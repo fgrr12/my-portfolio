@@ -7,12 +7,13 @@ import {
 	shouldPlaySound,
 } from '@/utils/terminalHelpers'
 
+import { useEasterEggs } from '@/hooks/useEasterEggs'
+import { useSoundEffects } from '@/hooks/useSoundEffects'
+
+import { COMMANDS, TERMINAL_CONFIG } from '@/constants/terminal'
 import { projects } from '@/data/projects'
 import { terminalContent } from '@/data/terminalContent'
 import { terminalMessages } from '@/data/terminalMessages'
-import { COMMANDS, TERMINAL_CONFIG } from '../constants/terminal'
-import { useEasterEggs } from './useEasterEggs'
-import { useSoundEffects } from './useSoundEffects'
 
 export function useTerminal() {
 	const [currentInput, setCurrentInput] = useState('')

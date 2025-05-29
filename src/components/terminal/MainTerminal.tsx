@@ -1,15 +1,15 @@
 import { gsap } from 'gsap'
 import { memo, useEffect, useRef, useState } from 'react'
 
-import type { MainTerminalProps } from '@/types/ui'
+import { CommandHistory } from '@/components/commands/CommandHistory'
+import { CommandInput } from '@/components/commands/CommandInput'
+import { QuickCommands } from '@/components/commands/QuickCommands'
+import { Suggestions } from '@/components/suggestions/Suggestions'
+import { StatusBar } from '@/components/ui/StatusBar'
+import { TerminalHeader } from '@/components/ui/TerminalHeader'
+import { WelcomeMessage } from '@/components/ui/WelcomeMessage'
 
-import { CommandHistory } from './CommandHistory'
-import { CommandInput } from './CommandInput'
-import { QuickCommands } from './QuickCommands'
-import { StatusBar } from './StatusBar'
-import { Suggestions } from './Suggestions'
-import { TerminalHeader } from './TerminalHeader'
-import { WelcomeMessage } from './WelcomeMessage'
+import type { MainTerminalProps } from '@/types/ui'
 
 export const MainTerminal = memo(function MainTerminal({
 	commandHistory,
