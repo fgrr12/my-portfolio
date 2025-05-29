@@ -1,7 +1,6 @@
 import * as path from 'node:path'
 import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react-swc'
-import unocss from 'unocss/vite'
 import { defineConfig } from 'vite'
 
 export default defineConfig({
@@ -13,5 +12,5 @@ export default defineConfig({
 			'@': path.resolve(__dirname, './src'),
 		},
 	},
-	plugins: [unocss(), tailwindcss(), react()],
+	plugins: [tailwindcss(), react()],
 })
