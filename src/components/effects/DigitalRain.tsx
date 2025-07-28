@@ -4,7 +4,7 @@ interface DigitalRainProps {
 	isActive: boolean
 }
 
-export default function DigitalRain({ isActive }: DigitalRainProps) {
+export function DigitalRain({ isActive }: DigitalRainProps) {
 	const canvasRef = useRef<HTMLCanvasElement>(null)
 
 	useEffect(() => {

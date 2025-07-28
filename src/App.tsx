@@ -1,7 +1,7 @@
 import { useLenis } from 'lenis/react'
 import { useEffect } from 'react'
 
-import DigitalRain from '@/components/effects/DigitalRain'
+import { DigitalRain } from '@/components/effects/DigitalRain'
 import { GlitchEffect } from '@/components/effects/GlitchEffect'
 import { SnowEffect } from '@/components/effects/SnowEffect'
 import { MainTerminal } from '@/components/terminal/MainTerminal'
