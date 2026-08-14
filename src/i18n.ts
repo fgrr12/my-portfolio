@@ -4,15 +4,34 @@ export type Language = 'en' | 'es'
 
 const STORAGE_KEY = 'portfolio-lang'
 
-/** Saved choice wins, then the browser's own preference, then English. */
+/** The /es/ page and the root page are separate URLs so hreflang can point at them. */
+const languageHref = (language: Language) =>
+	language === 'es' ? `${import.meta.env.BASE_URL}es/` : import.meta.env.BASE_URL
+
+/**
+ * The URL wins — it is what a crawler, a shared link or an hreflang hit asks for.
+ * Then a saved choice, then the browser's preference, then English.
+ */
 export const getInitialLanguage = (): Language => {
+	if (window.location.pathname.startsWith(languageHref('es'))) return 'es'
+
 	const saved = localStorage.getItem(STORAGE_KEY)
 	if (saved === 'en' || saved === 'es') return saved
 	return navigator.language.toLowerCase().startsWith('es') ? 'es' : 'en'
 }
 
+const documentTitles: Record<Language, string> = {
+	en: 'Fabricio Rojas — Full Stack Developer',
+	es: 'Fabricio Rojas — Desarrollador Full Stack',
+}
+
 export const persistLanguage = (language: Language) => {
 	localStorage.setItem(STORAGE_KEY, language)
+	// Keep the address bar honest without a reload, so a copied link opens in the
+	// language the visitor is actually looking at. The served <head> belongs to the
+	// document that loaded, so the tab title has to be updated by hand.
+	window.history.replaceState(null, '', languageHref(language))
+	document.title = documentTitles[language]
 }
 
 /**

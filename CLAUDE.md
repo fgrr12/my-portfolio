@@ -59,7 +59,13 @@ Three rules when touching this:
 - Anything that reads a project must take the language: `findProjectByName(name, lang)`, `getCommandSuggestions(input, lang)`. `useTerminal` stores `selectedProjectId`, not the project object, so switching language re-localises the open project instead of leaving a stale one in state.
 - `Project['status']` stays `'Production' | 'Beta' | 'Development'` because it drives badge colours and the type union; the translated label comes from `ui.statusLabels[status]`.
 
-Initial language is a saved `localStorage` choice, else `navigator.language`, else English. Already-printed command output keeps the language it was printed in — history is history.
+Initial language resolves in this order: **the URL path** (`/my-portfolio/es/` forces Spanish), then a saved `localStorage` choice, then `navigator.language`, then English. The URL wins because it is what a crawler, a shared link, or an hreflang hit is asking for. Already-printed command output keeps the language it was printed in — history is history.
+
+**There are two build entry points, and hreflang depends on them.** `index.html` (English) and `es/index.html` (Spanish) are both listed in `build.rollupOptions.input`, producing `dist/index.html` and `dist/es/index.html` — two real crawlable URLs, which is the whole reason hreflang can work on a static host. Consequences:
+
+- Any `<head>` change must be made in **both** files. They each carry a self-referencing `canonical` plus the full `hreflang` set (`en`, `es`, `x-default`), localized title/description/OG, and their own OG image (`og-image.png` / `og-image-es.png`).
+- Switching language in-app does not reload; it `replaceState`s the URL to match and sets `document.title` by hand (`persistLanguage`), because the served `<head>` belongs to whichever document loaded.
+- `public/sitemap.xml` lists both URLs with their `xhtml:link` alternates. Update it if a URL is ever added or renamed.
 
 **Reduced motion is honoured in two layers.** A blanket `@media (prefers-reduced-motion: reduce)` block in `src/index.css` neutralises every CSS animation and transition (the always-on flicker and scanlines are the reason it exists). GSAP is JavaScript and escapes that, so entrance animations are guarded at their call sites with `prefersReducedMotion()` — `MainTerminal`, `WelcomeMessage` and `ProjectDetail`. Any new GSAP animation needs its own guard. The canvas easter eggs (snow, digital rain) are left running: the user typed a command to summon them.
 

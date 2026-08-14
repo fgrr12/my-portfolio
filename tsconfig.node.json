@@ -1,6 +1,9 @@
 {
 	"compilerOptions": {
 		"tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
+		// A referenced project may not set noEmit (TS6310), and composite forces emit,
+		// so send the transpiled vite.config.js somewhere outside the repo.
+		"outDir": "./node_modules/.tmp/node-config",
 		"composite": true,
 		"skipLibCheck": true,
 		"module": "NodeNext",
