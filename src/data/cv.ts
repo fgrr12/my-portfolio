@@ -71,7 +71,7 @@ export const cv: Record<Language, CvData> = {
 		name: 'Fabricio Rojas',
 		title: 'Full Stack Developer',
 		summary:
-			'Full Stack Developer with 8+ years shipping web and mobile products end to end, across two stacks that rarely appear on the same CV: JavaScript/TypeScript (React, Angular, Node) and .NET (C#, Minimal APIs, EF Core, Blazor, MAUI). Currently building access control platforms for corporate campuses. Also run a livestock platform of my own where a voice assistant turns spoken updates into structured records using Whisper and schema-constrained LLM output.',
+			'Full Stack Developer with 8+ years shipping web and mobile products end to end, across two stacks that rarely appear on the same CV: JavaScript/TypeScript (React, Angular, Node) and .NET (C#, Minimal APIs, EF Core, Blazor, MAUI). Currently building access control and security systems for a university campus and for industrial sites. Also run a livestock platform of my own where a voice assistant turns spoken updates into structured records using Whisper and schema-constrained LLM output.',
 		location: 'Costa Rica · Remote',
 		experience: [
 			{
@@ -80,7 +80,7 @@ export const cv: Record<Language, CvData> = {
 				from: 'Oct 2025',
 				to: '',
 				highlights: [
-					'Built the entire web frontend for Earth, an access control platform for corporate campuses, and co-owned its backend, database design and IIS deployment.',
+					'Built the entire web frontend for the access control platform at EARTH University, and co-owned its backend, database design and IIS deployment.',
 					'Delivered the INTACO carrier registry end to end: a Blazor WebAssembly portal over a .NET Minimal API, plus an Android app that scans ID documents at gate points.',
 					'Rebuilt the visitor registry frontend with server-side rendering and live updates across screens over SignalR.',
 				],
@@ -149,7 +149,7 @@ export const cv: Record<Language, CvData> = {
 		name: 'Fabricio Rojas',
 		title: 'Desarrollador Full Stack',
 		summary:
-			'Desarrollador Full Stack con más de 8 años entregando productos web y móviles de punta a punta, en dos stacks que rara vez aparecen en el mismo CV: JavaScript/TypeScript (React, Angular, Node) y .NET (C#, Minimal APIs, EF Core, Blazor, MAUI). Actualmente construyendo plataformas de control de acceso para campus corporativos. También mantengo una plataforma ganadera propia donde un asistente de voz convierte lo hablado en registros estructurados usando Whisper y salida de LLM restringida por esquema.',
+			'Desarrollador Full Stack con más de 8 años entregando productos web y móviles de punta a punta, en dos stacks que rara vez aparecen en el mismo CV: JavaScript/TypeScript (React, Angular, Node) y .NET (C#, Minimal APIs, EF Core, Blazor, MAUI). Actualmente construyendo sistemas de control de acceso y seguridad para un campus universitario y para sitios industriales. También mantengo una plataforma ganadera propia donde un asistente de voz convierte lo hablado en registros estructurados usando Whisper y salida de LLM restringida por esquema.',
 		location: 'Costa Rica · Remoto',
 		experience: [
 			{
@@ -158,7 +158,7 @@ export const cv: Record<Language, CvData> = {
 				from: 'Oct 2025',
 				to: '',
 				highlights: [
-					'Construí todo el frontend web de Earth, una plataforma de control de acceso para campus corporativos, y compartí la propiedad del backend, el diseño de base de datos y el despliegue en IIS.',
+					'Construí todo el frontend web de la plataforma de control de acceso de la Universidad EARTH, y compartí la propiedad del backend, el diseño de base de datos y el despliegue en IIS.',
 					'Entregué de punta a punta el registro de transportistas de INTACO: portal en Blazor WebAssembly sobre una Minimal API de .NET, más una app Android que escanea documentos de identidad en los portones.',
 					'Reconstruí el frontend del registro de visitantes con renderizado en servidor y actualizaciones en vivo entre pantallas vía SignalR.',
 				],

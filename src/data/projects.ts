@@ -21,11 +21,11 @@ const projectSources: ProjectSource[] = [
 		status: 'Production',
 		year: '2026 — present',
 		en: {
-			title: 'Earth — Campus Access Control',
+			title: 'EARTH University — Campus Access Control',
 			description:
-				'Access control and security platform for corporate campuses: who enters, with which credentials, on what schedule.',
+				'Access control and security platform for a university campus: who enters, with which credentials, on what schedule.',
 			fullDescription:
-				'A security platform that governs movement through corporate campuses — people, visitors, invitations and access cards, plus asset movement between sites, internal transport routes, space reservations and attendance. I built the entire web frontend, co-owned the backend and the database design, and handled the IIS deployment. Guards work from an offline-capable PWA, and a cross-platform handheld app covers checkpoints without a desk.',
+				'A security platform that governs movement through the campus of EARTH University in Costa Rica — people, visitors, invitations and access cards, plus asset movement between sites, internal transport routes, space reservations and attendance. I built the entire web frontend, co-owned the backend and the database design, and handled the IIS deployment. Guards work from an offline-capable PWA, and a cross-platform handheld app covers checkpoints without a desk.',
 			features: [
 				'Person, visitor, invitation and access-card management',
 				'Asset movement tracking between sites',
@@ -38,11 +38,11 @@ const projectSources: ProjectSource[] = [
 			company: 'Accesos Automáticos',
 		},
 		es: {
-			title: 'Earth — Control de Acceso para Campus',
+			title: 'Universidad EARTH — Control de Acceso al Campus',
 			description:
-				'Plataforma de control de acceso y seguridad para campus corporativos: quién entra, con qué credenciales y en qué horario.',
+				'Plataforma de control de acceso y seguridad para un campus universitario: quién entra, con qué credenciales y en qué horario.',
 			fullDescription:
-				'Una plataforma de seguridad que gobierna el movimiento dentro de campus corporativos: personas, visitantes, invitaciones y tarjetas de acceso, además de traslado de activos entre sedes, rutas de transporte interno, reserva de espacios y asistencia. Construí todo el frontend web, compartí la propiedad del backend y del diseño de base de datos, y me encargué del despliegue en IIS. Los guardas trabajan desde una PWA que funciona sin conexión, y una app handheld multiplataforma cubre los puntos de control sin escritorio.',
+				'Una plataforma de seguridad que gobierna el movimiento dentro del campus de la Universidad EARTH en Costa Rica: personas, visitantes, invitaciones y tarjetas de acceso, además de traslado de activos entre sedes, rutas de transporte interno, reserva de espacios y asistencia. Construí todo el frontend web, compartí la propiedad del backend y del diseño de base de datos, y me encargué del despliegue en IIS. Los guardas trabajan desde una PWA que funciona sin conexión, y una app handheld multiplataforma cubre los puntos de control sin escritorio.',
 			features: [
 				'Gestión de personas, visitantes, invitaciones y tarjetas de acceso',
 				'Trazabilidad de traslado de activos entre sedes',
