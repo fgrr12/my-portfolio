@@ -205,7 +205,10 @@ export function useTerminal() {
 			} else if (lowerInput === 'download resume') {
 				const output = commands['download resume']()
 				addCommandToHistory(output as readonly string[] as string[], trimmedInput)
-				window.open('/my-portfolio/public/assets/documents/CV%20-%20Fabricio%20Rojas.pdf', '_blank')
+				window.open(
+					`${import.meta.env.BASE_URL}assets/documents/CV%20-%20Fabricio%20Rojas.pdf`,
+					'_blank'
+				)
 			} else if (lowerInput === 'connect') {
 				const output = commands.connect()
 				addCommandToHistory(output as readonly string[] as string[], trimmedInput)
