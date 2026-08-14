@@ -65,7 +65,7 @@ Initial language is a saved `localStorage` choice, else `navigator.language`, el
 
 ## Conventions
 
-- `@/` aliases `src/` (configured in both `vite.config.ts` and `tsconfig.app.json`).
+- `@/` aliases `src/` (configured in both `vite.config.ts` and the `paths` entry in `tsconfig.json`).
 - `src/types/terminal.d.ts` declares `Command`, `Project`, `TableData`, etc. as **global ambient types** — do not import them. `src/types/ui.d.ts` holds exported component prop interfaces and is imported normally.
 - Biome enforces tabs, single quotes, no semicolons, 100-char lines, and a custom import-group order (packages → `@/utils` → `@/components` → `@/hooks` → types, blank line between groups). Run `pnpm format` rather than hand-arranging imports.
 - Tailwind v4 via `@tailwindcss/vite`, but `src/index.css` still pulls in the legacy `tailwind.config.js` with `@config`. Theme-specific utilities (`glow`, `flicker`, `pipboy-bg`, `pipboy-card`, `scanlines`) are defined in `src/index.css`.
