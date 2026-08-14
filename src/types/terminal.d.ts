@@ -1,4 +1,5 @@
 interface Command {
+	id: string
 	input: string
 	output: string[]
 	timestamp: Date

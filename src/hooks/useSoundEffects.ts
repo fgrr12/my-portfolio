@@ -1,13 +1,20 @@
-import { useCallback, useRef } from 'react'
+import { useCallback } from 'react'
+
+// Shared across every caller of this hook: browsers cap how many AudioContexts a
+// page may hold, and each hook instance used to create its own.
+let sharedAudioContext: AudioContext | null = null
 
 export const useSoundEffects = () => {
-	const audioContextRef = useRef<AudioContext | null>(null)
-
 	const initAudioContext = useCallback(() => {
-		if (!audioContextRef.current) {
-			audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)()
+		if (!sharedAudioContext) {
+			sharedAudioContext = new (window.AudioContext || (window as any).webkitAudioContext)()
 		}
-		return audioContextRef.current
+		// Autoplay policy starts the context suspended until a user gesture; every
+		// sound here is gesture-driven, so resuming on demand is enough.
+		if (sharedAudioContext.state === 'suspended') {
+			sharedAudioContext.resume()
+		}
+		return sharedAudioContext
 	}, [])
 
 	// Subtle typing sound effect

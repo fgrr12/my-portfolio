@@ -12,15 +12,15 @@ export const CommandHistory = forwardRef<HTMLDivElement, CommandHistoryProps>(
 		return (
 			<div
 				ref={ref}
-				className="flex-1 overflow-y-auto space-y-2 relative z-10 min-h-0 mb-4 terminal-scroll-area"
+				className="flex-1 overflow-y-auto space-y-2 relative z-10 min-h-0 mb-4"
 				style={{
 					height: '100%',
 					overflowY: 'auto',
 				}}
 			>
 				<div className="space-y-2 max-w-full max-h-80 sm:max-h-full">
-					{commands.map((cmd, index) => (
-						<div key={index} className="space-y-1 max-w-full">
+					{commands.map((cmd) => (
+						<div key={cmd.id} className="space-y-1 max-w-full">
 							<div className="flex items-center space-x-2">
 								<span className="text-teal-400 glow flicker">fabricio:-+</span>
 								<span className="text-teal-300 flicker break-all">{cmd.input}</span>

@@ -31,7 +31,9 @@ Easter-egg commands live in `src/hooks/useEasterEggs.ts` and are spread into the
 
 **`executeCommand` special-cases some inputs before the map lookup**: `show project <name>` (prefix parse), `download resume` and `connect` (both call `window.open`), `back`, and `cls`. Everything else falls through to `commands[lowerInput]`, then to a not-found message.
 
-**Command output is `string[]`, rendered line by line with a 150ms stagger** (`addCommandToHistory`). `CommandOutputRenderer` scans those lines for marker syntax and swaps in a real table:
+**Command output is `string[]`, rendered line by line with a 150ms stagger** (`addCommandToHistory`). Each `Command` carries a `crypto.randomUUID()` `id` and the staggered updates target that id — never the last array element, since the user can submit another command mid-reveal and the entries would interleave. Keep that invariant if you touch the history updates.
+
+`CommandOutputRenderer` scans those lines for marker syntax and swaps in a real table:
 
 ```
 TABLE:<title>
@@ -42,7 +44,9 @@ END_TABLE
 
 Blank line or `END_TABLE` closes the block. This is how `skills` and similar commands produce tables — write the markers into the data file, don't build JSX.
 
-**Sound is synthesized, not sampled.** `useSoundEffects` builds each effect from Web Audio oscillators; there are no audio assets. Note `useEasterEggs` calls `useSoundEffects` independently, so it holds a second `AudioContext`.
+**Sound is synthesized, not sampled.** `useSoundEffects` builds each effect from Web Audio oscillators; there are no audio assets. The `AudioContext` is a module-level singleton shared by every caller of the hook and is resumed on demand, since the autoplay policy starts it suspended. `useEasterEggs(soundEnabled)` takes the mute flag as an argument — it has no other way to reach that state, which lives in `useTerminal`.
+
+**Keyboard ownership is split and easy to break.** `useTerminal.handleKeyDown` owns ↑/↓ (command history), Tab (completion), Esc and Enter. `Shift+Tab` is deliberately *not* intercepted so keyboard users can move focus out of the input. Do not add a competing `document`-level key listener — an earlier one in `Suggestions` fought the history navigation.
 
 **Visual effects** (`src/components/effects/`) are full-screen overlays toggled by an `isActive` prop from `useTerminal`.
 
@@ -51,10 +55,12 @@ Blank line or `END_TABLE` closes the block. This is how `skills` and similar com
 - `@/` aliases `src/` (configured in both `vite.config.ts` and `tsconfig.app.json`).
 - `src/types/terminal.d.ts` declares `Command`, `Project`, `TableData`, etc. as **global ambient types** — do not import them. `src/types/ui.d.ts` holds exported component prop interfaces and is imported normally.
 - Biome enforces tabs, single quotes, no semicolons, 100-char lines, and a custom import-group order (packages → `@/utils` → `@/components` → `@/hooks` → types, blank line between groups). Run `pnpm format` rather than hand-arranging imports.
-- Tailwind v4 via `@tailwindcss/vite`, but `src/index.css` still pulls in the legacy `tailwind.config.js` with `@config`. Theme-specific utilities (`glow`, `flicker`, `pipboy-bg`, `pipboy-card`, `scanlines`) are defined in `src/index.css`, and `.terminal-scroll-area` is the hook `useLenis` looks for when attaching smooth scrolling.
+- Tailwind v4 via `@tailwindcss/vite`, but `src/index.css` still pulls in the legacy `tailwind.config.js` with `@config`. Theme-specific utilities (`glow`, `flicker`, `pipboy-bg`, `pipboy-card`, `scanlines`) are defined in `src/index.css`.
+- Scrolling in both terminals is native `overflow-y: auto`. Lenis was removed — the main terminal's smooth scroll had never worked (`App.tsx` imported `useLenis` from `lenis/react`, which needs a `ReactLenis` provider that did not exist) and both init paths leaked an uncancelled `requestAnimationFrame` loop.
 
 ## Known dead scaffolding
 
-- `src/i18n.ts` initializes i18next with `i18next-http-backend`, but no locale files exist and nothing calls `useTranslation`. The `lang en` / `lang es` commands and the `ControlPanel` toggle only flip a state flag; all content is English-only.
+- `src/i18n.ts` initializes i18next with `i18next-http-backend`, but no locale files exist and nothing calls `useTranslation`. The `lang en` / `lang es` commands and the `ControlPanel` toggle only flip a state flag; all content is English-only — and `help` still advertises `lang en` as a working command.
 - `src/components/effects/RainEffect.tsx` is not imported anywhere.
 - `useGsapAnimations.ts` exports several animation helpers but only `ProjectDetail` consumes the hook.
+- `terminalHelpers.ts` exports `validateCommand` and `formatTimestamp` (unused) and `shouldPlaySound`, which is an identity function called ~15 times.

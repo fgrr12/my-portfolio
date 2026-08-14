@@ -16,7 +16,6 @@ export const QuickCommands = ({ commands, onExecute, disabled }: QuickCommandsPr
 						onClick={() => onExecute(cmd)}
 						disabled={disabled}
 						className="text-left text-teal-500 hover:text-teal-300 hover:bg-teal-400/10 px-2 py-2 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed glow flicker cursor-pointer"
-						tabIndex={-1}
 					>
 						▸ {cmd}
 					</button>

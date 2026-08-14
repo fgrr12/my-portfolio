@@ -1,4 +1,3 @@
-import { useLenis } from 'lenis/react'
 import { useEffect } from 'react'
 
 import { DigitalRain } from '@/components/effects/DigitalRain'
@@ -36,8 +35,6 @@ export const App = () => {
 		toggleSound,
 		toggleLanguage,
 	} = useTerminal()
-
-	useLenis()
 
 	useEffect(() => {
 		playStartup()

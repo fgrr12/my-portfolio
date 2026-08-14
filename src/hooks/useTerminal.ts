@@ -29,7 +29,7 @@ export function useTerminal() {
 
 	const soundEffects = useSoundEffects()
 	const { easterEggCommands, digitalRainMode, isSnowing, isGlitching, checkKonamiCode } =
-		useEasterEggs()
+		useEasterEggs(soundEnabled)
 	const {
 		playCommandSound,
 		playErrorSound,
@@ -141,25 +141,16 @@ export function useTerminal() {
 	}
 
 	const addCommandToHistory = async (output: string[], input: string) => {
-		const timestamp = new Date()
-		const baseCommand: Command = {
-			input,
-			output: [],
-			timestamp,
-		}
+		const id = crypto.randomUUID()
 
-		setCommandHistory((prev) => [...prev, baseCommand])
+		setCommandHistory((prev) => [...prev, { id, input, output: [], timestamp: new Date() }])
 
-		for (let i = 0; i < output.length; i++) {
+		for (const line of output) {
 			await new Promise((resolve) => setTimeout(resolve, 150))
 
-			setCommandHistory((prev) => {
-				const updated = [...prev]
-				const last = { ...updated[updated.length - 1] }
-				last.output = [...last.output, output[i]]
-				updated[updated.length - 1] = last
-				return updated
-			})
+			setCommandHistory((prev) =>
+				prev.map((cmd) => (cmd.id === id ? { ...cmd, output: [...cmd.output, line] } : cmd))
+			)
 		}
 	}
 
@@ -183,7 +174,9 @@ export function useTerminal() {
 			}
 			setHistoryIndex(-1)
 
+			const loadingId = crypto.randomUUID()
 			const loadingCommand: Command = {
+				id: loadingId,
 				input: trimmedInput,
 				output: [],
 				timestamp: new Date(),
@@ -196,7 +189,7 @@ export function useTerminal() {
 			const processingTime = generateProcessingTime()
 			await new Promise((resolve) => setTimeout(resolve, processingTime))
 
-			setCommandHistory((prev) => prev.slice(0, -1))
+			setCommandHistory((prev) => prev.filter((cmd) => cmd.id !== loadingId))
 
 			if (lowerInput.startsWith('show project ')) {
 				const projectName = trimmedInput.slice(13).trim()
@@ -207,12 +200,13 @@ export function useTerminal() {
 				addCommandToHistory(output as readonly string[] as string[], trimmedInput)
 				window.open(
 					`${import.meta.env.BASE_URL}assets/documents/CV%20-%20Fabricio%20Rojas.pdf`,
-					'_blank'
+					'_blank',
+					'noopener,noreferrer'
 				)
 			} else if (lowerInput === 'connect') {
 				const output = commands.connect()
 				addCommandToHistory(output as readonly string[] as string[], trimmedInput)
-				window.open('https://www.linkedin.com/in/fabricio-rojas', '_blank')
+				window.open('https://www.linkedin.com/in/fabricio-rojas', '_blank', 'noopener,noreferrer')
 			} else if (lowerInput === 'back') {
 				const output = commands.back()
 				addCommandToHistory(output as readonly string[] as string[], trimmedInput)
@@ -287,6 +281,7 @@ export function useTerminal() {
 				setCommandHistory((prev) => [
 					...prev,
 					{
+						id: crypto.randomUUID(),
 						input: '🎮 KONAMI CODE',
 						output,
 						timestamp: new Date(),
@@ -319,7 +314,8 @@ export function useTerminal() {
 						setCurrentInput(inputHistory[newIndex])
 					}
 				}
-			} else if (e.key === 'Tab') {
+			} else if (e.key === 'Tab' && !e.shiftKey) {
+				// Shift+Tab is left alone so keyboard users can move focus out of the input.
 				e.preventDefault()
 				handleTabCompletion()
 			} else if (e.key === 'Escape') {

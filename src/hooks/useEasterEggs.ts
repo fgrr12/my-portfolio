@@ -2,46 +2,39 @@ import { useCallback, useState } from 'react'
 
 import { useSoundEffects } from '@/hooks/useSoundEffects'
 
-export const useEasterEggs = () => {
+import { KONAMI_CODE } from '@/constants/terminal'
+
+export const useEasterEggs = (soundEnabled: boolean) => {
 	const [digitalRainMode, setDigitalRainMode] = useState(false)
 	const [konamiSequence, setKonamiSequence] = useState<string[]>([])
 	const [isSnowing, setIsSnowing] = useState(false)
 	const [isGlitching, setIsGlitching] = useState(false)
 	const { playDiscoverySound } = useSoundEffects()
 
-	const konamiCode = [
-		'ArrowUp',
-		'ArrowUp',
-		'ArrowDown',
-		'ArrowDown',
-		'ArrowLeft',
-		'ArrowRight',
-		'ArrowLeft',
-		'ArrowRight',
-		'KeyB',
-		'KeyA',
-	]
+	const playDiscovery = useCallback(() => {
+		if (soundEnabled) playDiscoverySound()
+	}, [soundEnabled, playDiscoverySound])
 
 	const checkKonamiCode = useCallback(
 		(key: string) => {
-			const newSequence = [...konamiSequence, key].slice(-10)
+			const newSequence = [...konamiSequence, key].slice(-KONAMI_CODE.length)
 			setKonamiSequence(newSequence)
 
-			if (newSequence.join(',') === konamiCode.join(',')) {
-				playDiscoverySound()
+			if (newSequence.join(',') === KONAMI_CODE.join(',')) {
+				playDiscovery()
 				setKonamiSequence([])
 				return true
 			}
 			return false
 		},
-		[konamiSequence, playDiscoverySound]
+		[konamiSequence, playDiscovery]
 	)
 
 	const easterEggCommands = {
 		'digital rain': () => {
 			setDigitalRainMode(true)
 			setTimeout(() => setDigitalRainMode(false), 12000)
-			playDiscoverySound()
+			playDiscovery()
 			return [
 				'Initializing digital precipitation protocol...',
 				'Loading binary weather patterns...',
@@ -56,7 +49,7 @@ export const useEasterEggs = () => {
 		},
 
 		brew: () => {
-			playDiscoverySound()
+			playDiscovery()
 			return [
 				'Starting coffee brewing sequence...',
 				'Grinding beans... ████████████ 100%',
@@ -84,7 +77,7 @@ export const useEasterEggs = () => {
 		snow: () => {
 			setIsSnowing(true)
 			setTimeout(() => setIsSnowing(false), 20000)
-			playDiscoverySound()
+			playDiscovery()
 			return [
 				'Initializing winter simulation...',
 				'Temperature dropping... ❄️',
@@ -103,7 +96,7 @@ export const useEasterEggs = () => {
 		glitch: () => {
 			setIsGlitching(true)
 			setTimeout(() => setIsGlitching(false), 8000)
-			playDiscoverySound()
+			playDiscovery()
 			return [
 				'D3t3ct1ng 5y5t3m 4n0m4ly...',
 				'R34l1ty m4tr1x d35t4b1l1z1ng...',
@@ -120,7 +113,7 @@ export const useEasterEggs = () => {
 		},
 
 		'dev mode': () => {
-			playDiscoverySound()
+			playDiscovery()
 			return [
 				'🔓 Developer mode activated!',
 				'',

@@ -1,4 +1,4 @@
-import { memo, useEffect } from 'react'
+import { memo } from 'react'
 
 import { ProjectDetail } from '@/components/terminal/ProjectDetail'
 import { TerminalHeader } from '@/components/ui/TerminalHeader'
@@ -17,7 +17,6 @@ const ProjectCard = memo(function ProjectCard({
 			type="button"
 			onClick={() => onSelect(project)}
 			className="w-full border border-teal-500/50 rounded-xl p-4 hover:bg-teal-400/5 transition-all duration-300 hover:border-teal-400 hover:shadow-lg hover:shadow-teal-500/20 cursor-pointer pipboy-card"
-			tabIndex={-1}
 		>
 			<div className="flex justify-between items-start mb-2">
 				<h3 className="text-lg font-semibold text-teal-300 glow flicker">{project.title}</h3>
@@ -48,41 +47,6 @@ export const ProjectsTerminal = ({
 	onSelectProject,
 	onBackToProjects,
 }: ProjectsTerminalProps) => {
-	useEffect(() => {
-		const reInitLenis = async () => {
-			const Lenis = (await import('lenis')).default
-			const terminalArea = document.querySelector('.projects-terminal-scroll')
-
-			if (
-				terminalArea instanceof HTMLElement &&
-				!terminalArea.hasAttribute('data-lenis-initialized')
-			) {
-				terminalArea.setAttribute('data-lenis-initialized', 'true')
-
-				const lenis = new Lenis({
-					wrapper: terminalArea,
-					content: terminalArea.firstElementChild as HTMLElement,
-					duration: 1.2,
-					easing: (t: number) => Math.min(1, 1.001 - 2 ** (-10 * t)),
-					orientation: 'vertical',
-					smoothWheel: true,
-					syncTouch: false,
-					touchMultiplier: 2,
-					infinite: false,
-				})
-
-				function raf(time: number) {
-					lenis.raf(time)
-					requestAnimationFrame(raf)
-				}
-
-				requestAnimationFrame(raf)
-			}
-		}
-
-		const timer = setTimeout(reInitLenis, 500)
-		return () => clearTimeout(timer)
-	}, [])
 	return (
 		<div className="lg:w-1/2 w-full pb-20 sm:pb-0">
 			<div className="bg-slate-900 rounded-xl border border-teal-500/40 shadow-2xl shadow-teal-500/20 h-full flex flex-col overflow-hidden terminal-glow pipboy-screen">

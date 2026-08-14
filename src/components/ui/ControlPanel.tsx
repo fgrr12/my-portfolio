@@ -16,7 +16,6 @@ export const ControlPanel = ({
 					onClick={onToggleSound}
 					className="w-12 h-12 rounded-xl border border-teal-500/30 bg-slate-900/90 backdrop-blur-sm hover:bg-teal-500/10 transition-all duration-300 group flex items-center justify-center cursor-pointer"
 					title={soundEnabled ? 'Sound: ON (click to disable)' : 'Sound: OFF (click to enable)'}
-					tabIndex={-1}
 				>
 					{soundEnabled ? (
 						<Volume2
@@ -40,7 +39,6 @@ export const ControlPanel = ({
 					onClick={onToggleLanguage}
 					className="w-12 h-12 rounded-xl border border-teal-500/30 bg-slate-900/90 backdrop-blur-sm hover:bg-teal-500/10 transition-all duration-300 group flex items-center justify-center relative cursor-pointer"
 					title={`Language: ${language.toUpperCase()} (click to switch)`}
-					tabIndex={-1}
 				>
 					<Globe
 						size={20}
@@ -59,7 +57,6 @@ export const ControlPanel = ({
 					onClick={onToggleSound}
 					className="w-11 h-11 rounded-xl border border-teal-500/30 bg-slate-900/90 backdrop-blur-sm hover:bg-teal-500/10 transition-all duration-300 group flex items-center justify-center cursor-pointer"
 					title={soundEnabled ? 'Sound: ON' : 'Sound: OFF'}
-					tabIndex={-1}
 				>
 					{soundEnabled ? (
 						<Volume2
@@ -83,7 +80,6 @@ export const ControlPanel = ({
 					onClick={onToggleLanguage}
 					className="w-11 h-11 rounded-xl border border-teal-500/30 bg-slate-900/90 backdrop-blur-sm hover:bg-teal-500/10 transition-all duration-300 group flex items-center justify-center relative cursor-pointer"
 					title={`Language: ${language.toUpperCase()}`}
-					tabIndex={-1}
 				>
 					<Globe
 						size={18}
