@@ -5,7 +5,7 @@ export type Language = 'en' | 'es'
 const STORAGE_KEY = 'portfolio-lang'
 
 /** The /es/ page and the root page are separate URLs so hreflang can point at them. */
-const languageHref = (language: Language) =>
+export const languageHref = (language: Language) =>
 	language === 'es' ? `${import.meta.env.BASE_URL}es/` : import.meta.env.BASE_URL
 
 /**
@@ -20,19 +20,19 @@ export const getInitialLanguage = (): Language => {
 	return navigator.language.toLowerCase().startsWith('es') ? 'es' : 'en'
 }
 
-const documentTitles: Record<Language, string> = {
+/** The served <head> belongs to whichever document loaded, so an in-app language
+ *  switch has to retitle the tab by hand. */
+export const documentTitles: Record<Language, string> = {
 	en: 'Fabricio Rojas — Full Stack Developer',
 	es: 'Fabricio Rojas — Desarrollador Full Stack',
 }
 
 export const persistLanguage = (language: Language) => {
 	localStorage.setItem(STORAGE_KEY, language)
-	// Keep the address bar honest without a reload, so a copied link opens in the
-	// language the visitor is actually looking at. The served <head> belongs to the
-	// document that loaded, so the tab title has to be updated by hand.
-	window.history.replaceState(null, '', languageHref(language))
-	document.title = documentTitles[language]
 }
+
+/** Reads the shared-link project id, e.g. ?project=cattle-tracker */
+export const getInitialProjectId = () => new URLSearchParams(window.location.search).get('project')
 
 /**
  * Chrome copy only. Command names ('help', 'show projects') are deliberately not
@@ -72,6 +72,8 @@ const uiStrings = {
 		technologies: 'Technologies:',
 		status: 'Status:',
 		year: 'Year:',
+		copy: 'Copy to clipboard',
+		copied: 'Copied',
 		backHint: "◆ Use 'back' command or click the back button to return to projects",
 	},
 	es: {
@@ -109,6 +111,8 @@ const uiStrings = {
 		technologies: 'Tecnologías:',
 		status: 'Estado:',
 		year: 'Año:',
+		copy: 'Copiar al portapapeles',
+		copied: 'Copiado',
 		backHint: "◆ Usá el comando 'back' o el botón para volver a los proyectos",
 	},
 } as const

@@ -36,7 +36,7 @@ const ProjectCard = memo(function ProjectCard({
 					{ui.statusLabels[project.status]}
 				</span>
 			</div>
-			<p className="text-teal-400/80 text-sm leading-relaxed mb-3 flicker">{project.description}</p>
+			<p className="text-teal-400/80 text-sm leading-relaxed mb-3">{project.description}</p>
 			<div className="text-teal-500 text-xs">
 				<span className="glow flicker">
 					{ui.techStack} {project.tech}
@@ -56,7 +56,7 @@ export const ProjectsTerminal = ({
 	const ui = useUi()
 
 	return (
-		<div className="lg:w-1/2 w-full pb-20 sm:pb-0">
+		<div className="lg:w-1/2 w-full flex-1 min-h-0 pb-20 sm:pb-0">
 			<div className="bg-slate-900 rounded-xl border border-teal-500/40 shadow-2xl shadow-teal-500/20 h-full flex flex-col overflow-hidden terminal-glow pipboy-screen">
 				<TerminalHeader
 					title="projects@terminal:~"

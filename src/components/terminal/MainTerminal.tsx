@@ -21,7 +21,7 @@ export const MainTerminal = memo(function MainTerminal({
 	currentInput,
 	suggestions,
 	isProcessing,
-	availableCommands,
+	quickCommands,
 	onInputChange,
 	onKeyDown,
 	onSuggestionSelect,
@@ -82,8 +82,13 @@ export const MainTerminal = memo(function MainTerminal({
 		}
 	}, [isProcessing])
 
+	// flex-1 min-h-0: in the lg row layout the cross axis stretches this for free, but
+	// stacked on mobile the column's main axis is vertical, so without it the panel
+	// collapses to content height and leaves the bottom of the screen empty.
 	return (
-		<div className={`${showProjects ? 'lg:w-1/2' : 'w-full'} transition-all duration-500`}>
+		<div
+			className={`${showProjects ? 'lg:w-1/2' : 'w-full'} flex-1 min-h-0 transition-all duration-500`}
+		>
 			<div
 				ref={containerRef}
 				className="bg-slate-900 rounded-xl border border-teal-500/40 shadow-2xl shadow-teal-500/20 h-full flex flex-col overflow-hidden terminal-glow pipboy-screen"
@@ -128,7 +133,7 @@ export const MainTerminal = memo(function MainTerminal({
 						/>
 
 						<QuickCommands
-							commands={availableCommands}
+							commands={quickCommands}
 							onExecute={onQuickCommand}
 							disabled={isProcessing}
 						/>

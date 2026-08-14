@@ -105,6 +105,21 @@ const buildEnglish = () => {
 				'',
 			],
 		},
+		// Commands a developer reflexively types at any prompt. Answering them is what
+		// makes the terminal read as real instead of as a menu in disguise.
+		shell: {
+			ls: ['about.md     skills.md     contact.md', 'projects/    resume.pdf'],
+			pwd: ['/home/fabricio/portfolio'],
+			whoami: ['fabricio'],
+			sudo: [
+				'[sudo] password for guest:',
+				'Sorry, try again.',
+				'',
+				'guest is not in the sudoers file. This incident will be reported.',
+			],
+			exit: ['logout', '', "There is no way out — but 'connect' opens my LinkedIn."],
+			man: ['What manual page do you want?', "For example, try 'help'."],
+		},
 	}
 }
 
@@ -211,6 +226,19 @@ const buildSpanish = () => {
 				"Escribí 'help' para ver los comandos disponibles",
 				'',
 			],
+		},
+		shell: {
+			ls: ['about.md     skills.md     contact.md', 'projects/    resume.pdf'],
+			pwd: ['/home/fabricio/portfolio'],
+			whoami: ['fabricio'],
+			sudo: [
+				'[sudo] password for guest:',
+				'Contraseña incorrecta, probá de nuevo.',
+				'',
+				'guest no está en el archivo sudoers. Se reportará este incidente.',
+			],
+			exit: ['logout', '', "No hay salida — pero 'connect' abre mi LinkedIn."],
+			man: ['¿Qué página del manual querés?', "Por ejemplo, probá 'help'."],
 		},
 	}
 }

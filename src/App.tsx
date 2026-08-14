@@ -20,7 +20,7 @@ export const App = () => {
 		showProjects,
 		selectedProject,
 		projects,
-		availableCommands,
+		quickCommands,
 		soundEnabled,
 		language,
 		digitalRainMode,
@@ -63,7 +63,7 @@ export const App = () => {
 						currentInput={currentInput}
 						suggestions={suggestions}
 						isProcessing={isProcessing}
-						availableCommands={availableCommands}
+						quickCommands={quickCommands}
 						onInputChange={handleInputChange}
 						onKeyDown={handleKeyDown}
 						onSuggestionSelect={selectSuggestion}

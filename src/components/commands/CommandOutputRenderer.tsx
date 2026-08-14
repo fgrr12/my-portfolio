@@ -72,7 +72,7 @@ export const CommandOutputRenderer = memo(function CommandOutputRenderer({
 			}
 
 			result.push(
-				<div key={`line-${i}`} className="text-teal-400 glow flicker break-words max-w-full">
+				<div key={`line-${i}`} className="text-teal-400 glow break-words max-w-full">
 					{line}
 				</div>
 			)

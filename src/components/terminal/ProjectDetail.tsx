@@ -73,7 +73,7 @@ export const ProjectDetail = memo(function ProjectDetail({ project, onBack }: Pr
 				<div className="text-teal-500 text-sm mb-2 glow flicker">
 					{project.company} • {project.tech} • {project.year}
 				</div>
-				<p className="text-teal-400/90 leading-relaxed glow flicker">{project.fullDescription}</p>
+				<p className="text-teal-400/90 leading-relaxed glow">{project.fullDescription}</p>
 			</div>
 
 			<div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
@@ -121,7 +121,7 @@ export const ProjectDetail = memo(function ProjectDetail({ project, onBack }: Pr
 					{project.features.map((feature, index) => (
 						<div
 							key={index}
-							className="flex items-center space-x-2 text-teal-400/80 glow flicker feature-item"
+							className="flex items-center space-x-2 text-teal-400/80 glow feature-item"
 						>
 							<span className="text-teal-500">▸</span>
 							<span>{feature}</span>

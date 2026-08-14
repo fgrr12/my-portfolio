@@ -22,7 +22,9 @@ export const CommandHistory = forwardRef<HTMLDivElement, CommandHistoryProps>(
 					{commands.map((cmd) => (
 						<div key={cmd.id} className="space-y-1 max-w-full">
 							<div className="flex items-center space-x-2">
-								<span className="text-teal-400 glow flicker">fabricio:-+</span>
+								<span className="text-teal-400 glow flicker shrink-0 whitespace-nowrap">
+									<span className="hidden sm:inline">fabricio@terminal</span>:~$
+								</span>
 								<span className="text-teal-300 flicker break-all">{cmd.input}</span>
 							</div>
 							{cmd.isLoading ? (

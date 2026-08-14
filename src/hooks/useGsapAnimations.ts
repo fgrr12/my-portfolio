@@ -165,21 +165,11 @@ export const useGSAPAnimations = () => {
 			ease: 'power3.out',
 		})
 
-		const title = detailRef.current.querySelector('.project-title')
-		if (title && title.textContent) {
-			const originalText = title.textContent
-			gsap.set(title, { text: '' })
-
-			tl.to(
-				title,
-				{
-					text: originalText,
-					duration: 1.5,
-					ease: 'none',
-				},
-				'-=0.5'
-			)
-		}
+		// The project title used to be typed out with TextPlugin, which meant clearing
+		// the DOM text first and relying on the tween to put it back. React owns that
+		// text, so any interruption (a backgrounded tab suspending rAF, an error before
+		// the tween) left the heading permanently blank. Content must not depend on an
+		// animation finishing; it fades in with the container instead.
 
 		const buttons = detailRef.current.querySelectorAll('.action-button')
 		if (buttons.length > 0) {

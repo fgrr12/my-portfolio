@@ -1,5 +1,6 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
+import { prefersReducedMotion } from '@/utils/prefersReducedMotion'
 import {
 	findProjectByName,
 	generateProcessingTime,
@@ -14,15 +15,27 @@ import { COMMANDS, TERMINAL_CONFIG, TOUR_COMMANDS } from '@/constants/terminal'
 import { getProjects } from '@/data/projects'
 import { terminalContent } from '@/data/terminalContent'
 import { terminalMessages } from '@/data/terminalMessages'
-import { getInitialLanguage, type Language, persistLanguage } from '@/i18n'
+import {
+	documentTitles,
+	getInitialLanguage,
+	getInitialProjectId,
+	type Language,
+	languageHref,
+	persistLanguage,
+} from '@/i18n'
 
 export function useTerminal() {
 	const [currentInput, setCurrentInput] = useState('')
 	const [commandHistory, setCommandHistory] = useState<Command[]>([])
 	const [inputHistory, setInputHistory] = useState<string[]>([])
 	const [historyIndex, setHistoryIndex] = useState(-1)
-	const [showProjects, setShowProjects] = useState(false)
-	const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null)
+	// A ?project=<id> link opens straight into that project's detail view.
+	const [initialProjectId] = useState(() => {
+		const id = getInitialProjectId()
+		return id && getProjects('en').some((project) => project.id === id) ? id : null
+	})
+	const [showProjects, setShowProjects] = useState(initialProjectId !== null)
+	const [selectedProjectId, setSelectedProjectId] = useState<string | null>(initialProjectId)
 	const [isProcessing, setIsProcessing] = useState(false)
 	const [suggestions, setSuggestions] = useState<string[]>([])
 	const [soundEnabled, setSoundEnabled] = useState(true)
@@ -39,6 +52,15 @@ export function useTerminal() {
 		setLanguage(next)
 		persistLanguage(next)
 	}, [])
+
+	// Single writer for the address bar. Language owns the path and the open project
+	// owns the query, so they have to be written together — updating either one on its
+	// own would drop the other.
+	useEffect(() => {
+		const url = languageHref(language) + (selectedProjectId ? `?project=${selectedProjectId}` : '')
+		window.history.replaceState(null, '', url)
+		document.title = documentTitles[language]
+	}, [language, selectedProjectId])
 
 	const soundEffects = useSoundEffects()
 	const { easterEggCommands, digitalRainMode, isSnowing, isGlitching, checkKonamiCode } =
@@ -150,6 +172,17 @@ export function useTerminal() {
 			return messages.connect.linkedin
 		},
 
+		ls: () => messages.shell.ls,
+		pwd: () => messages.shell.pwd,
+		whoami: () => messages.shell.whoami,
+		date: () => [new Date().toString()],
+		man: () => messages.shell.man,
+		exit: () => messages.shell.exit,
+		sudo: () => {
+			if (shouldPlaySound(soundEnabled)) playErrorSound()
+			return messages.shell.sudo
+		},
+
 		...easterEggCommands,
 	}
 
@@ -158,8 +191,16 @@ export function useTerminal() {
 
 		setCommandHistory((prev) => [...prev, { id, input, output: [], timestamp: new Date() }])
 
+		// The staggered reveal is decoration; print it all at once when motion is reduced.
+		if (prefersReducedMotion()) {
+			setCommandHistory((prev) =>
+				prev.map((cmd) => (cmd.id === id ? { ...cmd, output: [...output] } : cmd))
+			)
+			return
+		}
+
 		for (const line of output) {
-			await new Promise((resolve) => setTimeout(resolve, 150))
+			await new Promise((resolve) => setTimeout(resolve, TERMINAL_CONFIG.LINE_REVEAL))
 
 			setCommandHistory((prev) =>
 				prev.map((cmd) => (cmd.id === id ? { ...cmd, output: [...cmd.output, line] } : cmd))
@@ -228,7 +269,11 @@ export function useTerminal() {
 			} else if (lowerInput === 'back') {
 				const output = commands.back()
 				revealing = addCommandToHistory(output as readonly string[] as string[], trimmedInput)
-			} else if (lowerInput === 'cls') {
+			} else if (lowerInput === 'sudo' || lowerInput.startsWith('sudo ')) {
+				// Whatever they tried to sudo, the answer is the same.
+				const output = commands.sudo()
+				revealing = addCommandToHistory(output as readonly string[] as string[], trimmedInput)
+			} else if (lowerInput === 'cls' || lowerInput === 'clear') {
 				commands.cls()
 				setCommandHistory([])
 				setShowProjects(false)
@@ -295,6 +340,35 @@ export function useTerminal() {
 
 	const handleKeyDown = useCallback(
 		(e: React.KeyboardEvent) => {
+			if (e.ctrlKey && e.key.toLowerCase() === 'l') {
+				e.preventDefault()
+				setCommandHistory([])
+				setSuggestions([])
+				return
+			}
+
+			if (e.ctrlKey && e.key.toLowerCase() === 'c') {
+				// Only interrupt when there is nothing to copy — otherwise the browser's
+				// own copy shortcut is what the user meant.
+				const input = e.currentTarget as HTMLInputElement
+				if (input.selectionStart === input.selectionEnd) {
+					e.preventDefault()
+					setCommandHistory((prev) => [
+						...prev,
+						{
+							id: crypto.randomUUID(),
+							input: `${currentInput}^C`,
+							output: [],
+							timestamp: new Date(),
+						},
+					])
+					setCurrentInput('')
+					setSuggestions([])
+					setHistoryIndex(-1)
+					return
+				}
+			}
+
 			if (checkKonamiCode(e.code)) {
 				const output = easterEggCommands.konami()
 				setCommandHistory((prev) => [
@@ -443,7 +517,7 @@ export function useTerminal() {
 		showProjects,
 		selectedProject,
 		projects,
-		availableCommands: COMMANDS.AVAILABLE,
+		quickCommands: COMMANDS.QUICK,
 		soundEnabled,
 		language,
 		digitalRainMode,

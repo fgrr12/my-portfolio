@@ -33,7 +33,7 @@ export interface MainTerminalProps {
 	currentInput: string
 	suggestions: string[]
 	isProcessing: boolean
-	availableCommands: readonly string[]
+	quickCommands: readonly string[]
 	onInputChange: (value: string) => void
 	onKeyDown: (e: React.KeyboardEvent) => void
 	onSuggestionSelect: (suggestion: string) => void

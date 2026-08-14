@@ -16,7 +16,9 @@ export const CommandInput = forwardRef<HTMLInputElement, CommandInputProps>(
 
 		return (
 			<div className="flex items-center space-x-2 mb-4">
-				<span className="text-teal-400 glow flicker">fabricio:-+</span>
+				<span className="text-teal-400 glow flicker shrink-0 whitespace-nowrap">
+					<span className="hidden sm:inline">fabricio@terminal</span>:~$
+				</span>
 				<input
 					ref={ref}
 					type="text"
@@ -27,7 +29,6 @@ export const CommandInput = forwardRef<HTMLInputElement, CommandInputProps>(
 					placeholder={placeholder}
 					className="flex-1 bg-transparent text-teal-300 outline-none glow caret-teal-400 disabled:opacity-50 flicker"
 				/>
-				<span className="text-teal-400 animate-pulse glow">|</span>
 			</div>
 		)
 	}

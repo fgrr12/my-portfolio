@@ -23,7 +23,7 @@ A single-page fake terminal portfolio. There is no router, no backend, no persis
 
 **`src/hooks/useTerminal.ts` is the hub.** It owns all terminal state (input, history, suggestions, open project, sound, language) and the `commands` object mapping command string → `() => string[]`. `App.tsx` destructures its return value and wires it into the presentational components. Adding or changing a command usually means touching three places:
 
-1. `src/constants/terminal.ts` — `COMMANDS.AVAILABLE` / `.HIDDEN` / `.EASTER_EGGS` drive autocomplete, Tab completion, and the quick-command buttons. A command missing here still runs but is undiscoverable.
+1. `src/constants/terminal.ts` — `COMMANDS.AVAILABLE` / `.HIDDEN` / `.EASTER_EGGS` drive autocomplete, Tab completion, and the quick-command buttons. A command missing here still runs but is undiscoverable. `.HIDDEN` also holds the real shell commands (`ls`, `pwd`, `whoami`, `date`, `man`, `exit`, `sudo`, `clear`) — a developer types those at any prompt by reflex, and answering them is what keeps the terminal from reading as a menu in disguise.
 2. The `commands` object in `useTerminal.ts` — the actual handler.
 3. `src/data/terminalContent.ts` (long-form copy: about, skills, help, contact) or `src/data/terminalMessages.ts` (short status/error strings, some as functions taking an argument). Both are keyed by language, so **every string needs an `en` and an `es` entry**.
 
@@ -48,7 +48,11 @@ Blank line or `END_TABLE` closes the block. This is how `skills` and similar com
 
 **Sound is synthesized, not sampled.** `useSoundEffects` builds each effect from Web Audio oscillators; there are no audio assets. The `AudioContext` is a module-level singleton shared by every caller of the hook and is resumed on demand, since the autoplay policy starts it suspended. `useEasterEggs(soundEnabled)` takes the mute flag as an argument — it has no other way to reach that state, which lives in `useTerminal`.
 
-**Keyboard ownership is split and easy to break.** `useTerminal.handleKeyDown` owns ↑/↓ (command history), Tab (completion), Esc and Enter. `Shift+Tab` is deliberately *not* intercepted so keyboard users can move focus out of the input. Do not add a competing `document`-level key listener — an earlier one in `Suggestions` fought the history navigation.
+**Keyboard ownership is split and easy to break.** `useTerminal.handleKeyDown` owns ↑/↓ (command history), Tab (completion), Esc, Enter, `Ctrl+L` (clear) and `Ctrl+C` (cancel line). Two deliberate non-interceptions: `Shift+Tab` passes through so keyboard users can move focus out of the input, and `Ctrl+C` only interrupts when the input has no selection — otherwise it stays the browser's copy shortcut. Do not add a competing `document`-level key listener — an earlier one in `Suggestions` fought the history navigation.
+
+**Never let content depend on an animation finishing.** The project detail used to type its `<h1>` in with GSAP's TextPlugin, which cleared the DOM text first — React then considered that text current and would not restore it, so any interruption (a backgrounded tab suspending `requestAnimationFrame`, an error before the tween) left the heading permanently blank. Animate opacity and transform; leave the text alone.
+
+**`flicker` is for chrome, not for reading.** The CRT flicker animates `text-shadow` and `opacity` forever, which makes body text physically harder to read. It belongs on prompts, headings, status text and labels — never on command output lines, tables, project descriptions or feature lists.
 
 **Visual effects** (`src/components/effects/`) are full-screen overlays toggled by an `isActive` prop from `useTerminal`.
 
@@ -64,7 +68,8 @@ Initial language resolves in this order: **the URL path** (`/my-portfolio/es/` f
 **There are two build entry points, and hreflang depends on them.** `index.html` (English) and `es/index.html` (Spanish) are both listed in `build.rollupOptions.input`, producing `dist/index.html` and `dist/es/index.html` — two real crawlable URLs, which is the whole reason hreflang can work on a static host. Consequences:
 
 - Any `<head>` change must be made in **both** files. They each carry a self-referencing `canonical` plus the full `hreflang` set (`en`, `es`, `x-default`), localized title/description/OG, and their own OG image (`og-image.png` / `og-image-es.png`).
-- Switching language in-app does not reload; it `replaceState`s the URL to match and sets `document.title` by hand (`persistLanguage`), because the served `<head>` belongs to whichever document loaded.
+- Switching language in-app does not reload. **`useTerminal` holds the only writer for the address bar** — one effect keyed on `[language, selectedProjectId]` that rebuilds the whole URL (`languageHref(lang)` + `?project=<id>`) and retitles the tab. Language owns the path, the open project owns the query; writing either one alone would drop the other. `persistLanguage` only touches localStorage.
+- A `?project=<id>` link opens straight into that project's detail view; unknown ids are ignored. The id is language-independent, so the same link works from either page.
 - `public/sitemap.xml` lists both URLs with their `xhtml:link` alternates. Update it if a URL is ever added or renamed.
 
 **The indexable content is generated, never hand-written.** The terminal renders nothing until a visitor types a command, so both HTML files would otherwise ship an empty page. `scripts/seo-html.ts` builds a semantic block (`h1`, sections, one `<article>` per project, contact links) from the *same* `terminalContent` and `getProjects` the app uses, and the `inject-seo-content` plugin in `vite.config.ts` splices it in after `<div id="root"></div>` — in dev as well as build. Never edit the block by hand; change the data and it regenerates.
