@@ -88,6 +88,7 @@ ${role.highlights.length ? `<ul>${role.highlights.map((item) => `<li>${escapeHtm
 <h3>${escapeHtml(study.degree)}${study.degree && study.institution ? ' · ' : ''}${escapeHtml(study.institution)}</h3>
 <span class="meta">${dateRange(study.from, study.to, labels.present)}</span>
 </div>
+${study.note ? `<p class="meta">${escapeHtml(study.note)}</p>` : ''}
 </article>`
 		)
 		.join('')

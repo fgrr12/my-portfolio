@@ -1,6 +1,6 @@
 import { execFileSync } from 'node:child_process'
-import { existsSync, mkdirSync } from 'node:fs'
-import { dirname, resolve } from 'node:path'
+import { existsSync, mkdirSync, readdirSync, statSync } from 'node:fs'
+import { dirname, join, resolve } from 'node:path'
 
 /**
  * Prints the CV pages emitted by `vite build` to PDF.
@@ -29,11 +29,29 @@ if (!existsSync(CHROME)) {
 	process.exit(1)
 }
 
+/** Newest mtime anywhere under a directory. */
+const newestMtime = (dir) =>
+	readdirSync(dir, { withFileTypes: true }).reduce((newest, entry) => {
+		const full = join(dir, entry.name)
+		const mtime = entry.isDirectory() ? newestMtime(full) : statSync(full).mtimeMs
+		return Math.max(newest, mtime)
+	}, 0)
+
 for (const { page, pdf } of OUTPUTS) {
 	const source = resolve('dist', page)
 
 	if (!existsSync(source)) {
 		console.error(`Missing ${source}. Run \`pnpm build\` first.`)
+		process.exit(1)
+	}
+
+	/**
+	 * Running this script on its own silently prints whatever `dist` happens to
+	 * hold, which is how a CV with deleted projects still in it gets published.
+	 * Refuse rather than produce a plausible, stale PDF.
+	 */
+	if (statSync(source).mtimeMs < newestMtime(resolve('src/data'))) {
+		console.error(`${page} is older than src/data. Run \`pnpm cv\` (build + print) instead.`)
 		process.exit(1)
 	}
 

@@ -13,7 +13,8 @@ import type { Language } from '@/i18n'
  *  file produces a shorter PDF rather than a wrong one.
  *
  *    · location          where you are, and whether you want remote / relocation
- *    · experience[]      role and dates for Qubo Systems and CoBuild Lab
+ *    · experience[]      the `role` for each company, the start dates that are
+ *                        still blank, and 2-3 highlights each.
  *    · education[]
  *    · languages[]       with level
  * ────────────────────────────────────────────────────────────────────────────
@@ -34,6 +35,8 @@ export interface CvStudy {
 	degree: string
 	from: string
 	to: string
+	/** Anything worth one extra line, e.g. a thesis grade. */
+	note?: string
 }
 
 export interface CvLanguage {
@@ -68,14 +71,65 @@ export const cv: Record<Language, CvData> = {
 		name: 'Fabricio Rojas',
 		title: 'Full Stack Developer',
 		summary:
-			'Full Stack Developer with 5+ years building web and mobile products end to end, from database design to UI. Comfortable leading projects and talking to clients directly. Lately building with LLMs and agents in personal projects.',
-		location: '',
+			'Full Stack Developer with 5+ years shipping web and mobile products end to end, across two stacks that rarely appear on the same CV: JavaScript/TypeScript (React, Angular, Node) and .NET (C#, Minimal APIs, EF Core, Blazor, MAUI). Currently building access control platforms for corporate campuses. Also run a livestock platform of my own where a voice assistant turns spoken updates into structured records using Whisper and schema-constrained LLM output.',
+		location: 'Costa Rica · Remote',
 		experience: [
-			{ company: 'Qubo Systems', role: '', from: '', to: '', highlights: [] },
-			{ company: 'CoBuild Lab', role: '', from: '', to: '', highlights: [] },
+			{
+				company: 'Accesos Automáticos S.A.',
+				role: 'Full Stack Developer (contract)',
+				from: 'Oct 2025',
+				to: '',
+				highlights: [
+					'Built the entire web frontend for Earth, an access control platform for corporate campuses, and co-owned its backend, database design and IIS deployment.',
+					'Delivered the INTACO carrier registry end to end: a Blazor WebAssembly portal over a .NET Minimal API, plus an Android app that scans ID documents at gate points.',
+					'Rebuilt the visitor registry frontend with server-side rendering and live updates across screens over SignalR.',
+				],
+			},
+			{
+				company: 'Independent',
+				role: 'Product Development',
+				from: 'Oct 2024',
+				to: 'Sep 2025',
+				highlights: [
+					'Built and shipped a multi-tenant livestock management platform end to end — frontend, backend, database and the AI layer — now running in production on a working farm.',
+					'Designed its voice pipeline: spoken updates transcribed with Whisper, then parsed into typed farm actions by a schema-constrained LLM, so field staff never fill in a form.',
+				],
+			},
+			{
+				company: 'Qubo Systems',
+				role: 'Full Stack Developer',
+				from: 'Jul 2022',
+				to: 'Sep 2024',
+				highlights: [
+					'Led ongoing development of Serena, a childcare platform, taking full ownership of an existing production application and supporting stakeholders directly.',
+					'Built the accounting microservice for the condominium platform: React frontend, Express and Firebase Functions API, PostgreSQL schema.',
+					'Improved database query performance, added multi-language support and reworked UI/UX across the Angular admin and the mobile app.',
+				],
+			},
+			{
+				company: 'CoBuild Lab',
+				role: 'Full Stack Developer',
+				from: 'Sep 2021',
+				to: 'Apr 2022',
+				highlights: [
+					'Led development of BitBasel, an NFT marketplace, and owned its architecture.',
+					'Supervised a junior developer through implementation.',
+				],
+			},
 		],
-		education: [],
-		languages: [],
+		education: [
+			{
+				institution: 'Universidad Invenio',
+				degree: 'Licentiate, Business Information and Communication Technologies',
+				from: 'Jan 2017',
+				to: 'Jul 2021',
+				note: 'Thesis grade: 92',
+			},
+		],
+		languages: [
+			{ name: 'Spanish', level: 'Native' },
+			{ name: 'English', level: 'Professional' },
+		],
 	},
 
 	es: {
@@ -83,13 +137,74 @@ export const cv: Record<Language, CvData> = {
 		name: 'Fabricio Rojas',
 		title: 'Desarrollador Full Stack',
 		summary:
-			'Desarrollador Full Stack con más de 5 años construyendo productos web y móviles de punta a punta, del diseño de base de datos a la interfaz. Cómodo liderando proyectos y hablando directo con clientes. Últimamente construyendo con LLMs y agentes en proyectos propios.',
-		location: '',
+			'Desarrollador Full Stack con más de 5 años entregando productos web y móviles de punta a punta, en dos stacks que rara vez aparecen en el mismo CV: JavaScript/TypeScript (React, Angular, Node) y .NET (C#, Minimal APIs, EF Core, Blazor, MAUI). Actualmente construyendo plataformas de control de acceso para campus corporativos. También mantengo una plataforma ganadera propia donde un asistente de voz convierte lo hablado en registros estructurados usando Whisper y salida de LLM restringida por esquema.',
+		location: 'Costa Rica · Remoto',
 		experience: [
-			{ company: 'Qubo Systems', role: '', from: '', to: '', highlights: [] },
-			{ company: 'CoBuild Lab', role: '', from: '', to: '', highlights: [] },
+			{
+				company: 'Accesos Automáticos S.A.',
+				role: 'Full Stack Developer (contrato)',
+				from: 'Oct 2025',
+				to: '',
+				highlights: [
+					'Construí todo el frontend web de Earth, una plataforma de control de acceso para campus corporativos, y compartí la propiedad del backend, el diseño de base de datos y el despliegue en IIS.',
+					'Entregué de punta a punta el registro de transportistas de INTACO: portal en Blazor WebAssembly sobre una Minimal API de .NET, más una app Android que escanea documentos de identidad en los portones.',
+					'Reconstruí el frontend del registro de visitantes con renderizado en servidor y actualizaciones en vivo entre pantallas vía SignalR.',
+				],
+			},
+			{
+				company: 'Independent',
+				role: 'Product Development',
+				from: 'Oct 2024',
+				to: 'Sep 2025',
+				highlights: [
+					'Built and shipped a multi-tenant livestock management platform end to end — frontend, backend, database and the AI layer — now running in production on a working farm.',
+					'Designed its voice pipeline: spoken updates transcribed with Whisper, then parsed into typed farm actions by a schema-constrained LLM, so field staff never fill in a form.',
+				],
+			},
+			{
+				company: 'Independiente',
+				role: 'Desarrollo de producto propio',
+				from: 'Oct 2024',
+				to: 'Sep 2025',
+				highlights: [
+					'Construí y puse en producción una plataforma ganadera multi-tenant de punta a punta —frontend, backend, base de datos y la capa de IA—, hoy en uso en una finca real.',
+					'Diseñé su flujo de voz: lo hablado se transcribe con Whisper y un LLM restringido por esquema lo convierte en acciones tipadas, así el personal de campo nunca llena un formulario.',
+				],
+			},
+			{
+				company: 'Qubo Systems',
+				role: 'Full Stack Developer',
+				from: 'Jul 2022',
+				to: 'Sep 2024',
+				highlights: [
+					'Lideré el desarrollo continuo de Serena, una plataforma de cuidado infantil, tomando propiedad total de una aplicación ya en producción y dando soporte directo a los stakeholders.',
+					'Construí el microservicio contable de la plataforma de condominios: frontend en React, API con Express y Firebase Functions, esquema en PostgreSQL.',
+					'Mejoré el rendimiento de las consultas, agregué soporte multiidioma y rehice el UI/UX del admin en Angular y de la app móvil.',
+				],
+			},
+			{
+				company: 'CoBuild Lab',
+				role: 'Full Stack Developer',
+				from: 'Sep 2021',
+				to: 'Abr 2022',
+				highlights: [
+					'Lideré el desarrollo de BitBasel, un marketplace de NFTs, y fui dueño de su arquitectura.',
+					'Supervisé a un desarrollador junior durante la implementación.',
+				],
+			},
 		],
-		education: [],
-		languages: [],
+		education: [
+			{
+				institution: 'Universidad Invenio',
+				degree: 'Licenciatura en Tecnologías de la Información y Comunicación Empresarial',
+				from: 'Ene 2017',
+				to: 'Jul 2021',
+				note: 'Nota de tesis: 92',
+			},
+		],
+		languages: [
+			{ name: 'Español', level: 'Nativo' },
+			{ name: 'Inglés', level: 'Profesional' },
+		],
 	},
 }
