@@ -449,6 +449,75 @@ const projectSources: ProjectSource[] = [
 			company: 'CoBuild Lab',
 		},
 	},
+	{
+		id: 'candid-travel',
+		tech: '8Base, GraphQL, Next.js, React, Stripe, Material UI, SendGrid',
+		status: 'Production',
+		year: '2021 — 2022',
+		en: {
+			title: 'Candid Travel Ventures — Travel Booking',
+			description:
+				'Travel booking app for the Texas market, joined in the final stages before launch.',
+			fullDescription:
+				'A booking application where travellers choose and pay for tourism activities before they arrive. I joined in the final stretch before launch and shipped user-facing features against an 8Base GraphQL backend, with Stripe handling payments and SendGrid the transactional email — the parts that have to work on day one because a failed booking is a lost customer.',
+			features: [
+				'Activity selection and booking flow',
+				'Stripe payments',
+				'Transactional email with SendGrid',
+				'GraphQL backend on 8Base',
+				'Delivered against a launch deadline',
+			],
+			company: 'CoBuild Lab',
+		},
+		es: {
+			title: 'Candid Travel Ventures — Reserva de Viajes',
+			description:
+				'App de reserva de viajes para el mercado de Texas, en la que entré en las etapas finales previas al lanzamiento.',
+			fullDescription:
+				'Una aplicación de reservas donde los viajeros eligen y pagan actividades turísticas antes de llegar. Entré en la recta final previa al lanzamiento y entregué funcionalidades de cara al usuario sobre un backend GraphQL en 8Base, con Stripe manejando los pagos y SendGrid el correo transaccional — las partes que tienen que funcionar el primer día, porque una reserva fallida es un cliente perdido.',
+			features: [
+				'Selección de actividades y flujo de reserva',
+				'Pagos con Stripe',
+				'Correo transaccional con SendGrid',
+				'Backend GraphQL sobre 8Base',
+				'Entregado contra una fecha de lanzamiento',
+			],
+			company: 'CoBuild Lab',
+		},
+	},
+	{
+		id: 'pivot-market',
+		tech: 'Bubble, Stripe, Cypress',
+		status: 'Production',
+		year: '2021 — 2022',
+		en: {
+			title: 'Pivot Market — Retail Space Booking',
+			description: 'A published platform for booking retail space inside shopping malls.',
+			fullDescription:
+				'A platform where businesses find and book retail space inside shopping malls. I built the custom endpoints and the internal business logic on Bubble, and integrated Stripe for payments and Cypress for end-to-end tests — the two pieces that decide whether a booking platform can be trusted with someone else money.',
+			features: [
+				'Retail space listings and booking flow',
+				'Custom endpoints and internal business logic',
+				'Stripe payment integration',
+				'End-to-end test coverage with Cypress',
+			],
+			company: 'CoBuild Lab',
+		},
+		es: {
+			title: 'Pivot Market — Reserva de Locales Comerciales',
+			description:
+				'Una plataforma publicada para reservar locales comerciales en centros comerciales.',
+			fullDescription:
+				'Una plataforma donde los negocios encuentran y reservan locales dentro de centros comerciales. Construí los endpoints a medida y la lógica de negocio interna sobre Bubble, e integré Stripe para pagos y Cypress para pruebas end-to-end — las dos piezas que definen si a una plataforma de reservas se le puede confiar la plata de otro.',
+			features: [
+				'Listado de locales y flujo de reserva',
+				'Endpoints a medida y lógica de negocio interna',
+				'Integración de pagos con Stripe',
+				'Cobertura de pruebas end-to-end con Cypress',
+			],
+			company: 'CoBuild Lab',
+		},
+	},
 ]
 
 export const getProjects = (language: Language): Project[] =>

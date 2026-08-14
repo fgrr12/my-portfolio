@@ -71,7 +71,7 @@ export const cv: Record<Language, CvData> = {
 		name: 'Fabricio Rojas',
 		title: 'Full Stack Developer',
 		summary:
-			'Full Stack Developer with 5+ years shipping web and mobile products end to end, across two stacks that rarely appear on the same CV: JavaScript/TypeScript (React, Angular, Node) and .NET (C#, Minimal APIs, EF Core, Blazor, MAUI). Currently building access control platforms for corporate campuses. Also run a livestock platform of my own where a voice assistant turns spoken updates into structured records using Whisper and schema-constrained LLM output.',
+			'Full Stack Developer with 8+ years shipping web and mobile products end to end, across two stacks that rarely appear on the same CV: JavaScript/TypeScript (React, Angular, Node) and .NET (C#, Minimal APIs, EF Core, Blazor, MAUI). Currently building access control platforms for corporate campuses. Also run a livestock platform of my own where a voice assistant turns spoken updates into structured records using Whisper and schema-constrained LLM output.',
 		location: 'Costa Rica · Remote',
 		experience: [
 			{
@@ -101,9 +101,9 @@ export const cv: Record<Language, CvData> = {
 				from: 'Jul 2022',
 				to: 'Sep 2024',
 				highlights: [
-					'Led ongoing development of Serena, a childcare platform, taking full ownership of an existing production application and supporting stakeholders directly.',
-					'Built the accounting microservice for the condominium platform: React frontend, Express and Firebase Functions API, PostgreSQL schema.',
-					'Improved database query performance, added multi-language support and reworked UI/UX across the Angular admin and the mobile app.',
+					'Led ongoing development of Serena, a childcare platform: took full ownership of an existing production application, built Angular and React Native features, improved backend performance and security on Express and Firebase, and added in-app messaging for real-time updates.',
+					'Built a finance module as a microservice for a condominium platform — a React interface embedded in an Angular back office, contributing over half of its UI, with PostgreSQL tables designed for per-property financial operations.',
+					'Across the wider condominium ecosystem (Angular/Ionic frontends, several Express APIs, Firebase messaging, PostgreSQL on AWS): improved query performance, added internationalisation and shipped features on both the mobile app and the back office.',
 				],
 			},
 			{
@@ -112,8 +112,20 @@ export const cv: Record<Language, CvData> = {
 				from: 'Sep 2021',
 				to: 'Apr 2022',
 				highlights: [
-					'Led development of BitBasel, an NFT marketplace, and owned its architecture.',
-					'Supervised a junior developer through implementation.',
+					'Led development of BitBasel, an NFT marketplace on Stacks (Next.js, Styled Components, Hiro Wallet), owned its architecture and supervised a junior developer through the implementation.',
+					'Built custom endpoints and internal logic for Pivot Market, a published platform for booking retail space in malls, integrating Stripe for payments and Cypress for testing.',
+					'Shipped user-facing features for Candid Travel Ventures, a travel booking app for the Texas market, during the final stages before launch (8Base, Next.js, Stripe, Material UI, SendGrid).',
+				],
+			},
+			{
+				company: 'GBM as a Service',
+				role: 'Frontend Web Developer',
+				from: 'Oct 2017',
+				to: 'Dec 2020',
+				highlights: [
+					'Worked in a cross-functional Agile Scrum team of designers, developers, QA, product owners and project managers.',
+					'Built an internal resume management system with Angular and Firebase that streamlined CV tracking and staffing for upcoming projects.',
+					'Led my graduation thesis inside the company: a KPI dashboard in AngularJS integrating backend services, giving real-time visibility of project performance through interactive charts.',
 				],
 			},
 		],
@@ -137,7 +149,7 @@ export const cv: Record<Language, CvData> = {
 		name: 'Fabricio Rojas',
 		title: 'Desarrollador Full Stack',
 		summary:
-			'Desarrollador Full Stack con más de 5 años entregando productos web y móviles de punta a punta, en dos stacks que rara vez aparecen en el mismo CV: JavaScript/TypeScript (React, Angular, Node) y .NET (C#, Minimal APIs, EF Core, Blazor, MAUI). Actualmente construyendo plataformas de control de acceso para campus corporativos. También mantengo una plataforma ganadera propia donde un asistente de voz convierte lo hablado en registros estructurados usando Whisper y salida de LLM restringida por esquema.',
+			'Desarrollador Full Stack con más de 8 años entregando productos web y móviles de punta a punta, en dos stacks que rara vez aparecen en el mismo CV: JavaScript/TypeScript (React, Angular, Node) y .NET (C#, Minimal APIs, EF Core, Blazor, MAUI). Actualmente construyendo plataformas de control de acceso para campus corporativos. También mantengo una plataforma ganadera propia donde un asistente de voz convierte lo hablado en registros estructurados usando Whisper y salida de LLM restringida por esquema.',
 		location: 'Costa Rica · Remoto',
 		experience: [
 			{
@@ -177,9 +189,9 @@ export const cv: Record<Language, CvData> = {
 				from: 'Jul 2022',
 				to: 'Sep 2024',
 				highlights: [
-					'Lideré el desarrollo continuo de Serena, una plataforma de cuidado infantil, tomando propiedad total de una aplicación ya en producción y dando soporte directo a los stakeholders.',
-					'Construí el microservicio contable de la plataforma de condominios: frontend en React, API con Express y Firebase Functions, esquema en PostgreSQL.',
-					'Mejoré el rendimiento de las consultas, agregué soporte multiidioma y rehice el UI/UX del admin en Angular y de la app móvil.',
+					'Lideré el desarrollo continuo de Serena, una plataforma de cuidado infantil: tomé propiedad total de una aplicación ya en producción, construí funcionalidades en Angular y React Native, mejoré rendimiento y seguridad del backend en Express y Firebase, y agregué mensajería in-app en tiempo real.',
+					'Construí un módulo de finanzas como microservicio para una plataforma de condominios: una interfaz React embebida en un back office Angular, aportando más de la mitad de su UI, con tablas PostgreSQL diseñadas para operaciones financieras por propiedad.',
+					'En el ecosistema mayor de condominios (frontends Angular/Ionic, varias APIs Express, mensajería Firebase, PostgreSQL en AWS): mejoré el rendimiento de las consultas, agregué internacionalización y entregué funcionalidades en la app móvil y el back office.',
 				],
 			},
 			{
@@ -188,8 +200,20 @@ export const cv: Record<Language, CvData> = {
 				from: 'Sep 2021',
 				to: 'Abr 2022',
 				highlights: [
-					'Lideré el desarrollo de BitBasel, un marketplace de NFTs, y fui dueño de su arquitectura.',
-					'Supervisé a un desarrollador junior durante la implementación.',
+					'Lideré el desarrollo de BitBasel, un marketplace de NFTs sobre Stacks (Next.js, Styled Components, Hiro Wallet), fui dueño de su arquitectura y supervisé a un desarrollador junior durante la implementación.',
+					'Construí endpoints y lógica interna para Pivot Market, una plataforma publicada para reservar locales comerciales en centros comerciales, integrando Stripe para pagos y Cypress para pruebas.',
+					'Entregué funcionalidades de cara al usuario para Candid Travel Ventures, una app de reservas de viajes para el mercado de Texas, en las etapas finales previas al lanzamiento (8Base, Next.js, Stripe, Material UI, SendGrid).',
+				],
+			},
+			{
+				company: 'GBM as a Service',
+				role: 'Frontend Web Developer',
+				from: 'Oct 2017',
+				to: 'Dic 2020',
+				highlights: [
+					'Trabajé en un equipo ágil multidisciplinario con diseñadores, desarrolladores, QA, product owners y project managers, bajo Scrum.',
+					'Construí un sistema interno de gestión de currículums con Angular y Firebase que ordenó el seguimiento de CVs y la asignación de personal a proyectos.',
+					'Lideré mi proyecto de tesis dentro de la empresa: un dashboard de KPIs en AngularJS integrado con servicios de backend, que dio visibilidad en tiempo real del desempeño de los proyectos mediante gráficos interactivos.',
 				],
 			},
 		],
