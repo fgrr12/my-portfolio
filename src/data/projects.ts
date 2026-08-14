@@ -1,4 +1,3 @@
-import { PROJECT_STATUS } from '@/constants/terminal'
 import type { Language } from '@/i18n'
 
 interface LocalizedProject {
@@ -19,7 +18,7 @@ const projectSources: ProjectSource[] = [
 	{
 		id: 'marketplace',
 		tech: 'Flutter, React, Express.js, PostgreSQL',
-		status: PROJECT_STATUS.DEVELOPMENT,
+		status: 'Development',
 		github: '',
 		demo: '',
 		store: '',
@@ -60,7 +59,7 @@ const projectSources: ProjectSource[] = [
 	{
 		id: 'cattle-tracker',
 		tech: 'React, Firebase',
-		status: PROJECT_STATUS.PRODUCTION,
+		status: 'Production',
 		github: '',
 		demo: '',
 		store: '',
@@ -103,7 +102,7 @@ const projectSources: ProjectSource[] = [
 	{
 		id: 'condo-finances',
 		tech: 'React, Express.js, PostgreSQL',
-		status: PROJECT_STATUS.PRODUCTION,
+		status: 'Production',
 		year: '2024',
 		en: {
 			title: 'Condo Financial Management Microservice',
@@ -135,7 +134,7 @@ const projectSources: ProjectSource[] = [
 	{
 		id: 'condo-app',
 		tech: 'Angular, Ionic, Express.js, PostgreSQL, Firebase',
-		status: PROJECT_STATUS.PRODUCTION,
+		status: 'Production',
 		year: '2023',
 		en: {
 			title: 'Condominium Management Platform',
@@ -169,7 +168,7 @@ const projectSources: ProjectSource[] = [
 	{
 		id: 'serena-app',
 		tech: 'Angular, React Native, Firebase, Express.js',
-		status: PROJECT_STATUS.PRODUCTION,
+		status: 'Production',
 		year: '2022',
 		en: {
 			title: 'Serena: Nanny Service Platform',
@@ -203,7 +202,7 @@ const projectSources: ProjectSource[] = [
 	{
 		id: 'nft-store',
 		tech: 'Bubble.io',
-		status: PROJECT_STATUS.PRODUCTION,
+		status: 'Production',
 		year: '2022',
 		en: {
 			title: 'NFT Storefront Platform',
@@ -235,7 +234,7 @@ const projectSources: ProjectSource[] = [
 	{
 		id: 'pivot-market',
 		tech: 'Bubble.io',
-		status: PROJECT_STATUS.PRODUCTION,
+		status: 'Production',
 		year: '2021',
 		en: {
 			title: 'Pivot Market Platform',
@@ -267,7 +266,7 @@ const projectSources: ProjectSource[] = [
 	{
 		id: 'texas-travel',
 		tech: 'React, Firebase',
-		status: PROJECT_STATUS.PRODUCTION,
+		status: 'Production',
 		year: '2021',
 		en: {
 			title: 'Texas Travel Activity Planner',

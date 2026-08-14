@@ -67,6 +67,12 @@ Initial language resolves in this order: **the URL path** (`/my-portfolio/es/` f
 - Switching language in-app does not reload; it `replaceState`s the URL to match and sets `document.title` by hand (`persistLanguage`), because the served `<head>` belongs to whichever document loaded.
 - `public/sitemap.xml` lists both URLs with their `xhtml:link` alternates. Update it if a URL is ever added or renamed.
 
+**The indexable content is generated, never hand-written.** The terminal renders nothing until a visitor types a command, so both HTML files would otherwise ship an empty page. `scripts/seo-html.ts` builds a semantic block (`h1`, sections, one `<article>` per project, contact links) from the *same* `terminalContent` and `getProjects` the app uses, and the `inject-seo-content` plugin in `vite.config.ts` splices it in after `<div id="root"></div>` — in dev as well as build. Never edit the block by hand; change the data and it regenerates.
+
+Two properties it must keep: it lives **outside `#root`** so React never unmounts it, and it is hidden with the **clip pattern, not `display:none`** — the text has to stay in the accessibility tree, since it doubles as the only screen-reader-usable version of the portfolio.
+
+Because that script is imported by `vite.config.ts`, everything it reaches must stay free of runtime `@/` imports (the config is bundled before aliases exist). That is why `projects.ts` inlines its `status` literals instead of importing a constant, and why `scripts/seo-html.ts` keeps its own copy of the status labels rather than importing `src/i18n.ts`, which would drag React into the config bundle.
+
 **Reduced motion is honoured in two layers.** A blanket `@media (prefers-reduced-motion: reduce)` block in `src/index.css` neutralises every CSS animation and transition (the always-on flicker and scanlines are the reason it exists). GSAP is JavaScript and escapes that, so entrance animations are guarded at their call sites with `prefersReducedMotion()` — `MainTerminal`, `WelcomeMessage` and `ProjectDetail`. Any new GSAP animation needs its own guard. The canvas easter eggs (snow, digital rain) are left running: the user typed a command to summon them.
 
 ## Conventions

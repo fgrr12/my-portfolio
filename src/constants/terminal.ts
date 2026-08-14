@@ -61,9 +61,3 @@ export const LANGUAGES = {
 	EN: 'en',
 	ES: 'es',
 } as const
-
-export const PROJECT_STATUS = {
-	PRODUCTION: 'Production',
-	BETA: 'Beta',
-	DEVELOPMENT: 'Development',
-} as const
