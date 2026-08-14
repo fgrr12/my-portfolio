@@ -87,7 +87,7 @@ export const FileTree = ({
 				{/* Two sibling controls, never nested: the chevron only folds the branch,
 				    the label opens the pane. Interactive content inside a button is
 				    invalid HTML and unreachable for a screen reader. */}
-				<div className="flex items-center">
+				<div className="tree-folder" data-active={inProjects && !selectedProjectId}>
 					<button
 						type="button"
 						className="tree-row w-auto px-1"

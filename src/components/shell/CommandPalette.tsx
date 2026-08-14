@@ -71,9 +71,24 @@ export const CommandPalette = ({ open, onClose, projects, onRun }: CommandPalett
 		}
 	}, [open])
 
+	// Keyboard navigation has to move the viewport with it, or the selection walks
+	// off the bottom of the list and the user has to reach for the trackpad.
+	useEffect(() => {
+		const id = options[activeIndex]?.id
+		if (id) document.getElementById(id)?.scrollIntoView({ block: 'nearest' })
+	}, [activeIndex, options])
+
 	const run = (command: string) => {
 		onClose()
 		onRun(command)
+	}
+
+	/**
+	 * A click on the backdrop lands on the <dialog> element itself, since the box
+	 * only covers where its children are. Anything inside stops at a child.
+	 */
+	const handleBackdropClick = (event: React.MouseEvent) => {
+		if (event.target === dialogRef.current) onClose()
 	}
 
 	const handleKeyDown = (event: React.KeyboardEvent) => {
@@ -93,7 +108,14 @@ export const CommandPalette = ({ open, onClose, projects, onRun }: CommandPalett
 	let lastGroup = ''
 
 	return (
-		<dialog ref={dialogRef} className="palette" onClose={onClose} aria-label={ui.paletteLabel}>
+		// biome-ignore lint/a11y/useKeyWithClickEvents: dismissing by backdrop is a pointer convenience; the native dialog already closes on Esc for everyone else.
+		<dialog
+			ref={dialogRef}
+			className="palette"
+			onClose={onClose}
+			onClick={handleBackdropClick}
+			aria-label={ui.paletteLabel}
+		>
 			<input
 				type="text"
 				className="palette-search"

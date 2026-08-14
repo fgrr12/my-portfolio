@@ -234,6 +234,19 @@ export function useTerminal() {
 			setIsProcessing(true)
 			setSuggestions([])
 
+			/**
+			 * Anything that prints has to bring the terminal with it. Running a command
+			 * from the sidebar or the palette while the projects pane is open used to
+			 * write the output to a window the visitor could not see. The three
+			 * commands that own the pane themselves are the exception.
+			 */
+			const ownsPane =
+				lowerInput === 'back' ||
+				lowerInput === 'show projects' ||
+				lowerInput.startsWith('show project ')
+
+			if (!ownsPane) setActivePane('main')
+
 			if (shouldPlaySound(soundEnabled)) playCommandSound()
 
 			if (

@@ -95,6 +95,11 @@ ${projects}
 <style>
 #seo-content {
 	position: absolute;
+	/* Pinned to the origin on purpose: without top/left it keeps its static
+	   position, which is after a full-height #root, and that pushed the document
+	   a pixel past the viewport and put a scrollbar on a page that never scrolls. */
+	top: 0;
+	left: 0;
 	width: 1px;
 	height: 1px;
 	overflow: hidden;

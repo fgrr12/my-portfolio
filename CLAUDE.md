@@ -41,6 +41,8 @@ Below `lg` the sidebar hides and `ActionBar` takes over with the same commands a
 
 Easter-egg commands live in `src/hooks/useEasterEggs.ts` and are spread into the `commands` object; that hook also owns the visual-effect flags (`digitalRainMode`, `isSnowing`, `isGlitching`) and the Konami sequence tracker.
 
+**Anything that prints must bring the terminal with it.** `executeCommand` switches `activePane` back to `main` before running, except for the three commands that own the pane themselves (`back`, `show projects`, `show project <name>`). Without that, a command fired from the sidebar or the palette while the projects pane was open wrote its output to a window the visitor could not see.
+
 **`executeCommand` special-cases some inputs before the map lookup**: `show project <name>` (prefix parse), `download resume` and `connect` (both call `window.open`), `back`, and `cls`. Everything else falls through to `commands[lowerInput]`, then to a not-found message.
 
 **Command output is `string[]`, revealed line by line at `TERMINAL_CONFIG.LINE_REVEAL` (35ms)** (`addCommandToHistory`), and rendered as one `CommandBlock` per command. The block's left rail stays transparent until hover, and only a failure keeps it lit — Warp groups commands the same way, invisibly until you reach for it, so the scrollback reads as continuous output.
