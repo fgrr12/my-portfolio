@@ -358,6 +358,59 @@
 		color: var(--bg-deep);
 	}
 
+	/* ── Command palette ────────────────────────────────────────────────── */
+
+	.palette {
+		width: min(560px, calc(100vw - 2rem));
+		max-height: min(60vh, 30rem);
+		padding: 0;
+		border: 1px solid var(--line-strong);
+		border-radius: 12px;
+		background: var(--bg-chrome);
+		color: var(--fg);
+		box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+		overflow: hidden;
+		/* Sit high rather than dead-centre: the eye lands there first and the list
+		   grows downward without shifting what is already read. */
+		margin: 12vh auto auto;
+	}
+
+	.palette::backdrop {
+		background: rgba(10, 11, 14, 0.65);
+	}
+
+	.palette-search {
+		width: 100%;
+		background: transparent;
+		border: 0;
+		border-bottom: 1px solid var(--line);
+		outline: none;
+		padding: 0.85rem 1rem;
+		font-family: var(--mono);
+		font-size: 14px;
+		color: var(--fg);
+	}
+
+	.palette-option {
+		display: flex;
+		align-items: center;
+		gap: 0.6rem;
+		width: 100%;
+		padding: 0.5rem 1rem;
+		font-size: 13px;
+		color: var(--fg-dim);
+		background: transparent;
+		border: 0;
+		cursor: pointer;
+		text-align: left;
+	}
+
+	.palette-option[data-active="true"] {
+		color: var(--fg);
+		background: var(--bg-raise);
+		box-shadow: inset 2px 0 0 var(--purple);
+	}
+
 	/* ── tmux-style status line ─────────────────────────────────────────── */
 
 	.status-line {

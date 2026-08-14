@@ -1,9 +1,10 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 import { DigitalRain } from '@/components/effects/DigitalRain'
 import { GlitchEffect } from '@/components/effects/GlitchEffect'
 import { SnowEffect } from '@/components/effects/SnowEffect'
 import { ActionBar } from '@/components/shell/ActionBar'
+import { CommandPalette } from '@/components/shell/CommandPalette'
 import { FileTree } from '@/components/shell/FileTree'
 import { StatusLine } from '@/components/shell/StatusLine'
 import { TitleBar } from '@/components/shell/TitleBar'
@@ -47,6 +48,25 @@ export const App = () => {
 		toggleLanguage,
 	} = useTerminal()
 
+	const [paletteOpen, setPaletteOpen] = useState(false)
+
+	/**
+	 * ⌘K / Ctrl+K is an app-level shortcut, so it belongs on the document — unlike
+	 * arrows and Tab, which the prompt owns and which a document listener would
+	 * fight over (see useTerminal.handleKeyDown).
+	 */
+	useEffect(() => {
+		const onKeyDown = (event: KeyboardEvent) => {
+			if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
+				event.preventDefault()
+				setPaletteOpen((open) => !open)
+			}
+		}
+
+		document.addEventListener('keydown', onKeyDown)
+		return () => document.removeEventListener('keydown', onKeyDown)
+	}, [])
+
 	// The MOTD has an empty input, so it does not count as a command the visitor ran.
 	const showTour = !commandHistory.some((command) => command.input !== '')
 
@@ -61,7 +81,19 @@ export const App = () => {
 				<SnowEffect isActive={isSnowing} />
 				<GlitchEffect isActive={isGlitching} />
 
-				<TitleBar panes={PANES} activePane={activePane} onSelect={setActivePane} />
+				<TitleBar
+					panes={PANES}
+					activePane={activePane}
+					onSelect={setActivePane}
+					onOpenPalette={() => setPaletteOpen(true)}
+				/>
+
+				<CommandPalette
+					open={paletteOpen}
+					onClose={() => setPaletteOpen(false)}
+					projects={projects}
+					onRun={handleQuickCommand}
+				/>
 
 				<div className="flex flex-1 min-h-0">
 					<FileTree

@@ -1,12 +1,19 @@
+import { Search } from 'lucide-react'
+
 import type { PaneId } from '@/types/ui'
+
+import { useUi } from '@/i18n'
 
 interface TitleBarProps {
 	panes: readonly { id: PaneId; label: string }[]
 	activePane: PaneId
 	onSelect: (pane: PaneId) => void
+	onOpenPalette: () => void
 }
 
-export const TitleBar = ({ panes, activePane, onSelect }: TitleBarProps) => {
+export const TitleBar = ({ panes, activePane, onSelect, onOpenPalette }: TitleBarProps) => {
+	const ui = useUi()
+
 	return (
 		<div className="chrome-bar h-9 border-b" style={{ borderColor: 'var(--line)' }}>
 			{/* Window controls are decoration here, so they are hidden from assistive
@@ -32,7 +39,21 @@ export const TitleBar = ({ panes, activePane, onSelect }: TitleBarProps) => {
 				))}
 			</div>
 
-			<div className="label-micro ml-auto pr-3.5 hidden sm:block">fabricio@portfolio</div>
+			<button
+				type="button"
+				onClick={onOpenPalette}
+				className="action ml-auto mr-2 hidden sm:inline-flex"
+				style={{ color: 'var(--fg-muted)' }}
+			>
+				<Search size={12} />
+				{ui.paletteHint}
+				<kbd
+					className="ml-2 px-1.5 py-0.5 rounded text-[10px]"
+					style={{ background: 'var(--bg-deep)', color: 'var(--fg-dim)' }}
+				>
+					⌘K
+				</kbd>
+			</button>
 		</div>
 	)
 }
