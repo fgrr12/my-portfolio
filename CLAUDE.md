@@ -27,6 +27,10 @@ There is no router, no backend, no persisted state beyond the language choice �
 
 Typography is one monospace family end to end, chrome included, which is what a terminal app actually looks like. Hierarchy comes from size, weight and `.label-micro` (uppercase, tracked, muted) — not from a second face.
 
+**The sidebar is a directory listing, not a session list.** `FileTree` renders exactly the entries `ls` prints, and every node maps to a command that already exists — clicking one calls `handleQuickCommand`, so the terminal keeps the trace and the visitor learns the keyboard path. Deliberately *not* built: a Warp-style session list, or letting visitors open more terminals. Warp lists the many working directories you have open; a portfolio has one subject, and a second terminal would run the same commands against the same content — UI and state with no new information.
+
+Below `lg` the sidebar hides and `ActionBar` takes over with the same commands as chips. Keep those two in sync: they are one navigation in two forms, not two navigations.
+
 **Panes are tmux windows.** `activePane: 'main' | 'projects'` in `useTerminal`; both the top tabs and the status line's `[0:main*]` window list write to it. `show projects` and `show project <name>` switch panes as a side effect, and `back` walks detail → list → main.
 
 **`src/hooks/useTerminal.ts` is the hub.** It owns all terminal state (input, history, suggestions, open project, sound, language) and the `commands` object mapping command string → `() => string[]`. `App.tsx` destructures its return value and wires it into the presentational components. Adding or changing a command usually means touching three places:

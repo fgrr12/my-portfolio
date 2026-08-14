@@ -4,6 +4,7 @@ import { DigitalRain } from '@/components/effects/DigitalRain'
 import { GlitchEffect } from '@/components/effects/GlitchEffect'
 import { SnowEffect } from '@/components/effects/SnowEffect'
 import { ActionBar } from '@/components/shell/ActionBar'
+import { FileTree } from '@/components/shell/FileTree'
 import { StatusLine } from '@/components/shell/StatusLine'
 import { TitleBar } from '@/components/shell/TitleBar'
 import { MainTerminal } from '@/components/terminal/MainTerminal'
@@ -26,6 +27,7 @@ export const App = () => {
 		isProcessing,
 		activePane,
 		selectedProject,
+		selectedProjectId,
 		projects,
 		soundEnabled,
 		language,
@@ -45,6 +47,9 @@ export const App = () => {
 		toggleLanguage,
 	} = useTerminal()
 
+	// The MOTD has an empty input, so it does not count as a command the visitor ran.
+	const showTour = !commandHistory.some((command) => command.input !== '')
+
 	useEffect(() => {
 		playStartup()
 	}, [playStartup])
@@ -58,31 +63,45 @@ export const App = () => {
 
 				<TitleBar panes={PANES} activePane={activePane} onSelect={setActivePane} />
 
-				<main className="pane min-w-0">
-					{activePane === 'main' ? (
-						<MainTerminal
-							commandHistory={commandHistory}
-							currentInput={currentInput}
-							suggestions={suggestions}
-							isProcessing={isProcessing}
-							onInputChange={handleInputChange}
-							onKeyDown={handleKeyDown}
-							onSuggestionSelect={selectSuggestion}
-						/>
-					) : (
-						<ProjectsTerminal
-							projects={projects}
-							selectedProject={selectedProject}
-							onSelectProject={selectProject}
-							onBackToProjects={goBackToProjects}
-						/>
-					)}
-				</main>
+				<div className="flex flex-1 min-h-0">
+					<FileTree
+						projects={projects}
+						activePane={activePane}
+						selectedProjectId={selectedProjectId}
+						onRun={handleQuickCommand}
+						onRunTour={runTour}
+						showTour={showTour}
+						disabled={isProcessing}
+					/>
 
+					<main className="pane min-w-0">
+						{activePane === 'main' ? (
+							<MainTerminal
+								commandHistory={commandHistory}
+								currentInput={currentInput}
+								suggestions={suggestions}
+								isProcessing={isProcessing}
+								onInputChange={handleInputChange}
+								onKeyDown={handleKeyDown}
+								onSuggestionSelect={selectSuggestion}
+							/>
+						) : (
+							<ProjectsTerminal
+								projects={projects}
+								selectedProject={selectedProject}
+								onSelectProject={selectProject}
+								onBackToProjects={goBackToProjects}
+							/>
+						)}
+					</main>
+				</div>
+
+				{/* Below lg there is no room for the sidebar, so the same commands come
+				    back as a chip row. Same navigation, form suited to the width. */}
 				<ActionBar
 					onRun={handleQuickCommand}
 					onRunTour={runTour}
-					showTour={!commandHistory.some((command) => command.input !== '')}
+					showTour={showTour}
 					disabled={isProcessing}
 				/>
 

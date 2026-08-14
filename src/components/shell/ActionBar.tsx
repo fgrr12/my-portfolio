@@ -30,7 +30,7 @@ export const ActionBar = ({ onRun, onRunTour, showTour, disabled }: ActionBarPro
 
 	return (
 		<div
-			className="chrome-bar flex-wrap gap-2 px-3 py-2 border-t"
+			className="chrome-bar lg:hidden flex-wrap gap-2 px-3 py-2 border-t"
 			style={{ borderColor: 'var(--line)' }}
 		>
 			{showTour && (

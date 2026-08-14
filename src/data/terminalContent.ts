@@ -12,7 +12,7 @@ export const terminalContent = {
 			'5+ years building web and mobile products.',
 			'React · TypeScript · React Native · Node.js · PostgreSQL',
 			'',
-			"Type 'help' to list every command, or use the actions below.",
+			"Type 'help' to list every command.",
 		],
 
 		aboutMe: [
@@ -89,7 +89,7 @@ export const terminalContent = {
 			'🕵️ Some commands are hidden... try exploring!',
 			'🎮 Konami code still works: ⬆️⬆️⬇️⬇️⬅️➡️⬅️➡️BA',
 			'',
-			'💡 Tip: Use the control panel for quick settings',
+			'💡 Tip: sound and language live in the status bar, bottom right.',
 		],
 	},
 
@@ -101,7 +101,7 @@ export const terminalContent = {
 			'5+ años construyendo productos web y móviles.',
 			'React · TypeScript · React Native · Node.js · PostgreSQL',
 			'',
-			"Escribí 'help' para ver todos los comandos, o usá las acciones de abajo.",
+			"Escribí 'help' para ver todos los comandos.",
 		],
 
 		aboutMe: [
@@ -178,7 +178,7 @@ export const terminalContent = {
 			'🕵️ Hay comandos ocultos... ¡probá explorando!',
 			'🎮 El código Konami sigue funcionando: ⬆️⬆️⬇️⬇️⬅️➡️⬅️➡️BA',
 			'',
-			'💡 Tip: Usá el panel de control para ajustes rápidos',
+			'💡 Tip: el sonido y el idioma están en la barra de estado, abajo a la derecha.',
 		],
 	},
 } as const

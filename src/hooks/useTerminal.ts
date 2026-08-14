@@ -528,6 +528,7 @@ export function useTerminal() {
 		isProcessing,
 		activePane,
 		selectedProject,
+		selectedProjectId,
 		projects,
 		soundEnabled,
 		language,

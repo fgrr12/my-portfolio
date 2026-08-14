@@ -269,6 +269,55 @@
 		white-space: nowrap;
 	}
 
+	/* ── File tree ──────────────────────────────────────────────────────── */
+
+	/*
+	 * Navigation as a directory listing. Every node is a command that already
+	 * exists, so this is `ls` drawn instead of printed — it invents no structure,
+	 * and it shows a visitor the shape and size of the content without typing.
+	 */
+	.tree-row {
+		display: flex;
+		align-items: center;
+		gap: 0.45rem;
+		width: 100%;
+		padding: 0.28rem 0.6rem;
+		font-size: 12.5px;
+		color: var(--fg-dim);
+		background: transparent;
+		border: 0;
+		border-radius: 5px;
+		cursor: pointer;
+		text-align: left;
+		white-space: nowrap;
+		transition: color 0.12s, background 0.12s;
+	}
+
+	.tree-row:hover:not(:disabled) {
+		color: var(--fg);
+		background: var(--bg-raise);
+	}
+
+	.tree-row:disabled {
+		opacity: 0.5;
+		cursor: not-allowed;
+	}
+
+	.tree-row[aria-current="true"] {
+		color: var(--fg);
+		background: var(--bg-raise);
+		box-shadow: inset 2px 0 0 var(--purple);
+	}
+
+	.tree-row .tree-icon {
+		flex-shrink: 0;
+		color: var(--fg-muted);
+	}
+
+	.tree-row[aria-current="true"] .tree-icon {
+		color: var(--purple);
+	}
+
 	/* ── Action bar ─────────────────────────────────────────────────────── */
 
 	.action {

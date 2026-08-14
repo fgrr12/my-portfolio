@@ -41,9 +41,12 @@ export const getInitialProjectId = () => new URLSearchParams(window.location.sea
 const uiStrings = {
 	en: {
 		tourTitle: 'Show me everything',
-		inputPlaceholder: 'Type a command, or use the buttons below',
+		inputPlaceholder: 'Type a command…',
 		inputProcessing: 'Running...',
 		panesNav: 'Terminal windows',
+		filesNav: 'Portfolio files',
+		expand: 'Expand folder',
+		collapse: 'Collapse folder',
 		suggestions: 'Suggestions',
 		statusProcessing: 'Processing command...',
 		statusReady: 'System Ready',
@@ -68,9 +71,12 @@ const uiStrings = {
 	},
 	es: {
 		tourTitle: 'Mostrame todo',
-		inputPlaceholder: 'Escribí un comando, o usá los botones de abajo',
+		inputPlaceholder: 'Escribí un comando…',
 		inputProcessing: 'Ejecutando...',
 		panesNav: 'Ventanas del terminal',
+		filesNav: 'Archivos del portafolio',
+		expand: 'Expandir carpeta',
+		collapse: 'Contraer carpeta',
 		suggestions: 'Sugerencias',
 		statusProcessing: 'Procesando comando...',
 		statusReady: 'Sistema Listo',
