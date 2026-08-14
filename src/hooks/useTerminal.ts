@@ -28,7 +28,22 @@ import {
 
 export function useTerminal() {
 	const [currentInput, setCurrentInput] = useState('')
-	const [commandHistory, setCommandHistory] = useState<Command[]>([])
+	const [language, setLanguage] = useState<Language>(getInitialLanguage)
+
+	/**
+	 * The login banner is seeded as an ordinary history entry with no input, so it
+	 * behaves like everything else the shell printed: it scrolls away as commands
+	 * pile up, and `clear` / `cls` / Ctrl+L wipe it. It keeps the language it was
+	 * printed in, exactly like the rest of the scrollback.
+	 */
+	const [commandHistory, setCommandHistory] = useState<Command[]>(() => [
+		{
+			id: crypto.randomUUID(),
+			input: '',
+			output: [...terminalContent[language].motd(new Date().toLocaleString())],
+			timestamp: new Date(),
+		},
+	])
 	const [inputHistory, setInputHistory] = useState<string[]>([])
 	const [historyIndex, setHistoryIndex] = useState(-1)
 	// A ?project=<id> link opens straight into that project's detail view.
@@ -41,7 +56,6 @@ export function useTerminal() {
 	const [isProcessing, setIsProcessing] = useState(false)
 	const [suggestions, setSuggestions] = useState<string[]>([])
 	const [soundEnabled, setSoundEnabled] = useState(true)
-	const [language, setLanguage] = useState<Language>(getInitialLanguage)
 
 	// Derived, so switching language re-localises the open project instead of
 	// leaving a stale object from the previous language in state.

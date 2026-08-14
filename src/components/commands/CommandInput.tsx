@@ -20,33 +20,24 @@ export const CommandInput = forwardRef<HTMLInputElement, CommandInputProps>(
 		}, [value, ref])
 
 		return (
-			<div className="pt-1">
-				<div className="flex items-center gap-2 text-[13px]">
-					<span className="prompt-path">~/portfolio</span>
-					<span className="prompt-branch flex items-center gap-1">
-						<span aria-hidden="true">git:</span>main
-					</span>
-				</div>
-
-				<div className="flex items-center gap-2 mt-0.5">
-					<span className="prompt-caret shrink-0 text-base leading-none">❯</span>
-					<input
-						ref={ref}
-						type="text"
-						value={value}
-						onChange={(e) => onChange(e.target.value)}
-						onKeyDown={onKeyDown}
-						disabled={disabled}
-						placeholder={placeholder}
-						spellCheck={false}
-						autoComplete="off"
-						autoCapitalize="off"
-						autoCorrect="off"
-						aria-label={placeholder}
-						className="flex-1 min-w-0 bg-transparent outline-none disabled:opacity-50 text-[14px]"
-						style={{ color: 'var(--fg)', caretColor: 'var(--purple)' }}
-					/>
-				</div>
+			<div className="flex items-center gap-2 pt-1">
+				<span className="prompt-caret shrink-0 text-base leading-none">❯</span>
+				<input
+					ref={ref}
+					type="text"
+					value={value}
+					onChange={(e) => onChange(e.target.value)}
+					onKeyDown={onKeyDown}
+					disabled={disabled}
+					placeholder={placeholder}
+					spellCheck={false}
+					autoComplete="off"
+					autoCapitalize="off"
+					autoCorrect="off"
+					aria-label={placeholder}
+					className="flex-1 min-w-0 bg-transparent outline-none disabled:opacity-50 text-[14px]"
+					style={{ color: 'var(--fg)', caretColor: 'var(--purple)' }}
+				/>
 			</div>
 		)
 	}

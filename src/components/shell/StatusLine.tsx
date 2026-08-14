@@ -1,5 +1,4 @@
 import { Volume2, VolumeX } from 'lucide-react'
-import { useEffect, useState } from 'react'
 
 import type { Language, PaneId } from '@/types/ui'
 
@@ -14,17 +13,6 @@ interface StatusLineProps {
 	language: Language
 	onToggleSound: () => void
 	onToggleLanguage: () => void
-}
-
-const useClock = () => {
-	const [now, setNow] = useState(() => new Date())
-
-	useEffect(() => {
-		const id = setInterval(() => setNow(new Date()), 30_000)
-		return () => clearInterval(id)
-	}, [])
-
-	return now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
 }
 
 /**
@@ -43,7 +31,6 @@ export const StatusLine = ({
 	onToggleLanguage,
 }: StatusLineProps) => {
 	const ui = useUi()
-	const clock = useClock()
 
 	return (
 		<div className="status-line">
@@ -65,6 +52,13 @@ export const StatusLine = ({
 			</nav>
 
 			<div className="ml-auto flex items-center gap-3 pl-3 shrink-0">
+				{/* Warp parks the working directory and branch down here rather than in
+				    the prompt, which keeps the prompt itself to a single clean line. */}
+				<span className="hidden md:flex items-center gap-2">
+					<span className="prompt-path">~/portfolio</span>
+					<span className="prompt-branch">git:main</span>
+				</span>
+
 				<span className="flex items-center gap-1.5">
 					<span
 						className="w-1.5 h-1.5 rounded-full"
@@ -94,8 +88,6 @@ export const StatusLine = ({
 				>
 					{language.toUpperCase()}
 				</button>
-
-				<span className="hidden sm:inline tabular-nums">{clock}</span>
 			</div>
 		</div>
 	)

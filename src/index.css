@@ -143,14 +143,15 @@
 	}
 
 	/*
-	 * A command and its output are one unit, the way Warp groups them. The rail
-	 * on the left is what makes the grouping readable at a glance, and it colours
-	 * by outcome so a failed command is findable without reading it.
+	 * A command and its output are one unit, the way Warp groups them — but Warp
+	 * keeps the grouping invisible until you reach for it, so the scrollback reads
+	 * as continuous output. The rail appears on hover, and stays lit for a failure,
+	 * because that is the one outcome worth spotting without reading.
 	 */
 	.block {
-		border-left: 2px solid var(--line-strong);
-		padding: 0.5rem 0 0.5rem 0.9rem;
-		margin-bottom: 0.35rem;
+		border-left: 2px solid transparent;
+		padding: 0.35rem 0 0.35rem 0.75rem;
+		transition: border-color 0.12s;
 	}
 
 	.block[data-state="running"] {
@@ -162,7 +163,13 @@
 	}
 
 	.block:hover {
-		border-left-color: var(--purple);
+		border-left-color: var(--line-strong);
+	}
+
+	/* The login banner is output, not chrome: it scrolls away and `clear` removes it. */
+	.block[data-state="motd"] {
+		border-left-color: transparent;
+		padding-bottom: 0.9rem;
 	}
 
 	.block-output {

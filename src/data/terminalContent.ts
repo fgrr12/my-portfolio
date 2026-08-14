@@ -1,5 +1,20 @@
 export const terminalContent = {
 	en: {
+		/**
+		 * Printed at login, the way a shell prints its message of the day. It is
+		 * seeded into the history as ordinary output, so it scrolls away as commands
+		 * pile up and `clear` wipes it like anything else.
+		 */
+		motd: (lastLogin: string) => [
+			`Last login: ${lastLogin}`,
+			'',
+			'Fabricio Rojas — Full Stack Developer',
+			'5+ years building web and mobile products.',
+			'React · TypeScript · React Native · Node.js · PostgreSQL',
+			'',
+			"Type 'help' to list every command, or use the actions below.",
+		],
+
 		aboutMe: [
 			'Loading developer profile...',
 			'',
@@ -79,6 +94,16 @@ export const terminalContent = {
 	},
 
 	es: {
+		motd: (lastLogin: string) => [
+			`Último acceso: ${lastLogin}`,
+			'',
+			'Fabricio Rojas — Desarrollador Full Stack',
+			'5+ años construyendo productos web y móviles.',
+			'React · TypeScript · React Native · Node.js · PostgreSQL',
+			'',
+			"Escribí 'help' para ver todos los comandos, o usá las acciones de abajo.",
+		],
+
 		aboutMe: [
 			'Cargando perfil del desarrollador...',
 			'',

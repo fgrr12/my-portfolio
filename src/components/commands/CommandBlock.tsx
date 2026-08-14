@@ -14,24 +14,28 @@ interface CommandBlockProps {
  * findable by colour before it is read.
  */
 export const CommandBlock = memo(function CommandBlock({ command }: CommandBlockProps) {
-	const state = command.isLoading ? 'running' : command.failed ? 'failed' : 'done'
+	// An empty input means nothing was typed — it is the login banner, so it prints
+	// its body with no prompt line above it.
+	const isMotd = command.input === ''
+	const state = isMotd ? 'motd' : command.isLoading ? 'running' : command.failed ? 'failed' : 'done'
 
 	return (
 		<div className="block" data-state={state}>
-			<div className="flex items-baseline gap-2 text-[13px]">
-				<span className="prompt-path shrink-0 hidden sm:inline">~/portfolio</span>
-				<span className="prompt-caret shrink-0">❯</span>
-				<span className="break-all" style={{ color: 'var(--fg)' }}>
-					{command.input}
-				</span>
-				<time
-					className="ml-auto shrink-0 tabular-nums text-[11px] hidden sm:block"
-					style={{ color: 'var(--fg-muted)' }}
-					dateTime={command.timestamp.toISOString()}
-				>
-					{command.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-				</time>
-			</div>
+			{!isMotd && (
+				<div className="flex items-baseline gap-2 text-[13px]">
+					<span className="prompt-caret shrink-0">❯</span>
+					<span className="break-all" style={{ color: 'var(--fg)' }}>
+						{command.input}
+					</span>
+					<time
+						className="ml-auto shrink-0 tabular-nums text-[11px] hidden sm:block"
+						style={{ color: 'var(--fg-muted)' }}
+						dateTime={command.timestamp.toISOString()}
+					>
+						{command.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+					</time>
+				</div>
+			)}
 
 			{command.isLoading ? (
 				<div className="mt-1.5">
@@ -39,7 +43,7 @@ export const CommandBlock = memo(function CommandBlock({ command }: CommandBlock
 				</div>
 			) : (
 				command.output.length > 0 && (
-					<div className="mt-1.5">
+					<div className={isMotd ? '' : 'mt-1.5'}>
 						<CommandOutputRenderer output={command.output} />
 					</div>
 				)

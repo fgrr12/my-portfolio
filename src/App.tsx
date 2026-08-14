@@ -82,7 +82,7 @@ export const App = () => {
 				<ActionBar
 					onRun={handleQuickCommand}
 					onRunTour={runTour}
-					showTour={commandHistory.length === 0}
+					showTour={!commandHistory.some((command) => command.input !== '')}
 					disabled={isProcessing}
 				/>
 
