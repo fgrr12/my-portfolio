@@ -71,9 +71,17 @@ export const CommandOutputRenderer = memo(function CommandOutputRenderer({
 				continue
 			}
 
+			// A shell prints its own failures in red; matching that is information,
+			// not styling — you can spot a failed line without reading it.
+			const isError = /^bash:|^\[sudo\]/.test(line)
+
 			result.push(
-				<div key={`line-${i}`} className="text-teal-400 glow break-words max-w-full">
-					{line}
+				<div
+					key={`line-${i}`}
+					className="break-words max-w-full text-[13px] leading-relaxed"
+					style={{ color: isError ? 'var(--pink)' : 'var(--fg)' }}
+				>
+					{line || ' '}
 				</div>
 			)
 			i++
@@ -83,7 +91,7 @@ export const CommandOutputRenderer = memo(function CommandOutputRenderer({
 	}
 
 	return (
-		<div className="space-y-1 max-w-full overflow-x-auto">
+		<div className="max-w-full overflow-x-auto block-output">
 			<div className="max-w-full sm:max-w-none">{renderOutput()}</div>
 		</div>
 	)

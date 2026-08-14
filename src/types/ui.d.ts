@@ -1,11 +1,9 @@
 import type React from 'react'
 
-export interface ControlPanelProps {
-	soundEnabled: boolean
-	language: 'en' | 'es'
-	onToggleSound: () => void
-	onToggleLanguage: () => void
-}
+export type { Language } from '@/i18n'
+
+/** The terminal "windows" the app can show, in tmux's sense. */
+export type PaneId = 'main' | 'projects'
 
 export interface SuggestionsProps {
 	suggestions: string[]
@@ -21,31 +19,19 @@ export interface CommandInputProps {
 	placeholder: string
 }
 
-export interface TerminalHeaderProps {
-	title: string
-	subtitle: string
-	onClose?: () => void
-	showCloseButton?: boolean
-}
-
 export interface MainTerminalProps {
 	commandHistory: Command[]
 	currentInput: string
 	suggestions: string[]
 	isProcessing: boolean
-	quickCommands: readonly string[]
 	onInputChange: (value: string) => void
 	onKeyDown: (e: React.KeyboardEvent) => void
 	onSuggestionSelect: (suggestion: string) => void
-	onQuickCommand: (command: string) => void
-	onRunTour: () => void
-	showProjects: boolean
 }
 
 export interface ProjectsTerminalProps {
 	projects: Project[]
 	selectedProject: Project | null
-	onClose: () => void
 	onSelectProject: (project: Project) => void
 	onBackToProjects: () => void
 }

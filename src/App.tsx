@@ -3,13 +3,20 @@ import { useEffect } from 'react'
 import { DigitalRain } from '@/components/effects/DigitalRain'
 import { GlitchEffect } from '@/components/effects/GlitchEffect'
 import { SnowEffect } from '@/components/effects/SnowEffect'
+import { ActionBar } from '@/components/shell/ActionBar'
+import { StatusLine } from '@/components/shell/StatusLine'
+import { TitleBar } from '@/components/shell/TitleBar'
 import { MainTerminal } from '@/components/terminal/MainTerminal'
 import { ProjectsTerminal } from '@/components/terminal/ProjectsTerminal'
-import { ControlPanel } from '@/components/ui/ControlPanel'
 
 import { useTerminal } from '@/hooks/useTerminal'
 
 import { LanguageProvider } from '@/i18n'
+
+const PANES = [
+	{ id: 'main', label: 'main' },
+	{ id: 'projects', label: 'projects' },
+] as const
 
 export const App = () => {
 	const {
@@ -17,10 +24,9 @@ export const App = () => {
 		commandHistory,
 		suggestions,
 		isProcessing,
-		showProjects,
+		activePane,
 		selectedProject,
 		projects,
-		quickCommands,
 		soundEnabled,
 		language,
 		digitalRainMode,
@@ -31,7 +37,7 @@ export const App = () => {
 		handleQuickCommand,
 		runTour,
 		selectSuggestion,
-		closeProjects,
+		setActivePane,
 		selectProject,
 		goBackToProjects,
 		playStartup,
@@ -45,43 +51,51 @@ export const App = () => {
 
 	return (
 		<LanguageProvider value={language}>
-			<div className="h-screen bg-gray-950 p-4 font-mono pipboy-bg relative">
+			<div className="app-shell">
 				<DigitalRain isActive={digitalRainMode} />
 				<SnowEffect isActive={isSnowing} />
 				<GlitchEffect isActive={isGlitching} />
 
-				<ControlPanel
+				<TitleBar panes={PANES} activePane={activePane} onSelect={setActivePane} />
+
+				<main className="pane min-w-0">
+					{activePane === 'main' ? (
+						<MainTerminal
+							commandHistory={commandHistory}
+							currentInput={currentInput}
+							suggestions={suggestions}
+							isProcessing={isProcessing}
+							onInputChange={handleInputChange}
+							onKeyDown={handleKeyDown}
+							onSuggestionSelect={selectSuggestion}
+						/>
+					) : (
+						<ProjectsTerminal
+							projects={projects}
+							selectedProject={selectedProject}
+							onSelectProject={selectProject}
+							onBackToProjects={goBackToProjects}
+						/>
+					)}
+				</main>
+
+				<ActionBar
+					onRun={handleQuickCommand}
+					onRunTour={runTour}
+					showTour={commandHistory.length === 0}
+					disabled={isProcessing}
+				/>
+
+				<StatusLine
+					panes={PANES}
+					activePane={activePane}
+					onSelectPane={setActivePane}
+					isProcessing={isProcessing}
 					soundEnabled={soundEnabled}
 					language={language}
 					onToggleSound={toggleSound}
 					onToggleLanguage={toggleLanguage}
 				/>
-
-				<div className="max-w-7xl mx-auto h-full flex flex-col lg:flex-row gap-4 relative z-10">
-					<MainTerminal
-						commandHistory={commandHistory}
-						currentInput={currentInput}
-						suggestions={suggestions}
-						isProcessing={isProcessing}
-						quickCommands={quickCommands}
-						onInputChange={handleInputChange}
-						onKeyDown={handleKeyDown}
-						onSuggestionSelect={selectSuggestion}
-						onQuickCommand={handleQuickCommand}
-						onRunTour={runTour}
-						showProjects={showProjects}
-					/>
-
-					{showProjects && (
-						<ProjectsTerminal
-							projects={projects}
-							selectedProject={selectedProject}
-							onClose={closeProjects}
-							onSelectProject={selectProject}
-							onBackToProjects={goBackToProjects}
-						/>
-					)}
-				</div>
 			</div>
 		</LanguageProvider>
 	)

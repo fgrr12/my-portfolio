@@ -5,6 +5,29 @@ import type { TableRendererProps } from '@/types/ui'
 
 import { useUi } from '@/i18n'
 
+const isUrl = (text: string) => /^(https?:\/\/|www\.|github\.com|linkedin\.com|mailto:)/i.test(text)
+const isEmail = (text: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(text)
+
+const makeLink = (text: string) => {
+	const href = isEmail(text)
+		? `mailto:${text}`
+		: /^https?:\/\//i.test(text)
+			? text
+			: `https://${text}`
+
+	return (
+		<a
+			href={href}
+			target="_blank"
+			rel="noopener noreferrer"
+			className="underline underline-offset-2 transition-colors"
+			style={{ color: 'var(--cyan)' }}
+		>
+			{text}
+		</a>
+	)
+}
+
 /** Contact details are meant to be taken away, not retyped. */
 const CopyButton = ({ value }: { value: string }) => {
 	const ui = useUi()
@@ -16,7 +39,7 @@ const CopyButton = ({ value }: { value: string }) => {
 			setCopied(true)
 			setTimeout(() => setCopied(false), 1500)
 		} catch {
-			// Clipboard needs a secure context and permission; the mailto link still works.
+			// Clipboard needs a secure context and permission; the link still works.
 		}
 	}
 
@@ -26,41 +49,18 @@ const CopyButton = ({ value }: { value: string }) => {
 			onClick={handleCopy}
 			title={copied ? ui.copied : ui.copy}
 			aria-label={`${ui.copy}: ${value}`}
-			className="shrink-0 rounded p-1 text-teal-500 transition-colors hover:bg-teal-400/10 hover:text-teal-300 focus:outline-none focus:ring-2 focus:ring-teal-400/50 cursor-pointer"
+			className="shrink-0 rounded p-1 transition-colors cursor-pointer"
+			style={{ color: copied ? 'var(--green)' : 'var(--fg-muted)' }}
 		>
-			{copied ? <Check size={14} /> : <Copy size={14} />}
+			{copied ? <Check size={13} /> : <Copy size={13} />}
 		</button>
 	)
 }
 
-const isUrl = (text: string) => {
-	return /^(https?:\/\/|www\.|github\.com|linkedin\.com|mailto:)/i.test(text)
-}
-
-const isEmail = (text: string) => {
-	return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(text)
-}
-
-const makeLink = (text: string) => {
-	let href = text
-	if (isEmail(text)) {
-		href = `mailto:${text}`
-	} else if (!/^https?:\/\//i.test(text)) {
-		href = `https://${text}`
-	}
-
-	return (
-		<a
-			href={href}
-			target="_blank"
-			rel="noopener noreferrer"
-			className="underline text-teal-300 hover:text-teal-100 transition-colors"
-		>
-			{text}
-		</a>
-	)
-}
-
+/**
+ * Command output that declares a TABLE block gets real table semantics — the data
+ * is tabular, so it should be a table for a screen reader too, not ASCII art.
+ */
 export const TableRenderer = memo(function TableRenderer({
 	data,
 	className = '',
@@ -68,49 +68,37 @@ export const TableRenderer = memo(function TableRenderer({
 	const { title, headers, rows } = data
 
 	return (
-		<div className={`my-4 max-w-fit ${className}`}>
-			<div className="overflow-x-auto rounded-xl border border-teal-500/40 bg-slate-900/70">
-				<table className="w-full border-collapse text-teal-400 glow">
-					<caption className="text-center font-bold text-teal-300 bg-slate-800/80 px-4 py-2 border-b border-teal-500/40 rounded-t-xl">
-						◆ {title} ◆
-					</caption>
-					{headers && (
-						<thead className="bg-slate-800/60">
-							<tr>
-								{headers.map((header, index) => (
-									<th
-										key={index}
-										className="text-left px-3 py-2 text-teal-300 font-mono text-sm border-b border-teal-500/30"
-									>
-										{header}
-									</th>
-								))}
-							</tr>
-						</thead>
-					)}
-					<tbody>
-						{rows.map((row, rowIndex) => (
-							<tr key={rowIndex} className="hover:bg-teal-500/10 transition-colors">
-								{row.map((cell, cellIndex) => (
-									<td
-										key={cellIndex}
-										className="px-3 py-2 text-teal-400/90 font-mono text-sm whitespace-nowrap border-b border-teal-500/20"
-									>
-										{isUrl(cell) || isEmail(cell) ? (
-											<span className="inline-flex items-center gap-2">
-												{makeLink(cell)}
-												<CopyButton value={cell} />
-											</span>
-										) : (
-											cell
-										)}
-									</td>
-								))}
-							</tr>
-						))}
-					</tbody>
-				</table>
-			</div>
+		<div className={`my-3 overflow-x-auto ${className}`}>
+			<table className="data-table">
+				<caption>{title}</caption>
+				{headers && (
+					<thead>
+						<tr>
+							{headers.map((header) => (
+								<th key={header}>{header}</th>
+							))}
+						</tr>
+					</thead>
+				)}
+				<tbody>
+					{rows.map((row) => (
+						<tr key={row.join('|')}>
+							{row.map((cell, cellIndex) => (
+								<td key={`${cell}-${cellIndex}`}>
+									{isUrl(cell) || isEmail(cell) ? (
+										<span className="inline-flex items-center gap-1.5">
+											{makeLink(cell)}
+											<CopyButton value={cell} />
+										</span>
+									) : (
+										cell
+									)}
+								</td>
+							))}
+						</tr>
+					))}
+				</tbody>
+			</table>
 		</div>
 	)
 })

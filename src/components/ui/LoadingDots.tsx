@@ -1,18 +1,15 @@
-import { useEffect, useState } from 'react'
+import { useUi } from '@/i18n'
 
+/** A blinking block cursor is what a shell shows while a command runs. */
 export const LoadingDots = () => {
-	const [dots, setDots] = useState('')
+	const ui = useUi()
 
-	useEffect(() => {
-		const interval = setInterval(() => {
-			setDots((prev) => {
-				if (prev === '...') return ''
-				return `${prev}.`
-			})
-		}, 300)
-
-		return () => clearInterval(interval)
-	}, [])
-
-	return <span className="text-teal-400 glow flicker">Processing{dots}</span>
+	return (
+		// <output> already carries role="status", so screen readers announce the run.
+		<output
+			aria-label={ui.inputProcessing}
+			className="inline-block w-2 h-4 align-middle caret-blink"
+			style={{ background: 'var(--amber)' }}
+		/>
+	)
 }

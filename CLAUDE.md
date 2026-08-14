@@ -19,7 +19,15 @@ Deploy: `.github/workflows/ci.yml` builds and publishes to GitHub Pages on every
 
 ## Architecture
 
-A single-page fake terminal portfolio. There is no router, no backend, no persisted state — everything lives in React state for the session.
+A portfolio built as a **terminal application**, not as a web page with terminal styling. That distinction drives the whole layout, so keep it: `App.tsx` is an app shell — `TitleBar` (window controls + pane tabs), the active pane, `ActionBar`, `StatusLine` — and the terminal viewport contains *only what the shell printed*. Buttons, status readouts and CTAs live in the chrome. Putting an affordance back inside the scroll area is the one change that undoes the redesign.
+
+There is no router, no backend, no persisted state beyond the language choice — everything lives in React state for the session.
+
+**Design tokens live in `src/index.css`** as CSS custom properties (Tokyo Night). The accents are an information system, not a palette: blue is identity, cyan is location, green is state/success, amber is running, pink is failure, purple is the single brand accent. Never pick one because it looks right in that spot — pick it because of what it means. Components read them via `style={{ color: 'var(--…)' }}` or the semantic classes (`.block`, `.card`, `.chip`, `.action`, `.data-table`, `.status-line`).
+
+Typography is one monospace family end to end, chrome included, which is what a terminal app actually looks like. Hierarchy comes from size, weight and `.label-micro` (uppercase, tracked, muted) — not from a second face.
+
+**Panes are tmux windows.** `activePane: 'main' | 'projects'` in `useTerminal`; both the top tabs and the status line's `[0:main*]` window list write to it. `show projects` and `show project <name>` switch panes as a side effect, and `back` walks detail → list → main.
 
 **`src/hooks/useTerminal.ts` is the hub.** It owns all terminal state (input, history, suggestions, open project, sound, language) and the `commands` object mapping command string → `() => string[]`. `App.tsx` destructures its return value and wires it into the presentational components. Adding or changing a command usually means touching three places:
 
@@ -31,7 +39,7 @@ Easter-egg commands live in `src/hooks/useEasterEggs.ts` and are spread into the
 
 **`executeCommand` special-cases some inputs before the map lookup**: `show project <name>` (prefix parse), `download resume` and `connect` (both call `window.open`), `back`, and `cls`. Everything else falls through to `commands[lowerInput]`, then to a not-found message.
 
-**Command output is `string[]`, rendered line by line with a 150ms stagger** (`addCommandToHistory`). Each `Command` carries a `crypto.randomUUID()` `id` and the staggered updates target that id — never the last array element, since the user can submit another command mid-reveal and the entries would interleave. Keep that invariant if you touch the history updates.
+**Command output is `string[]`, revealed line by line at `TERMINAL_CONFIG.LINE_REVEAL` (35ms)** (`addCommandToHistory`), and rendered as one `CommandBlock` per command — prompt, output and outcome grouped by a coloured left rail. Each `Command` carries a `crypto.randomUUID()` `id` and the staggered updates target that id — never the last array element, since the user can submit another command mid-reveal and the entries would interleave. Keep that invariant if you touch the history updates.
 
 `executeCommand` clears `isProcessing` *before* awaiting the reveal, then awaits it. So the input stays responsive while lines print, but the returned promise only settles once the command has finished printing. `runTour` depends on that to chain `TOUR_COMMANDS` (`about me` → `skills` → `show projects`) without their outputs overlapping — it backs the "Show me everything" button that `MainTerminal` renders as an empty state for visitors who will not type.
 
@@ -52,7 +60,7 @@ Blank line or `END_TABLE` closes the block. This is how `skills` and similar com
 
 **Never let content depend on an animation finishing.** The project detail used to type its `<h1>` in with GSAP's TextPlugin, which cleared the DOM text first — React then considered that text current and would not restore it, so any interruption (a backgrounded tab suspending `requestAnimationFrame`, an error before the tween) left the heading permanently blank. Animate opacity and transform; leave the text alone.
 
-**`flicker` is for chrome, not for reading.** The CRT flicker animates `text-shadow` and `opacity` forever, which makes body text physically harder to read. It belongs on prompts, headings, status text and labels — never on command output lines, tables, project descriptions or feature lists.
+**The CRT flicker and scanline scroll are gone.** They cost readability on long text and were the loudest "hobby project" signal. What remains is a nearly invisible static scanline texture. Do not reintroduce animation on text that is meant to be read.
 
 **Visual effects** (`src/components/effects/`) are full-screen overlays toggled by an `isActive` prop from `useTerminal`.
 
@@ -78,18 +86,16 @@ Two properties it must keep: it lives **outside `#root`** so React never unmount
 
 Because that script is imported by `vite.config.ts`, everything it reaches must stay free of runtime `@/` imports (the config is bundled before aliases exist). That is why `projects.ts` inlines its `status` literals instead of importing a constant, and why `scripts/seo-html.ts` keeps its own copy of the status labels rather than importing `src/i18n.ts`, which would drag React into the config bundle.
 
-**Reduced motion is honoured in two layers.** A blanket `@media (prefers-reduced-motion: reduce)` block in `src/index.css` neutralises every CSS animation and transition (the always-on flicker and scanlines are the reason it exists). GSAP is JavaScript and escapes that, so entrance animations are guarded at their call sites with `prefersReducedMotion()` — `MainTerminal`, `WelcomeMessage` and `ProjectDetail`. Any new GSAP animation needs its own guard. The canvas easter eggs (snow, digital rain) are left running: the user typed a command to summon them.
+**Reduced motion is honoured in two layers.** A blanket `@media (prefers-reduced-motion: reduce)` block in `src/index.css` neutralises every CSS animation and transition. JavaScript escapes that, so the staggered output reveal checks `prefersReducedMotion()` and prints at once instead. The canvas easter eggs (snow, digital rain) are left running: the user typed a command to summon them.
 
 ## Conventions
 
 - `@/` aliases `src/` (configured in both `vite.config.ts` and the `paths` entry in `tsconfig.json`).
 - `src/types/terminal.d.ts` declares `Command`, `Project`, `TableData`, etc. as **global ambient types** — do not import them. `src/types/ui.d.ts` holds exported component prop interfaces and is imported normally.
 - Biome enforces tabs, single quotes, no semicolons, 100-char lines, and a custom import-group order (packages → `@/utils` → `@/components` → `@/hooks` → types, blank line between groups). Run `pnpm format` rather than hand-arranging imports.
-- Tailwind v4 via `@tailwindcss/vite`, but `src/index.css` still pulls in the legacy `tailwind.config.js` with `@config`. Theme-specific utilities (`glow`, `flicker`, `pipboy-bg`, `pipboy-card`, `scanlines`) are defined in `src/index.css`.
+- Tailwind v4 via `@tailwindcss/vite`, but `src/index.css` still pulls in the legacy `tailwind.config.js` with `@config`. Tailwind is used for layout and spacing only; surfaces and colour come from the tokens and semantic classes in `src/index.css`.
 - Scrolling in both terminals is native `overflow-y: auto`. Lenis was removed — the main terminal's smooth scroll had never worked (`App.tsx` imported `useLenis` from `lenis/react`, which needs a `ReactLenis` provider that did not exist) and both init paths leaked an uncancelled `requestAnimationFrame` loop.
 
 ## Known dead scaffolding
 
-- `src/components/effects/RainEffect.tsx` is not imported anywhere.
-- `useGsapAnimations.ts` exports several animation helpers but only `ProjectDetail` consumes the hook.
 - `terminalHelpers.ts` exports `validateCommand` and `formatTimestamp` (unused) and `shouldPlaySound`, which is an identity function called ~15 times.

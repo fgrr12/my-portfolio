@@ -4,6 +4,8 @@ interface Command {
 	output: string[]
 	timestamp: Date
 	isLoading?: boolean
+	/** Colours the block's rail so a failed command is findable without reading it. */
+	failed?: boolean
 }
 
 interface Project {

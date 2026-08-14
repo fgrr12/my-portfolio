@@ -23,14 +23,6 @@ export const TERMINAL_CONFIG = {
 
 export const COMMANDS = {
 	AVAILABLE: ['show projects', 'show project', 'about me', 'skills', 'open contact', 'help'],
-	/**
-	 * The buttons under the input. Separate from AVAILABLE because the two answer
-	 * different questions: AVAILABLE is what autocomplete should know about, QUICK is
-	 * what deserves a click. `download resume` and `connect` are the two conversion
-	 * actions and used to be buried in HIDDEN; `show project` (no argument) only
-	 * prints usage, so it makes a poor button.
-	 */
-	QUICK: ['about me', 'skills', 'show projects', 'open contact', 'download resume', 'connect'],
 	HIDDEN: [
 		'cls',
 		'clear',

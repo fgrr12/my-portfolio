@@ -1,11 +1,16 @@
 import { memo } from 'react'
 
 import { ProjectDetail } from '@/components/terminal/ProjectDetail'
-import { TerminalHeader } from '@/components/ui/TerminalHeader'
 
 import type { ProjectsTerminalProps } from '@/types/ui'
 
 import { useUi } from '@/i18n'
+
+const STATUS_COLOR: Record<Project['status'], string> = {
+	Production: 'var(--green)',
+	Beta: 'var(--amber)',
+	Development: 'var(--blue)',
+}
 
 const ProjectCard = memo(function ProjectCard({
 	project,
@@ -17,30 +22,27 @@ const ProjectCard = memo(function ProjectCard({
 	const ui = useUi()
 
 	return (
-		<button
-			type="button"
-			onClick={() => onSelect(project)}
-			className="w-full border border-teal-500/50 rounded-xl p-4 hover:bg-teal-400/5 transition-all duration-300 hover:border-teal-400 hover:shadow-lg hover:shadow-teal-500/20 cursor-pointer pipboy-card"
-		>
-			<div className="flex justify-between items-start mb-2">
-				<h3 className="text-lg font-semibold text-teal-300 glow flicker">{project.title}</h3>
+		<button type="button" onClick={() => onSelect(project)} className="card">
+			<div className="flex items-start justify-between gap-3 mb-1.5">
+				<h3 className="text-[15px] font-semibold" style={{ color: 'var(--fg)' }}>
+					{project.title}
+				</h3>
 				<span
-					className={`text-xs px-2 py-1 rounded flicker ${
-						project.status === 'Production'
-							? 'bg-green-500/20 text-green-400'
-							: project.status === 'Beta'
-								? 'bg-yellow-500/20 text-yellow-400'
-								: 'bg-blue-500/20 text-blue-400'
-					} glow`}
+					className="chip shrink-0"
+					style={{ color: STATUS_COLOR[project.status], borderColor: STATUS_COLOR[project.status] }}
 				>
 					{ui.statusLabels[project.status]}
 				</span>
 			</div>
-			<p className="text-teal-400/80 text-sm leading-relaxed mb-3">{project.description}</p>
-			<div className="text-teal-500 text-xs">
-				<span className="glow flicker">
-					{ui.techStack} {project.tech}
-				</span>
+
+			<p className="text-[13px] leading-relaxed mb-3" style={{ color: 'var(--fg-dim)' }}>
+				{project.description}
+			</p>
+
+			<div className="flex items-center gap-2 text-[11px]" style={{ color: 'var(--fg-muted)' }}>
+				<span className="tabular-nums">{project.year}</span>
+				<span aria-hidden="true">·</span>
+				<span className="truncate">{project.tech}</span>
 			</div>
 		</button>
 	)
@@ -49,43 +51,29 @@ const ProjectCard = memo(function ProjectCard({
 export const ProjectsTerminal = ({
 	projects,
 	selectedProject,
-	onClose,
 	onSelectProject,
 	onBackToProjects,
 }: ProjectsTerminalProps) => {
 	const ui = useUi()
 
 	return (
-		<div className="lg:w-1/2 w-full flex-1 min-h-0 pb-20 sm:pb-0">
-			<div className="bg-slate-900 rounded-xl border border-teal-500/40 shadow-2xl shadow-teal-500/20 h-full flex flex-col overflow-hidden terminal-glow pipboy-screen">
-				<TerminalHeader
-					title="projects@terminal:~"
-					subtitle="PROJECTS_DB"
-					onClose={onClose}
-					showCloseButton={true}
-				/>
-
-				<div className="flex-1 p-4 relative sm:overflow-y-auto">
-					<div className="absolute inset-0 pointer-events-none scanlines" />
-
-					{selectedProject ? (
-						<ProjectDetail project={selectedProject} onBack={onBackToProjects} />
-					) : (
-						<div className="relative z-10">
-							<div className="text-teal-300 glow text-lg mb-4 flicker">{ui.projectDatabase}</div>
-
-							<div className="space-y-4 max-h-120 sm:max-h-full overflow-y-auto sm:overflow-y-hidden">
-								{projects.map((project) => (
-									<ProjectCard key={project.id} project={project} onSelect={onSelectProject} />
-								))}
-							</div>
-
-							<div className="mt-6 text-teal-600 text-xs glow flicker">
-								{ui.projectsLoaded(projects.length)}
-							</div>
+		<div className="pane h-full">
+			<div className="px-3 sm:px-5 py-5 max-w-6xl">
+				{selectedProject ? (
+					<ProjectDetail project={selectedProject} onBack={onBackToProjects} />
+				) : (
+					<>
+						<div className="label-micro mb-3">
+							{ui.projectDatabase} · {projects.length}
 						</div>
-					)}
-				</div>
+
+						<div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+							{projects.map((project) => (
+								<ProjectCard key={project.id} project={project} onSelect={onSelectProject} />
+							))}
+						</div>
+					</>
+				)}
 			</div>
 		</div>
 	)

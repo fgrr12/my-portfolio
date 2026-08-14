@@ -11,7 +11,9 @@ import {
 import { useEasterEggs } from '@/hooks/useEasterEggs'
 import { useSoundEffects } from '@/hooks/useSoundEffects'
 
-import { COMMANDS, TERMINAL_CONFIG, TOUR_COMMANDS } from '@/constants/terminal'
+import type { PaneId } from '@/types/ui'
+
+import { TERMINAL_CONFIG, TOUR_COMMANDS } from '@/constants/terminal'
 import { getProjects } from '@/data/projects'
 import { terminalContent } from '@/data/terminalContent'
 import { terminalMessages } from '@/data/terminalMessages'
@@ -34,7 +36,7 @@ export function useTerminal() {
 		const id = getInitialProjectId()
 		return id && getProjects('en').some((project) => project.id === id) ? id : null
 	})
-	const [showProjects, setShowProjects] = useState(initialProjectId !== null)
+	const [activePane, setActivePane] = useState<PaneId>(initialProjectId ? 'projects' : 'main')
 	const [selectedProjectId, setSelectedProjectId] = useState<string | null>(initialProjectId)
 	const [isProcessing, setIsProcessing] = useState(false)
 	const [suggestions, setSuggestions] = useState<string[]>([])
@@ -76,7 +78,7 @@ export function useTerminal() {
 
 	const commands = {
 		'show projects': () => {
-			setShowProjects(true)
+			setActivePane('projects')
 			setSelectedProjectId(null)
 			if (shouldPlaySound(soundEnabled)) playSuccessSound()
 			return messages.showProjects.success
@@ -93,7 +95,7 @@ export function useTerminal() {
 				return messages.showProject.notFound(projectName)
 			}
 
-			setShowProjects(true)
+			setActivePane('projects')
 			setSelectedProjectId(project.id)
 			if (shouldPlaySound(soundEnabled)) playSuccessSound()
 			return messages.showProject.success(project.title)
@@ -105,8 +107,8 @@ export function useTerminal() {
 				if (shouldPlaySound(soundEnabled)) playCommandSound()
 				return messages.back.toProjects
 			}
-			if (showProjects) {
-				setShowProjects(false)
+			if (activePane === 'projects') {
+				setActivePane('main')
 				if (shouldPlaySound(soundEnabled)) playCommandSound()
 				return messages.back.closeProjects
 			}
@@ -186,10 +188,10 @@ export function useTerminal() {
 		...easterEggCommands,
 	}
 
-	const addCommandToHistory = async (output: string[], input: string) => {
+	const addCommandToHistory = async (output: string[], input: string, failed = false) => {
 		const id = crypto.randomUUID()
 
-		setCommandHistory((prev) => [...prev, { id, input, output: [], timestamp: new Date() }])
+		setCommandHistory((prev) => [...prev, { id, input, output: [], timestamp: new Date(), failed }])
 
 		// The staggered reveal is decoration; print it all at once when motion is reduced.
 		if (prefersReducedMotion()) {
@@ -276,7 +278,7 @@ export function useTerminal() {
 			} else if (lowerInput === 'cls' || lowerInput === 'clear') {
 				commands.cls()
 				setCommandHistory([])
-				setShowProjects(false)
+				setActivePane('main')
 				setSelectedProjectId(null)
 			} else {
 				const command = commands[lowerInput as keyof typeof commands]
@@ -290,7 +292,8 @@ export function useTerminal() {
 					if (shouldPlaySound(soundEnabled)) playErrorSound()
 					revealing = addCommandToHistory(
 						messages.error.notFound(trimmedInput) as string[],
-						trimmedInput
+						trimmedInput,
+						true
 					)
 				}
 			}
@@ -471,11 +474,6 @@ export function useTerminal() {
 		[soundEnabled, playButtonSound]
 	)
 
-	const closeProjects = useCallback(() => {
-		setShowProjects(false)
-		setSelectedProjectId(null)
-	}, [])
-
 	const selectProject = useCallback((project: Project) => {
 		setSelectedProjectId(project.id)
 	}, [])
@@ -514,10 +512,9 @@ export function useTerminal() {
 		commandHistory,
 		suggestions,
 		isProcessing,
-		showProjects,
+		activePane,
 		selectedProject,
 		projects,
-		quickCommands: COMMANDS.QUICK,
 		soundEnabled,
 		language,
 		digitalRainMode,
@@ -530,7 +527,7 @@ export function useTerminal() {
 		handleQuickCommand,
 		runTour,
 		selectSuggestion,
-		closeProjects,
+		setActivePane,
 		selectProject,
 		goBackToProjects,
 		playStartup,

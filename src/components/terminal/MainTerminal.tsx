@@ -1,78 +1,35 @@
-import { gsap } from 'gsap'
-import { Play } from 'lucide-react'
-import { memo, useEffect, useRef, useState } from 'react'
-
-import { prefersReducedMotion } from '@/utils/prefersReducedMotion'
+import { memo, useEffect, useRef } from 'react'
 
 import { CommandHistory } from '@/components/commands/CommandHistory'
 import { CommandInput } from '@/components/commands/CommandInput'
-import { QuickCommands } from '@/components/commands/QuickCommands'
 import { Suggestions } from '@/components/suggestions/Suggestions'
-import { StatusBar } from '@/components/ui/StatusBar'
-import { TerminalHeader } from '@/components/ui/TerminalHeader'
-import { WelcomeMessage } from '@/components/ui/WelcomeMessage'
 
 import type { MainTerminalProps } from '@/types/ui'
 
 import { useUi } from '@/i18n'
 
+/**
+ * The terminal viewport, and nothing else. Every affordance that used to live in
+ * here — quick commands, the tour button, the status readout — now sits in the
+ * app chrome, so what scrolls is only ever what the shell printed.
+ */
 export const MainTerminal = memo(function MainTerminal({
 	commandHistory,
 	currentInput,
 	suggestions,
 	isProcessing,
-	quickCommands,
 	onInputChange,
 	onKeyDown,
 	onSuggestionSelect,
-	onQuickCommand,
-	onRunTour,
-	showProjects,
 }: MainTerminalProps) {
 	const ui = useUi()
 	const inputRef = useRef<HTMLInputElement>(null)
-	const terminalRef = useRef<HTMLDivElement>(null)
-	const containerRef = useRef<HTMLDivElement>(null)
-	const [hasInitialized, setHasInitialized] = useState(false)
-
-	useEffect(() => {
-		if (prefersReducedMotion()) return
-
-		if (!hasInitialized && containerRef.current) {
-			setHasInitialized(true)
-
-			gsap.set(containerRef.current, {
-				scale: 0.8,
-				opacity: 0,
-				rotationX: -15,
-			})
-
-			const tl = gsap.timeline()
-
-			tl.to(containerRef.current, {
-				scale: 1,
-				opacity: 1,
-				rotationX: 0,
-				duration: 1.2,
-				ease: 'power3.out',
-			})
-
-			tl.to(
-				containerRef.current,
-				{
-					boxShadow: '0 0 50px rgba(20, 184, 166, 0.4), inset 0 0 50px rgba(20, 184, 166, 0.15)',
-					duration: 0.8,
-					ease: 'power2.inOut',
-				},
-				'-=0.5'
-			)
-		}
-	}, [hasInitialized])
+	const scrollRef = useRef<HTMLDivElement>(null)
 
 	// biome-ignore lint:call by commandHistory
 	useEffect(() => {
-		if (terminalRef.current) {
-			terminalRef.current.scrollTop = terminalRef.current.scrollHeight
+		if (scrollRef.current) {
+			scrollRef.current.scrollTop = scrollRef.current.scrollHeight
 		}
 	}, [commandHistory])
 
@@ -82,65 +39,35 @@ export const MainTerminal = memo(function MainTerminal({
 		}
 	}, [isProcessing])
 
-	// flex-1 min-h-0: in the lg row layout the cross axis stretches this for free, but
-	// stacked on mobile the column's main axis is vertical, so without it the panel
-	// collapses to content height and leaves the bottom of the screen empty.
 	return (
-		<div
-			className={`${showProjects ? 'lg:w-1/2' : 'w-full'} flex-1 min-h-0 transition-all duration-500`}
-		>
-			<div
-				ref={containerRef}
-				className="bg-slate-900 rounded-xl border border-teal-500/40 shadow-2xl shadow-teal-500/20 h-full flex flex-col overflow-hidden terminal-glow pipboy-screen"
-			>
-				<TerminalHeader title="fabricio@terminal:~" subtitle="MAIN_TERMINAL" />
+		<div className="flex flex-col h-full min-h-0 relative">
+			<div className="absolute inset-0 pointer-events-none scanlines" aria-hidden="true" />
 
-				<div className="flex-1 flex flex-col p-4 relative min-h-0">
-					<div className="absolute inset-0 pointer-events-none scanlines" />
-
-					<WelcomeMessage />
-
-					{commandHistory.length === 0 && (
-						<button
-							type="button"
-							onClick={onRunTour}
-							className="relative z-10 flex-shrink-0 mb-4 w-full sm:w-auto sm:self-start flex items-center justify-center sm:justify-start gap-3 rounded-xl border border-teal-400/60 bg-teal-500/15 px-5 py-3 text-left transition-colors hover:bg-teal-500/25 hover:border-teal-300 cursor-pointer"
-						>
-							<Play size={18} className="text-teal-300 shrink-0" />
-							<span>
-								<span className="block text-teal-200 font-semibold glow">{ui.tourTitle}</span>
-								<span className="block text-teal-500 text-xs">{ui.tourHint}</span>
-							</span>
-						</button>
-					)}
-
-					<CommandHistory ref={terminalRef} commands={commandHistory} />
-
-					<div className="relative z-10 flex-shrink-0">
-						<Suggestions
-							suggestions={suggestions}
-							onSelect={onSuggestionSelect}
-							inputRef={inputRef as any}
-						/>
-
-						<CommandInput
-							ref={inputRef}
-							value={currentInput}
-							onChange={onInputChange}
-							onKeyDown={onKeyDown}
-							disabled={isProcessing}
-							placeholder={isProcessing ? ui.inputProcessing : ui.inputPlaceholder}
-						/>
-
-						<QuickCommands
-							commands={quickCommands}
-							onExecute={onQuickCommand}
-							disabled={isProcessing}
-						/>
-
-						<StatusBar isProcessing={isProcessing} />
-					</div>
+			{commandHistory.length === 0 && (
+				<div className="px-3 sm:px-4 pt-4">
+					<p className="text-[13px] max-w-md" style={{ color: 'var(--fg-dim)' }}>
+						{ui.emptyState}
+					</p>
 				</div>
+			)}
+
+			<CommandHistory ref={scrollRef} commands={commandHistory} />
+
+			<div className="shrink-0 px-3 sm:px-4 pb-3 relative z-10">
+				<Suggestions
+					suggestions={suggestions}
+					onSelect={onSuggestionSelect}
+					inputRef={inputRef as React.RefObject<HTMLInputElement>}
+				/>
+
+				<CommandInput
+					ref={inputRef}
+					value={currentInput}
+					onChange={onInputChange}
+					onKeyDown={onKeyDown}
+					disabled={isProcessing}
+					placeholder={isProcessing ? ui.inputProcessing : ui.inputPlaceholder}
+				/>
 			</div>
 		</div>
 	)

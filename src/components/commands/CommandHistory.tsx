@@ -1,7 +1,6 @@
 import { forwardRef } from 'react'
 
-import { CommandOutputRenderer } from '@/components/commands/CommandOutputRenderer'
-import { LoadingDots } from '@/components/ui/LoadingDots'
+import { CommandBlock } from '@/components/commands/CommandBlock'
 
 interface CommandHistoryProps {
 	commands: Command[]
@@ -10,35 +9,10 @@ interface CommandHistoryProps {
 export const CommandHistory = forwardRef<HTMLDivElement, CommandHistoryProps>(
 	({ commands }, ref) => {
 		return (
-			<div
-				ref={ref}
-				className="flex-1 overflow-y-auto space-y-2 relative z-10 min-h-0 mb-4"
-				style={{
-					height: '100%',
-					overflowY: 'auto',
-				}}
-			>
-				<div className="space-y-2 max-w-full max-h-80 sm:max-h-full">
-					{commands.map((cmd) => (
-						<div key={cmd.id} className="space-y-1 max-w-full">
-							<div className="flex items-center space-x-2">
-								<span className="text-teal-400 glow flicker shrink-0 whitespace-nowrap">
-									<span className="hidden sm:inline">fabricio@terminal</span>:~$
-								</span>
-								<span className="text-teal-300 flicker break-all">{cmd.input}</span>
-							</div>
-							{cmd.isLoading ? (
-								<div className="ml-4">
-									<LoadingDots />
-								</div>
-							) : (
-								<div className="ml-4 max-w-full overflow-hidden">
-									<CommandOutputRenderer output={cmd.output} />
-								</div>
-							)}
-						</div>
-					))}
-				</div>
+			<div ref={ref} className="flex-1 min-h-0 overflow-y-auto px-3 sm:px-4">
+				{commands.map((command) => (
+					<CommandBlock key={command.id} command={command} />
+				))}
 			</div>
 		)
 	}
