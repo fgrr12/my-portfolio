@@ -6,6 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ```bash
 pnpm dev              # vite dev server
+pnpm cv               # rebuild, then print the CV PDFs from src/data/cv.ts
 pnpm build            # vite build -> dist/ (does NOT type-check)
 pnpm preview          # serve the built output
 pnpm lint             # biome lint
@@ -91,6 +92,10 @@ Initial language resolves in this order: **the URL path** (`/my-portfolio/es/` f
 - Switching language in-app does not reload. **`useTerminal` holds the only writer for the address bar** — one effect keyed on `[language, selectedProjectId]` that rebuilds the whole URL (`languageHref(lang)` + `?project=<id>`) and retitles the tab. Language owns the path, the open project owns the query; writing either one alone would drop the other. `persistLanguage` only touches localStorage.
 - A `?project=<id>` link opens straight into that project's detail view; unknown ids are ignored. The id is language-independent, so the same link works from either page.
 - `public/sitemap.xml` lists both URLs with their `xhtml:link` alternates. Update it if a URL is ever added or renamed.
+
+**The CV PDF is generated, never hand-edited.** `scripts/cv-html.ts` builds a printable page from `src/data/cv.ts` *plus* the same `terminalContent` skills and `getProjects` list the site renders, so the CV cannot disagree with the portfolio. A Vite plugin emits `dist/cv-en.html` and `dist/cv-es.html`; `pnpm cv` then prints both with headless Chrome into `public/assets/documents/`. The PDFs are committed so CI stays a plain `vite build` with no browser step — re-run `pnpm cv` after touching `cv.ts` or any project copy.
+
+Its palette is deliberately not the site's: a CV is printed and opened in light PDF viewers, where Tokyo Night becomes a black rectangle. Sections with no data are omitted rather than rendered empty, so an unfinished `cv.ts` yields a shorter PDF instead of a wrong one.
 
 **The indexable content is generated, never hand-written.** The terminal renders nothing until a visitor types a command, so both HTML files would otherwise ship an empty page. `scripts/seo-html.ts` builds a semantic block (`h1`, sections, one `<article>` per project, contact links) from the *same* `terminalContent` and `getProjects` the app uses, and the `inject-seo-content` plugin in `vite.config.ts` splices it in after `<div id="root"></div>` — in dev as well as build. Never edit the block by hand; change the data and it regenerates.
 

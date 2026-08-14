@@ -14,15 +14,15 @@ import type { Language } from '../src/i18n'
  * React never touches it.
  */
 
-const escapeHtml = (text: string) =>
+export const escapeHtml = (text: string) =>
 	text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
 
 /** Drops the fake "Loading..." preamble lines and blank spacers. */
-const prose = (lines: readonly string[]) =>
+export const prose = (lines: readonly string[]) =>
 	lines.filter((line) => line.trim() !== '' && !line.trim().endsWith('...'))
 
 /** Pulls `Label|Value` rows out of the TABLE:/HEADERS:/END_TABLE marker syntax. */
-const tableRows = (lines: readonly string[]) =>
+export const tableRows = (lines: readonly string[]) =>
 	lines
 		.filter((line) => line.includes('|') && !line.startsWith('HEADERS'))
 		.map((line) => line.split('|').map((cell) => cell.trim()))

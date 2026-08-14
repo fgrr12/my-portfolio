@@ -287,7 +287,11 @@ export function useTerminal() {
 				const output = commands['download resume']()
 				revealing = addCommandToHistory(output as readonly string[] as string[], trimmedInput)
 				window.open(
-					`${import.meta.env.BASE_URL}assets/documents/CV%20-%20Fabricio%20Rojas.pdf`,
+					// Both PDFs come out of `pnpm cv`; hand over the one matching the
+					// language the visitor is reading.
+					`${import.meta.env.BASE_URL}assets/documents/CV%20-%20Fabricio%20Rojas${
+						language === 'es' ? '%20(ES)' : ''
+					}.pdf`,
 					'_blank',
 					'noopener,noreferrer'
 				)

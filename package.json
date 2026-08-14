@@ -8,7 +8,8 @@
 		"preview": "vite preview",
 		"build": "vite build",
 		"format": "biome format --write .",
-		"lint": "biome lint"
+		"lint": "biome lint",
+		"cv": "vite build && node scripts/print-cv.mjs"
 	},
 	"dependencies": {
 		"lucide-react": "^0.561.0",
