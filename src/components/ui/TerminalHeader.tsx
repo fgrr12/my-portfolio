@@ -1,11 +1,15 @@
 import type { TerminalHeaderProps } from '@/types/ui'
 
+import { useUi } from '@/i18n'
+
 export const TerminalHeader = ({
 	title,
 	subtitle,
 	onClose,
 	showCloseButton = false,
 }: TerminalHeaderProps) => {
+	const ui = useUi()
+
 	return (
 		<div className="bg-slate-800 px-4 py-2 flex justify-between items-center border-b border-teal-500/30">
 			<div className="flex items-center space-x-2">
@@ -14,7 +18,7 @@ export const TerminalHeader = ({
 						type="button"
 						onClick={onClose}
 						className="w-3 h-3 bg-red-500 rounded-full hover:bg-red-400 transition-colors cursor-pointer"
-						title="Close terminal"
+						title={ui.closeTerminal}
 					/>
 				) : (
 					<div className="w-3 h-3 bg-red-500 rounded-full" />

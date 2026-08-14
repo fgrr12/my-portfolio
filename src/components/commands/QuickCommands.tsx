@@ -1,3 +1,5 @@
+import { useUi } from '@/i18n'
+
 interface QuickCommandsProps {
 	commands: readonly string[]
 	onExecute: (command: string) => void
@@ -5,9 +7,11 @@ interface QuickCommandsProps {
 }
 
 export const QuickCommands = ({ commands, onExecute, disabled }: QuickCommandsProps) => {
+	const ui = useUi()
+
 	return (
 		<div className="text-sm mb-4">
-			<div className="text-teal-600 mb-2 glow flicker">◆ Quick commands:</div>
+			<div className="text-teal-600 mb-2 glow flicker">{ui.quickCommands}</div>
 			<div className="grid grid-cols-2 gap-2">
 				{commands.map((cmd) => (
 					<button

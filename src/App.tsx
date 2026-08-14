@@ -9,6 +9,8 @@ import { ControlPanel } from '@/components/ui/ControlPanel'
 
 import { useTerminal } from '@/hooks/useTerminal'
 
+import { LanguageProvider } from '@/i18n'
+
 export const App = () => {
 	const {
 		currentInput,
@@ -27,6 +29,7 @@ export const App = () => {
 		handleInputChange,
 		handleKeyDown,
 		handleQuickCommand,
+		runTour,
 		selectSuggestion,
 		closeProjects,
 		selectProject,
@@ -41,42 +44,45 @@ export const App = () => {
 	}, [playStartup])
 
 	return (
-		<div className="h-screen bg-gray-950 p-4 font-mono pipboy-bg relative">
-			<DigitalRain isActive={digitalRainMode} />
-			<SnowEffect isActive={isSnowing} />
-			<GlitchEffect isActive={isGlitching} />
+		<LanguageProvider value={language}>
+			<div className="h-screen bg-gray-950 p-4 font-mono pipboy-bg relative">
+				<DigitalRain isActive={digitalRainMode} />
+				<SnowEffect isActive={isSnowing} />
+				<GlitchEffect isActive={isGlitching} />
 
-			<ControlPanel
-				soundEnabled={soundEnabled}
-				language={language}
-				onToggleSound={toggleSound}
-				onToggleLanguage={toggleLanguage}
-			/>
-
-			<div className="max-w-7xl mx-auto h-full flex flex-col lg:flex-row gap-4 relative z-10">
-				<MainTerminal
-					commandHistory={commandHistory}
-					currentInput={currentInput}
-					suggestions={suggestions}
-					isProcessing={isProcessing}
-					availableCommands={availableCommands}
-					onInputChange={handleInputChange}
-					onKeyDown={handleKeyDown}
-					onSuggestionSelect={selectSuggestion}
-					onQuickCommand={handleQuickCommand}
-					showProjects={showProjects}
+				<ControlPanel
+					soundEnabled={soundEnabled}
+					language={language}
+					onToggleSound={toggleSound}
+					onToggleLanguage={toggleLanguage}
 				/>
 
-				{showProjects && (
-					<ProjectsTerminal
-						projects={projects}
-						selectedProject={selectedProject}
-						onClose={closeProjects}
-						onSelectProject={selectProject}
-						onBackToProjects={goBackToProjects}
+				<div className="max-w-7xl mx-auto h-full flex flex-col lg:flex-row gap-4 relative z-10">
+					<MainTerminal
+						commandHistory={commandHistory}
+						currentInput={currentInput}
+						suggestions={suggestions}
+						isProcessing={isProcessing}
+						availableCommands={availableCommands}
+						onInputChange={handleInputChange}
+						onKeyDown={handleKeyDown}
+						onSuggestionSelect={selectSuggestion}
+						onQuickCommand={handleQuickCommand}
+						onRunTour={runTour}
+						showProjects={showProjects}
 					/>
-				)}
+
+					{showProjects && (
+						<ProjectsTerminal
+							projects={projects}
+							selectedProject={selectedProject}
+							onClose={closeProjects}
+							onSelectProject={selectProject}
+							onBackToProjects={goBackToProjects}
+						/>
+					)}
+				</div>
 			</div>
-		</div>
+		</LanguageProvider>
 	)
 }

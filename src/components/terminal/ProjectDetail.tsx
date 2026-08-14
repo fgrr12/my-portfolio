@@ -1,7 +1,11 @@
 import { ArrowLeft, Github, Play, ShoppingBag } from 'lucide-react'
 import { memo, useEffect, useRef } from 'react'
 
+import { prefersReducedMotion } from '@/utils/prefersReducedMotion'
+
 import { useGSAPAnimations } from '@/hooks/useGsapAnimations'
+
+import { useUi } from '@/i18n'
 
 interface ProjectDetailProps {
 	project: Project
@@ -9,11 +13,13 @@ interface ProjectDetailProps {
 }
 
 export const ProjectDetail = memo(function ProjectDetail({ project, onBack }: ProjectDetailProps) {
+	const ui = useUi()
 	const detailRef: any = useRef<HTMLDivElement>(null)
 	const { animateProjectDetail, animateHoverEffect, animateHoverOut } = useGSAPAnimations()
 
 	// biome-ignore lint:call by project id
 	useEffect(() => {
+		if (prefersReducedMotion()) return
 		animateProjectDetail(detailRef)
 	}, [project.id, animateProjectDetail])
 
@@ -22,10 +28,12 @@ export const ProjectDetail = memo(function ProjectDetail({ project, onBack }: Pr
 	}
 
 	const handleMouseEnter = (e: React.MouseEvent<HTMLButtonElement>) => {
+		if (prefersReducedMotion()) return
 		animateHoverEffect(e.currentTarget)
 	}
 
 	const handleMouseLeave = (e: React.MouseEvent<HTMLButtonElement>) => {
+		if (prefersReducedMotion()) return
 		animateHoverOut(e.currentTarget)
 	}
 
@@ -40,9 +48,9 @@ export const ProjectDetail = memo(function ProjectDetail({ project, onBack }: Pr
 					onMouseLeave={handleMouseLeave}
 				>
 					<ArrowLeft size={16} />
-					<span>Back to Projects</span>
+					<span>{ui.backToProjects}</span>
 				</button>
-				<div className="text-teal-600 text-xs glow flicker">PROJECT_DETAIL</div>
+				<div className="text-teal-600 text-xs glow flicker">{ui.projectDetail}</div>
 			</div>
 
 			<div className="mb-6">
@@ -59,7 +67,7 @@ export const ProjectDetail = memo(function ProjectDetail({ project, onBack }: Pr
 									: 'bg-blue-500/20 text-blue-400'
 						} glow`}
 					>
-						{project.status}
+						{ui.statusLabels[project.status]}
 					</span>
 				</div>
 				<div className="text-teal-500 text-sm mb-2 glow flicker">
@@ -78,7 +86,7 @@ export const ProjectDetail = memo(function ProjectDetail({ project, onBack }: Pr
 						className="flex items-center justify-center space-x-2 bg-teal-500/10 border border-teal-500/30 rounded-xl px-4 py-3 hover:bg-teal-500/20 hover:border-teal-400/50 transition-all duration-300 glow flicker action-button  cursor-pointer"
 					>
 						<Github size={18} />
-						<span>View Code</span>
+						<span>{ui.viewCode}</span>
 					</button>
 				)}
 				{project.demo && (
@@ -90,7 +98,7 @@ export const ProjectDetail = memo(function ProjectDetail({ project, onBack }: Pr
 						className="flex items-center justify-center space-x-2 bg-blue-500/10 border border-blue-500/30 rounded-xl px-4 py-3 hover:bg-blue-500/20 hover:border-blue-400/50 transition-all duration-300 glow flicker action-button  cursor-pointer"
 					>
 						<Play size={18} />
-						<span>Live Demo</span>
+						<span>{ui.liveDemo}</span>
 					</button>
 				)}
 				{project.store && (
@@ -102,13 +110,13 @@ export const ProjectDetail = memo(function ProjectDetail({ project, onBack }: Pr
 						className="flex items-center justify-center space-x-2 bg-purple-500/10 border border-purple-500/30 rounded-xl px-4 py-3 hover:bg-purple-500/20 hover:border-purple-400/50 transition-all duration-300 glow flicker action-button  cursor-pointer"
 					>
 						<ShoppingBag size={18} />
-						<span>App Store</span>
+						<span>{ui.appStore}</span>
 					</button>
 				)}
 			</div>
 
 			<div className="mb-6">
-				<h3 className="text-lg font-semibold text-teal-300 mb-3 glow flicker">Key Features</h3>
+				<h3 className="text-lg font-semibold text-teal-300 mb-3 glow flicker">{ui.keyFeatures}</h3>
 				<div className="grid grid-cols-1 gap-2">
 					{project.features.map((feature, index) => (
 						<div
@@ -123,23 +131,23 @@ export const ProjectDetail = memo(function ProjectDetail({ project, onBack }: Pr
 			</div>
 
 			<div className="border rounded-xl border-teal-500/30 p-4 pipboy-card">
-				<h3 className="text-lg font-semibold text-teal-300 mb-3 glow flicker">Technical Stack</h3>
+				<h3 className="text-lg font-semibold text-teal-300 mb-3 glow flicker">
+					{ui.technicalStack}
+				</h3>
 				<div className="text-teal-400/80 glow flicker">
 					<div className="mb-2">
-						<span className="text-teal-500">Technologies:</span> {project.tech}
+						<span className="text-teal-500">{ui.technologies}</span> {project.tech}
 					</div>
 					<div className="mb-2">
-						<span className="text-teal-500">Status:</span> {project.status}
+						<span className="text-teal-500">{ui.status}</span> {ui.statusLabels[project.status]}
 					</div>
 					<div>
-						<span className="text-teal-500">Year:</span> {project.year}
+						<span className="text-teal-500">{ui.year}</span> {project.year}
 					</div>
 				</div>
 			</div>
 
-			<div className="mt-6 text-teal-600 text-xs glow flicker">
-				◆ Use 'back' command or click the back button to return to projects
-			</div>
+			<div className="mt-6 text-teal-600 text-xs glow flicker">{ui.backHint}</div>
 		</div>
 	)
 })

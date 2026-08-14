@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
 import {
 	findProjectByName,
@@ -10,10 +10,11 @@ import {
 import { useEasterEggs } from '@/hooks/useEasterEggs'
 import { useSoundEffects } from '@/hooks/useSoundEffects'
 
-import { COMMANDS, TERMINAL_CONFIG } from '@/constants/terminal'
-import { projects } from '@/data/projects'
+import { COMMANDS, TERMINAL_CONFIG, TOUR_COMMANDS } from '@/constants/terminal'
+import { getProjects } from '@/data/projects'
 import { terminalContent } from '@/data/terminalContent'
 import { terminalMessages } from '@/data/terminalMessages'
+import { getInitialLanguage, type Language, persistLanguage } from '@/i18n'
 
 export function useTerminal() {
 	const [currentInput, setCurrentInput] = useState('')
@@ -21,11 +22,23 @@ export function useTerminal() {
 	const [inputHistory, setInputHistory] = useState<string[]>([])
 	const [historyIndex, setHistoryIndex] = useState(-1)
 	const [showProjects, setShowProjects] = useState(false)
-	const [selectedProject, setSelectedProject] = useState<Project | null>(null)
+	const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null)
 	const [isProcessing, setIsProcessing] = useState(false)
 	const [suggestions, setSuggestions] = useState<string[]>([])
 	const [soundEnabled, setSoundEnabled] = useState(true)
-	const [language, setLanguage] = useState<'en' | 'es'>('en')
+	const [language, setLanguage] = useState<Language>(getInitialLanguage)
+
+	// Derived, so switching language re-localises the open project instead of
+	// leaving a stale object from the previous language in state.
+	const projects = useMemo(() => getProjects(language), [language])
+	const selectedProject = projects.find((project) => project.id === selectedProjectId) ?? null
+	const content = terminalContent[language]
+	const messages = terminalMessages[language]
+
+	const changeLanguage = useCallback((next: Language) => {
+		setLanguage(next)
+		persistLanguage(next)
+	}, [])
 
 	const soundEffects = useSoundEffects()
 	const { easterEggCommands, digitalRainMode, isSnowing, isGlitching, checkKonamiCode } =
@@ -42,61 +55,61 @@ export function useTerminal() {
 	const commands = {
 		'show projects': () => {
 			setShowProjects(true)
-			setSelectedProject(null)
+			setSelectedProjectId(null)
 			if (shouldPlaySound(soundEnabled)) playSuccessSound()
-			return terminalMessages.commands.showProjects.success
+			return messages.showProjects.success
 		},
 
 		'show project': (projectName?: string) => {
 			if (!projectName) {
-				return terminalMessages.commands.showProject.usage
+				return messages.showProject.usage
 			}
 
-			const project = findProjectByName(projectName)
+			const project = findProjectByName(projectName, language)
 			if (!project) {
 				if (shouldPlaySound(soundEnabled)) playErrorSound()
-				return terminalMessages.commands.showProject.notFound(projectName)
+				return messages.showProject.notFound(projectName)
 			}
 
 			setShowProjects(true)
-			setSelectedProject(project)
+			setSelectedProjectId(project.id)
 			if (shouldPlaySound(soundEnabled)) playSuccessSound()
-			return terminalMessages.commands.showProject.success(project.title)
+			return messages.showProject.success(project.title)
 		},
 
 		back: () => {
 			if (selectedProject) {
-				setSelectedProject(null)
+				setSelectedProjectId(null)
 				if (shouldPlaySound(soundEnabled)) playCommandSound()
-				return terminalMessages.commands.back.toProjects
+				return messages.back.toProjects
 			}
 			if (showProjects) {
 				setShowProjects(false)
 				if (shouldPlaySound(soundEnabled)) playCommandSound()
-				return terminalMessages.commands.back.closeProjects
+				return messages.back.closeProjects
 			}
 			if (shouldPlaySound(soundEnabled)) playErrorSound()
-			return terminalMessages.commands.back.nothing
+			return messages.back.nothing
 		},
 
 		'about me': () => {
 			if (shouldPlaySound(soundEnabled)) playSuccessSound()
-			return terminalContent.aboutMe
+			return content.aboutMe
 		},
 
 		skills: () => {
 			if (shouldPlaySound(soundEnabled)) playSuccessSound()
-			return terminalContent.skills
+			return content.skills
 		},
 
 		'open contact': () => {
 			if (shouldPlaySound(soundEnabled)) playSuccessSound()
-			return terminalContent.contact
+			return content.contact
 		},
 
 		help: () => {
 			if (shouldPlaySound(soundEnabled)) playSuccessSound()
-			return terminalContent.help
+			return content.help
 		},
 
 		cls: () => {
@@ -107,34 +120,34 @@ export function useTerminal() {
 		'sound on': () => {
 			setSoundEnabled(true)
 			playSuccessSound()
-			return terminalMessages.commands.sound.on
+			return messages.sound.on
 		},
 
 		'sound off': () => {
 			setSoundEnabled(false)
-			return terminalMessages.commands.sound.off
+			return messages.sound.off
 		},
 
 		'lang en': () => {
-			setLanguage('en')
+			changeLanguage('en')
 			if (shouldPlaySound(soundEnabled)) playSuccessSound()
-			return terminalMessages.commands.language.english
+			return messages.language.english
 		},
 
 		'lang es': () => {
-			setLanguage('es')
+			changeLanguage('es')
 			if (shouldPlaySound(soundEnabled)) playSuccessSound()
-			return terminalMessages.commands.language.spanish
+			return messages.language.spanish
 		},
 
 		'download resume': () => {
 			if (shouldPlaySound(soundEnabled)) playSuccessSound()
-			return terminalMessages.commands.download.resume
+			return messages.download.resume
 		},
 
 		connect: () => {
 			if (shouldPlaySound(soundEnabled)) playSuccessSound()
-			return terminalMessages.commands.connect.linkedin
+			return messages.connect.linkedin
 		},
 
 		...easterEggCommands,
@@ -191,13 +204,18 @@ export function useTerminal() {
 
 			setCommandHistory((prev) => prev.filter((cmd) => cmd.id !== loadingId))
 
+			// Resolves once every output line has been revealed. isProcessing is cleared
+			// before awaiting it, so typing stays responsive during the reveal, while
+			// callers that need to chain commands (runTour) can wait for a clean finish.
+			let revealing: Promise<void> = Promise.resolve()
+
 			if (lowerInput.startsWith('show project ')) {
 				const projectName = trimmedInput.slice(13).trim()
 				const output = commands['show project'](projectName)
-				addCommandToHistory(output as string[], trimmedInput)
+				revealing = addCommandToHistory(output as string[], trimmedInput)
 			} else if (lowerInput === 'download resume') {
 				const output = commands['download resume']()
-				addCommandToHistory(output as readonly string[] as string[], trimmedInput)
+				revealing = addCommandToHistory(output as readonly string[] as string[], trimmedInput)
 				window.open(
 					`${import.meta.env.BASE_URL}assets/documents/CV%20-%20Fabricio%20Rojas.pdf`,
 					'_blank',
@@ -205,34 +223,35 @@ export function useTerminal() {
 				)
 			} else if (lowerInput === 'connect') {
 				const output = commands.connect()
-				addCommandToHistory(output as readonly string[] as string[], trimmedInput)
+				revealing = addCommandToHistory(output as readonly string[] as string[], trimmedInput)
 				window.open('https://www.linkedin.com/in/fabricio-rojas', '_blank', 'noopener,noreferrer')
 			} else if (lowerInput === 'back') {
 				const output = commands.back()
-				addCommandToHistory(output as readonly string[] as string[], trimmedInput)
+				revealing = addCommandToHistory(output as readonly string[] as string[], trimmedInput)
 			} else if (lowerInput === 'cls') {
 				commands.cls()
 				setCommandHistory([])
 				setShowProjects(false)
-				setSelectedProject(null)
+				setSelectedProjectId(null)
 			} else {
 				const command = commands[lowerInput as keyof typeof commands]
 
 				if (command) {
 					const output = command()
 					if (output.length > 0) {
-						addCommandToHistory(output as string[], trimmedInput)
+						revealing = addCommandToHistory(output as string[], trimmedInput)
 					}
 				} else if (trimmedInput) {
 					if (shouldPlaySound(soundEnabled)) playErrorSound()
-					addCommandToHistory(
-						terminalMessages.commands.error.notFound(trimmedInput) as string[],
+					revealing = addCommandToHistory(
+						messages.error.notFound(trimmedInput) as string[],
 						trimmedInput
 					)
 				}
 			}
 
 			setIsProcessing(false)
+			await revealing
 		},
 		[
 			isProcessing,
@@ -246,7 +265,7 @@ export function useTerminal() {
 	)
 
 	const handleTabCompletion = useCallback(() => {
-		const matches = getCommandSuggestions(currentInput)
+		const matches = getCommandSuggestions(currentInput, language)
 
 		if (matches.length === 1) {
 			setCurrentInput(matches[0])
@@ -272,7 +291,7 @@ export function useTerminal() {
 				if (soundEnabled) playButtonSound()
 			}
 		}
-	}, [currentInput, soundEnabled, playButtonSound])
+	}, [currentInput, language, soundEnabled, playButtonSound])
 
 	const handleKeyDown = useCallback(
 		(e: React.KeyboardEvent) => {
@@ -344,13 +363,13 @@ export function useTerminal() {
 			}
 
 			if (value.trim()) {
-				const matches = getCommandSuggestions(value)
+				const matches = getCommandSuggestions(value, language)
 				setSuggestions(matches.length > 0 ? matches : [])
 			} else {
 				setSuggestions([])
 			}
 		},
-		[soundEnabled, playTypingSound, currentInput.length]
+		[soundEnabled, language, playTypingSound, currentInput.length]
 	)
 
 	const handleQuickCommand = useCallback(
@@ -363,6 +382,12 @@ export function useTerminal() {
 		[isProcessing, executeCommand]
 	)
 
+	const runTour = useCallback(async () => {
+		for (const cmd of TOUR_COMMANDS) {
+			await executeCommand(cmd)
+		}
+	}, [executeCommand])
+
 	const selectSuggestion = useCallback(
 		(suggestion: string) => {
 			setCurrentInput(suggestion)
@@ -374,15 +399,15 @@ export function useTerminal() {
 
 	const closeProjects = useCallback(() => {
 		setShowProjects(false)
-		setSelectedProject(null)
+		setSelectedProjectId(null)
 	}, [])
 
 	const selectProject = useCallback((project: Project) => {
-		setSelectedProject(project)
+		setSelectedProjectId(project.id)
 	}, [])
 
 	const goBackToProjects = useCallback(() => {
-		setSelectedProject(null)
+		setSelectedProjectId(null)
 	}, [])
 
 	const toggleSound = useCallback(() => {
@@ -396,12 +421,12 @@ export function useTerminal() {
 
 	const toggleLanguage = useCallback(() => {
 		const newLanguage = language === 'en' ? 'es' : 'en'
-		setLanguage(newLanguage)
+		changeLanguage(newLanguage)
 
 		if (shouldPlaySound(soundEnabled)) {
 			setTimeout(() => playButtonSound(), TERMINAL_CONFIG.ANIMATION_DELAYS.SOUND_FEEDBACK)
 		}
-	}, [language, soundEnabled, playButtonSound])
+	}, [language, changeLanguage, soundEnabled, playButtonSound])
 
 	const playStartup = useCallback(() => {
 		if (shouldPlaySound(soundEnabled)) {
@@ -429,6 +454,7 @@ export function useTerminal() {
 		handleInputChange,
 		handleKeyDown,
 		handleQuickCommand,
+		runTour,
 		selectSuggestion,
 		closeProjects,
 		selectProject,

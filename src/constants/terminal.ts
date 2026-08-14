@@ -40,6 +40,10 @@ export const COMMANDS = {
 	],
 } as const
 
+// Played in order by the "show me everything" button, for visitors who will not
+// type a command. Keep it short: bio, stack, work.
+export const TOUR_COMMANDS = ['about me', 'skills', 'show projects'] as const
+
 export const KONAMI_CODE = [
 	'ArrowUp',
 	'ArrowUp',

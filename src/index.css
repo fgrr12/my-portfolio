@@ -1,3 +1,8 @@
+/**
+ * biome-ignore-all lint/complexity/noImportantStyles: the only !important rules
+ * live in the prefers-reduced-motion block, where they must beat the inline
+ * styles GSAP writes onto elements. That override is the whole point.
+ */
 @import "tailwindcss";
 @tailwind utilities;
 @config "../tailwind.config.js";
@@ -199,6 +204,23 @@
 
 ::-webkit-scrollbar-thumb:hover {
 	background: rgba(20, 184, 166, 0.5);
+}
+
+/*
+ * The CRT look (flicker on every text node, scanlines, pulses) animates
+ * continuously without the user ever asking for it. Honour the OS setting.
+ * GSAP entrance animations are JS, so they are guarded separately via
+ * prefersReducedMotion().
+ */
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
 }
 
 /* Responsive adjustments */

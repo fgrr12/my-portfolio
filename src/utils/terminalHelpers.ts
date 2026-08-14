@@ -1,23 +1,27 @@
 import { COMMANDS, TERMINAL_CONFIG } from '@/constants/terminal'
-import { projects } from '@/data/projects'
+import { getProjects } from '@/data/projects'
+import type { Language } from '@/i18n'
 
-export const findProjectByName = (name: string): Project | null => {
+export const findProjectByName = (name: string, language: Language): Project | null => {
 	const searchTerm = name.toLowerCase()
-	return (projects.find(
-		(project) =>
-			project.title.toLowerCase().includes(searchTerm) ||
-			project.id.toLowerCase().includes(searchTerm)
-	) || null) as Project
+	return (
+		getProjects(language).find(
+			(project) =>
+				project.title.toLowerCase().includes(searchTerm) ||
+				project.id.toLowerCase().includes(searchTerm)
+		) ?? null
+	)
 }
 
 export const getAllCommands = (): string[] => {
 	return [...COMMANDS.AVAILABLE, ...COMMANDS.HIDDEN, ...COMMANDS.EASTER_EGGS]
 }
 
-export const getCommandSuggestions = (input: string): string[] => {
+export const getCommandSuggestions = (input: string, language: Language): string[] => {
 	if (!input.trim()) return []
 
 	const trimmedInput = input.trim().toLowerCase()
+	const projects = getProjects(language)
 
 	// Handle "show project" command specifically
 	if (trimmedInput.startsWith('show project')) {

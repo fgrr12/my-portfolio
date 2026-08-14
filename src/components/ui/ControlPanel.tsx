@@ -2,12 +2,16 @@ import { Globe, Volume2, VolumeX } from 'lucide-react'
 
 import type { ControlPanelProps } from '@/types/ui'
 
+import { useUi } from '@/i18n'
+
 export const ControlPanel = ({
 	soundEnabled,
 	language,
 	onToggleSound,
 	onToggleLanguage,
 }: ControlPanelProps) => {
+	const ui = useUi()
+
 	return (
 		<>
 			<div className="hidden sm:flex fixed top-3 right-3 z-30 flex-col gap-2">
@@ -15,7 +19,7 @@ export const ControlPanel = ({
 					type="button"
 					onClick={onToggleSound}
 					className="w-12 h-12 rounded-xl border border-teal-500/30 bg-slate-900/90 backdrop-blur-sm hover:bg-teal-500/10 transition-all duration-300 group flex items-center justify-center cursor-pointer"
-					title={soundEnabled ? 'Sound: ON (click to disable)' : 'Sound: OFF (click to enable)'}
+					title={soundEnabled ? ui.soundOn : ui.soundOff}
 				>
 					{soundEnabled ? (
 						<Volume2
@@ -38,7 +42,7 @@ export const ControlPanel = ({
 					type="button"
 					onClick={onToggleLanguage}
 					className="w-12 h-12 rounded-xl border border-teal-500/30 bg-slate-900/90 backdrop-blur-sm hover:bg-teal-500/10 transition-all duration-300 group flex items-center justify-center relative cursor-pointer"
-					title={`Language: ${language.toUpperCase()} (click to switch)`}
+					title={ui.languageToggle(language.toUpperCase())}
 				>
 					<Globe
 						size={20}
@@ -56,7 +60,7 @@ export const ControlPanel = ({
 					type="button"
 					onClick={onToggleSound}
 					className="w-11 h-11 rounded-xl border border-teal-500/30 bg-slate-900/90 backdrop-blur-sm hover:bg-teal-500/10 transition-all duration-300 group flex items-center justify-center cursor-pointer"
-					title={soundEnabled ? 'Sound: ON' : 'Sound: OFF'}
+					title={soundEnabled ? ui.soundOn : ui.soundOff}
 				>
 					{soundEnabled ? (
 						<Volume2
@@ -79,7 +83,7 @@ export const ControlPanel = ({
 					type="button"
 					onClick={onToggleLanguage}
 					className="w-11 h-11 rounded-xl border border-teal-500/30 bg-slate-900/90 backdrop-blur-sm hover:bg-teal-500/10 transition-all duration-300 group flex items-center justify-center relative cursor-pointer"
-					title={`Language: ${language.toUpperCase()}`}
+					title={ui.languageToggle(language.toUpperCase())}
 				>
 					<Globe
 						size={18}

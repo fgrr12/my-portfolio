@@ -1,5 +1,8 @@
 import { gsap } from 'gsap'
+import { Play } from 'lucide-react'
 import { memo, useEffect, useRef, useState } from 'react'
+
+import { prefersReducedMotion } from '@/utils/prefersReducedMotion'
 
 import { CommandHistory } from '@/components/commands/CommandHistory'
 import { CommandInput } from '@/components/commands/CommandInput'
@@ -11,6 +14,8 @@ import { WelcomeMessage } from '@/components/ui/WelcomeMessage'
 
 import type { MainTerminalProps } from '@/types/ui'
 
+import { useUi } from '@/i18n'
+
 export const MainTerminal = memo(function MainTerminal({
 	commandHistory,
 	currentInput,
@@ -21,14 +26,18 @@ export const MainTerminal = memo(function MainTerminal({
 	onKeyDown,
 	onSuggestionSelect,
 	onQuickCommand,
+	onRunTour,
 	showProjects,
 }: MainTerminalProps) {
+	const ui = useUi()
 	const inputRef = useRef<HTMLInputElement>(null)
 	const terminalRef = useRef<HTMLDivElement>(null)
 	const containerRef = useRef<HTMLDivElement>(null)
 	const [hasInitialized, setHasInitialized] = useState(false)
 
 	useEffect(() => {
+		if (prefersReducedMotion()) return
+
 		if (!hasInitialized && containerRef.current) {
 			setHasInitialized(true)
 
@@ -86,6 +95,20 @@ export const MainTerminal = memo(function MainTerminal({
 
 					<WelcomeMessage />
 
+					{commandHistory.length === 0 && (
+						<button
+							type="button"
+							onClick={onRunTour}
+							className="relative z-10 flex-shrink-0 mb-4 w-full sm:w-auto sm:self-start flex items-center justify-center sm:justify-start gap-3 rounded-xl border border-teal-400/60 bg-teal-500/15 px-5 py-3 text-left transition-colors hover:bg-teal-500/25 hover:border-teal-300 cursor-pointer"
+						>
+							<Play size={18} className="text-teal-300 shrink-0" />
+							<span>
+								<span className="block text-teal-200 font-semibold glow">{ui.tourTitle}</span>
+								<span className="block text-teal-500 text-xs">{ui.tourHint}</span>
+							</span>
+						</button>
+					)}
+
 					<CommandHistory ref={terminalRef} commands={commandHistory} />
 
 					<div className="relative z-10 flex-shrink-0">
@@ -101,7 +124,7 @@ export const MainTerminal = memo(function MainTerminal({
 							onChange={onInputChange}
 							onKeyDown={onKeyDown}
 							disabled={isProcessing}
-							placeholder={isProcessing ? 'Processing...' : 'Type a command...'}
+							placeholder={isProcessing ? ui.inputProcessing : ui.inputPlaceholder}
 						/>
 
 						<QuickCommands

@@ -1,6 +1,10 @@
 import type { SuggestionsProps } from '@/types/ui'
 
+import { useUi } from '@/i18n'
+
 export const Suggestions = ({ suggestions, onSelect, inputRef }: SuggestionsProps) => {
+	const ui = useUi()
+
 	// Arrow keys belong to command history (see useTerminal.handleKeyDown); suggestions
 	// are reached with Tab completion or a click, the way a real shell behaves.
 	const handleSelect = (suggestion: string) => {
@@ -19,7 +23,7 @@ export const Suggestions = ({ suggestions, onSelect, inputRef }: SuggestionsProp
 
 	return (
 		<div className="mb-2">
-			<div className="text-teal-600 text-xs mb-1 flicker">◆ Suggestions:</div>
+			<div className="text-teal-600 text-xs mb-1 flicker">{ui.suggestions}</div>
 			<div className="flex flex-wrap gap-2">
 				{suggestions.map((suggestion) => (
 					<button

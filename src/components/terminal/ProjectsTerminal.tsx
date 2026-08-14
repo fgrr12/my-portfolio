@@ -5,6 +5,8 @@ import { TerminalHeader } from '@/components/ui/TerminalHeader'
 
 import type { ProjectsTerminalProps } from '@/types/ui'
 
+import { useUi } from '@/i18n'
+
 const ProjectCard = memo(function ProjectCard({
 	project,
 	onSelect,
@@ -12,6 +14,8 @@ const ProjectCard = memo(function ProjectCard({
 	project: Project
 	onSelect: (project: Project) => void
 }) {
+	const ui = useUi()
+
 	return (
 		<button
 			type="button"
@@ -29,12 +33,14 @@ const ProjectCard = memo(function ProjectCard({
 								: 'bg-blue-500/20 text-blue-400'
 					} glow`}
 				>
-					{project.status}
+					{ui.statusLabels[project.status]}
 				</span>
 			</div>
 			<p className="text-teal-400/80 text-sm leading-relaxed mb-3 flicker">{project.description}</p>
 			<div className="text-teal-500 text-xs">
-				<span className="glow flicker">Tech Stack: {project.tech}</span>
+				<span className="glow flicker">
+					{ui.techStack} {project.tech}
+				</span>
 			</div>
 		</button>
 	)
@@ -47,6 +53,8 @@ export const ProjectsTerminal = ({
 	onSelectProject,
 	onBackToProjects,
 }: ProjectsTerminalProps) => {
+	const ui = useUi()
+
 	return (
 		<div className="lg:w-1/2 w-full pb-20 sm:pb-0">
 			<div className="bg-slate-900 rounded-xl border border-teal-500/40 shadow-2xl shadow-teal-500/20 h-full flex flex-col overflow-hidden terminal-glow pipboy-screen">
@@ -64,7 +72,7 @@ export const ProjectsTerminal = ({
 						<ProjectDetail project={selectedProject} onBack={onBackToProjects} />
 					) : (
 						<div className="relative z-10">
-							<div className="text-teal-300 glow text-lg mb-4 flicker">◆ PROJECT DATABASE ◆</div>
+							<div className="text-teal-300 glow text-lg mb-4 flicker">{ui.projectDatabase}</div>
 
 							<div className="space-y-4 max-h-120 sm:max-h-full overflow-y-auto sm:overflow-y-hidden">
 								{projects.map((project) => (
@@ -73,8 +81,7 @@ export const ProjectsTerminal = ({
 							</div>
 
 							<div className="mt-6 text-teal-600 text-xs glow flicker">
-								◆ {projects.length} projects loaded • Click on a project or use 'show project{' '}
-								{'<name>'}'
+								{ui.projectsLoaded(projects.length)}
 							</div>
 						</div>
 					)}

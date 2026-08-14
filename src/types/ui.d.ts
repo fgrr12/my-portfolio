@@ -38,6 +38,7 @@ export interface MainTerminalProps {
 	onKeyDown: (e: React.KeyboardEvent) => void
 	onSuggestionSelect: (suggestion: string) => void
 	onQuickCommand: (command: string) => void
+	onRunTour: () => void
 	showProjects: boolean
 }
 

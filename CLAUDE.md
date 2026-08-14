@@ -25,13 +25,15 @@ A single-page fake terminal portfolio. There is no router, no backend, no persis
 
 1. `src/constants/terminal.ts` — `COMMANDS.AVAILABLE` / `.HIDDEN` / `.EASTER_EGGS` drive autocomplete, Tab completion, and the quick-command buttons. A command missing here still runs but is undiscoverable.
 2. The `commands` object in `useTerminal.ts` — the actual handler.
-3. `src/data/terminalContent.ts` (long-form copy: about, skills, help, contact) or `src/data/terminalMessages.ts` (short status/error strings, some as functions taking an argument).
+3. `src/data/terminalContent.ts` (long-form copy: about, skills, help, contact) or `src/data/terminalMessages.ts` (short status/error strings, some as functions taking an argument). Both are keyed by language, so **every string needs an `en` and an `es` entry**.
 
 Easter-egg commands live in `src/hooks/useEasterEggs.ts` and are spread into the `commands` object; that hook also owns the visual-effect flags (`digitalRainMode`, `isSnowing`, `isGlitching`) and the Konami sequence tracker.
 
 **`executeCommand` special-cases some inputs before the map lookup**: `show project <name>` (prefix parse), `download resume` and `connect` (both call `window.open`), `back`, and `cls`. Everything else falls through to `commands[lowerInput]`, then to a not-found message.
 
 **Command output is `string[]`, rendered line by line with a 150ms stagger** (`addCommandToHistory`). Each `Command` carries a `crypto.randomUUID()` `id` and the staggered updates target that id — never the last array element, since the user can submit another command mid-reveal and the entries would interleave. Keep that invariant if you touch the history updates.
+
+`executeCommand` clears `isProcessing` *before* awaiting the reveal, then awaits it. So the input stays responsive while lines print, but the returned promise only settles once the command has finished printing. `runTour` depends on that to chain `TOUR_COMMANDS` (`about me` → `skills` → `show projects`) without their outputs overlapping — it backs the "Show me everything" button that `MainTerminal` renders as an empty state for visitors who will not type.
 
 `CommandOutputRenderer` scans those lines for marker syntax and swaps in a real table:
 
@@ -50,6 +52,17 @@ Blank line or `END_TABLE` closes the block. This is how `skills` and similar com
 
 **Visual effects** (`src/components/effects/`) are full-screen overlays toggled by an `isActive` prop from `useTerminal`.
 
+**The site is bilingual (en/es) without an i18n library.** `src/i18n.ts` holds the `Language` type, the UI chrome strings, and a React context; `useTerminal` owns the `language` state and `App` publishes it through `LanguageProvider`. Components read copy with `useUi()`. Content lives beside the data it belongs to: `terminalContent[lang]`, `terminalMessages[lang]`, and `getProjects(lang)` — which merges each project's language-independent fields (id, tech, status, year, links) with its `en`/`es` block.
+
+Three rules when touching this:
+- Command names are never translated. `help`, `show projects` and `lang es` are commands, like `ls`. Only their *descriptions* in the help table are.
+- Anything that reads a project must take the language: `findProjectByName(name, lang)`, `getCommandSuggestions(input, lang)`. `useTerminal` stores `selectedProjectId`, not the project object, so switching language re-localises the open project instead of leaving a stale one in state.
+- `Project['status']` stays `'Production' | 'Beta' | 'Development'` because it drives badge colours and the type union; the translated label comes from `ui.statusLabels[status]`.
+
+Initial language is a saved `localStorage` choice, else `navigator.language`, else English. Already-printed command output keeps the language it was printed in — history is history.
+
+**Reduced motion is honoured in two layers.** A blanket `@media (prefers-reduced-motion: reduce)` block in `src/index.css` neutralises every CSS animation and transition (the always-on flicker and scanlines are the reason it exists). GSAP is JavaScript and escapes that, so entrance animations are guarded at their call sites with `prefersReducedMotion()` — `MainTerminal`, `WelcomeMessage` and `ProjectDetail`. Any new GSAP animation needs its own guard. The canvas easter eggs (snow, digital rain) are left running: the user typed a command to summon them.
+
 ## Conventions
 
 - `@/` aliases `src/` (configured in both `vite.config.ts` and `tsconfig.app.json`).
@@ -60,7 +73,6 @@ Blank line or `END_TABLE` closes the block. This is how `skills` and similar com
 
 ## Known dead scaffolding
 
-- `src/i18n.ts` initializes i18next with `i18next-http-backend`, but no locale files exist and nothing calls `useTranslation`. The `lang en` / `lang es` commands and the `ControlPanel` toggle only flip a state flag; all content is English-only — and `help` still advertises `lang en` as a working command.
 - `src/components/effects/RainEffect.tsx` is not imported anywhere.
 - `useGsapAnimations.ts` exports several animation helpers but only `ProjectDetail` consumes the hook.
 - `terminalHelpers.ts` exports `validateCommand` and `formatTimestamp` (unused) and `shouldPlaySound`, which is an identity function called ~15 times.
