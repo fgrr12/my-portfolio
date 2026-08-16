@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 
+import { Companion } from '@/components/companion/Companion'
 import { DigitalRain } from '@/components/effects/DigitalRain'
 import { GlitchEffect } from '@/components/effects/GlitchEffect'
 import { SnowEffect } from '@/components/effects/SnowEffect'
@@ -31,6 +32,7 @@ export const App = () => {
 		selectedProjectId,
 		projects,
 		soundEnabled,
+		companionVisible,
 		language,
 		digitalRainMode,
 		isSnowing,
@@ -95,7 +97,9 @@ export const App = () => {
 					onRun={handleQuickCommand}
 				/>
 
-				<div className="flex flex-1 min-h-0">
+				{/* relative, so the pet is positioned against the pane row: it floats over
+				    the terminal but never over the action bar or the status line. */}
+				<div className="flex flex-1 min-h-0 relative">
 					<FileTree
 						projects={projects}
 						activePane={activePane}
@@ -126,6 +130,20 @@ export const App = () => {
 							/>
 						)}
 					</main>
+
+					{/* Chrome, like every other affordance: it floats above the viewport
+					    rather than printing itself into the scrollback. */}
+					<Companion
+						visible={companionVisible}
+						isProcessing={isProcessing}
+						commandHistory={commandHistory}
+						selectedProject={selectedProject}
+						digitalRainMode={digitalRainMode}
+						isSnowing={isSnowing}
+						isGlitching={isGlitching}
+						soundEnabled={soundEnabled}
+						onRun={handleQuickCommand}
+					/>
 				</div>
 
 				{/* Below lg there is no room for the sidebar, so the same commands come

@@ -56,6 +56,7 @@ export function useTerminal() {
 	const [isProcessing, setIsProcessing] = useState(false)
 	const [suggestions, setSuggestions] = useState<string[]>([])
 	const [soundEnabled, setSoundEnabled] = useState(true)
+	const [companionVisible, setCompanionVisible] = useState(true)
 
 	// Derived, so switching language re-localises the open project instead of
 	// leaving a stale object from the previous language in state.
@@ -186,6 +187,14 @@ export function useTerminal() {
 		connect: () => {
 			if (shouldPlaySound(soundEnabled)) playSuccessSound()
 			return messages.connect.linkedin
+		},
+
+		// The pet is a resident process, so it is started and stopped like one.
+		tico: () => {
+			const next = !companionVisible
+			setCompanionVisible(next)
+			if (shouldPlaySound(soundEnabled)) playSuccessSound()
+			return next ? messages.companion.on : messages.companion.off
 		},
 
 		ls: () => messages.shell.ls,
@@ -548,6 +557,7 @@ export function useTerminal() {
 		selectedProjectId,
 		projects,
 		soundEnabled,
+		companionVisible,
 		language,
 		digitalRainMode,
 		isSnowing,

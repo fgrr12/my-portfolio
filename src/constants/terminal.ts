@@ -40,6 +40,7 @@ export const COMMANDS = {
 		'lang es',
 		'download resume',
 		'connect',
+		'tico',
 	],
 	EASTER_EGGS: [
 		'digital rain',

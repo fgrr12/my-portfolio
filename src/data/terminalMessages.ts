@@ -98,6 +98,24 @@ const buildEnglish = () => {
 				'Tip: You can also find it in the "contact" section.',
 			],
 		},
+		companion: {
+			on: [
+				'Starting tico...',
+				'',
+				'✓ tico attached to this session',
+				'',
+				'He watches every command you run and has an opinion about all of them.',
+				'Click him, drag him around, or leave him alone and he will fall asleep.',
+				"Run 'tico' again to stop the process.",
+			],
+			off: [
+				'Stopping tico...',
+				'',
+				'✓ Process terminated. He was not offended.',
+				'',
+				"Run 'tico' whenever you want him back.",
+			],
+		},
 		error: {
 			notFound: (command: string) => [
 				`bash: ${command}: command not found`,
@@ -218,6 +236,24 @@ const buildSpanish = () => {
 				'✓ Usuario y URL agregados a la base de contactos',
 				'',
 				'Tip: También lo encontrás en la sección "contact".',
+			],
+		},
+		companion: {
+			on: [
+				'Iniciando tico...',
+				'',
+				'✓ tico conectado a esta sesión',
+				'',
+				'Ve todos los comandos que ejecutás y tiene una opinión sobre cada uno.',
+				'Hacele clic, arrastralo por ahí, o dejalo quieto y se queda dormido.',
+				"Ejecutá 'tico' otra vez para detener el proceso.",
+			],
+			off: [
+				'Deteniendo tico...',
+				'',
+				'✓ Proceso terminado. No se ofendió.',
+				'',
+				"Ejecutá 'tico' cuando lo querás de vuelta.",
 			],
 		},
 		error: {

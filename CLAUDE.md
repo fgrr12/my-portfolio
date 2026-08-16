@@ -77,6 +77,14 @@ Blank line or `END_TABLE` closes the block. This is how `skills` and similar com
 
 **Visual effects** (`src/components/effects/`) are full-screen overlays toggled by an `isActive` prop from `useTerminal`.
 
+**`tico` is a terminal pet, and it is chrome.** `src/components/companion/` renders a draggable creature drawn as a miniature terminal window — the same window chrome as `TitleBar`, a dark screen with the scanline texture, and a face on it. It is positioned `absolute` inside the pane row in `App.tsx` (which is why that row is `relative`), so it floats *over* the viewport and never prints into the scrollback; the container itself is `pointer-events: none` so click-to-focus still reaches the prompt everywhere except on the pet and its speech bubble.
+
+Three rules hold it together:
+
+- **It reads state, it does not own any.** Every reaction is derived from props already flowing through `App`: `isProcessing` → thinking, the last non-loading `commandHistory` entry → happy or (on `failed`) error, `selectedProject` → the project's glyph and line, the easter-egg flags → its theme. The one piece of state it added is `companionVisible` in `useTerminal`, toggled by the `tico` command. A history entry keeps its id while its output reveals line by line but is a **new object on every one of those updates**, so the reaction effect dedupes on `id` — never on object identity.
+- **Its copy is data, in `src/data/companion.ts`, keyed by language like everything else.** Lines about a project are keyed by `Project['id']`; lines about a command are keyed by the command as typed. Both need an `en` and an `es` entry, and the lines describe the real work — the pet is a guide to the portfolio, not a character with a script of its own.
+- **Motion is CSS only.** The `prefers-reduced-motion` block already flattens all of it, which is the whole reason none of it is written in JavaScript. What survives that block is blinking and talking, which is the part worth keeping. The antenna LED is the only informational colour on it and follows the palette rule: amber running, pink failed, green ready.
+
 **The site is bilingual (en/es) without an i18n library.** `src/i18n.ts` holds the `Language` type, the UI chrome strings, and a React context; `useTerminal` owns the `language` state and `App` publishes it through `LanguageProvider`. Components read copy with `useUi()`. Content lives beside the data it belongs to: `terminalContent[lang]`, `terminalMessages[lang]`, and `getProjects(lang)` — which merges each project's language-independent fields (id, tech, status, year, links) with its `en`/`es` block.
 
 Three rules when touching this:

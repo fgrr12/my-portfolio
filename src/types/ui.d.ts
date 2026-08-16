@@ -40,3 +40,38 @@ export interface TableRendererProps {
 	data: TableData
 	className?: string
 }
+
+/** Every state the terminal pet can be in. Drives both eyes and mouth. */
+export type CompanionMood =
+	| 'idle'
+	| 'happy'
+	| 'thinking'
+	| 'error'
+	| 'wow'
+	| 'love'
+	| 'dizzy'
+	| 'sleep'
+	| 'held'
+
+export interface CompanionFaceProps {
+	mood: CompanionMood
+	blink: boolean
+	/** Pointer direction, -1…1 on each axis. The eyes lean this way. */
+	look: { x: number; y: number }
+	/** Shown instead of the face while a project is open. */
+	glyph: string | null
+	faceColor: string
+	ledColor: string
+}
+
+export interface CompanionProps {
+	visible: boolean
+	isProcessing: boolean
+	commandHistory: Command[]
+	selectedProject: Project | null
+	digitalRainMode: boolean
+	isSnowing: boolean
+	isGlitching: boolean
+	soundEnabled: boolean
+	onRun: (command: string) => void
+}
