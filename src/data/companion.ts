@@ -49,7 +49,15 @@ interface CompanionCopy {
 	drag: string[]
 	thinking: string[]
 	error: string[]
+	/** Said on the third failed command in a row, instead of the usual shrug. */
+	struggling: string
 	wake: string[]
+	/** Said when the tab comes back after a while away. */
+	back: string[]
+	muted: string
+	unmuted: string
+	/** Said once, when that many commands have been run in this session. */
+	milestones: { at: number; text: string }[]
 	/** Keyed by the command as typed, lowercased. */
 	commands: Record<string, string>
 	/** Keyed by `Project['id']`. */
@@ -106,7 +114,23 @@ export const companionCopy: Record<Language, CompanionCopy> = {
 			'That command does not exist. Yet.',
 		],
 
+		struggling: "Three in a row. Try 'help' — I am not judging.",
+
 		wake: ['I am up, I am up.', 'Back online.'],
+
+		back: [
+			'You came back. I kept the session warm.',
+			'Welcome back. Nothing crashed.',
+			'There you are. I was starting to talk to myself.',
+		],
+
+		muted: 'Sound off. I will read lips.',
+		unmuted: 'I can hear again. Careful what you type.',
+
+		milestones: [
+			{ at: 5, text: 'Five commands in. You are the type who reads the manual. He likes that.' },
+			{ at: 12, text: 'Twelve commands. At this point you may as well just email him.' },
+		],
 
 		commands: {
 			'about me': 'Eight years, two stacks, one person. It is short — read it.',
@@ -228,7 +252,23 @@ export const companionCopy: Record<Language, CompanionCopy> = {
 			'Ese comando no existe. Todavía.',
 		],
 
+		struggling: "Tres seguidos. Probá 'help', no te estoy juzgando.",
+
 		wake: ['Ya desperté, ya desperté.', 'De vuelta en línea.'],
+
+		back: [
+			'Volviste. Te guardé la sesión calientita.',
+			'Bienvenido de vuelta. No se cayó nada.',
+			'Ahí estás. Ya estaba empezando a hablar solo.',
+		],
+
+		muted: 'Sin sonido. Te leo los labios.',
+		unmuted: 'Ya escucho otra vez. Cuidado con lo que escribís.',
+
+		milestones: [
+			{ at: 5, text: 'Cinco comandos. Sos de los que leen el manual. Eso a él le gusta.' },
+			{ at: 12, text: 'Doce comandos. A este punto mejor escribile directamente.' },
+		],
 
 		commands: {
 			'about me': 'Ocho años, dos stacks, una sola persona. Es corto — leelo.',

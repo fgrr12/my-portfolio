@@ -52,6 +52,11 @@ export type CompanionMood =
 	| 'dizzy'
 	| 'sleep'
 	| 'held'
+	/** Someone is typing at the prompt and it is reading over their shoulder. */
+	| 'watching'
+	/** Sound was just turned off, so it has its hands over its ears. */
+	| 'muted'
+	| 'yawn'
 
 export interface CompanionFaceProps {
 	mood: CompanionMood
@@ -67,6 +72,8 @@ export interface CompanionFaceProps {
 export interface CompanionProps {
 	visible: boolean
 	isProcessing: boolean
+	/** What is in the prompt right now — it leans over to read along. */
+	currentInput: string
 	commandHistory: Command[]
 	selectedProject: Project | null
 	digitalRainMode: boolean

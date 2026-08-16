@@ -153,6 +153,33 @@ export const useSoundEffects = () => {
 		})
 	}, [initAudioContext])
 
+	/**
+	 * The pet's voice: two short blips, deliberately quieter than anything the
+	 * shell itself makes. It speaks often, so it has to sit under the interface
+	 * rather than on top of it.
+	 */
+	const playChirpSound = useCallback(() => {
+		const audioContext = initAudioContext()
+
+		for (const [index, freq] of [880, 1180].entries()) {
+			const oscillator = audioContext.createOscillator()
+			const gainNode = audioContext.createGain()
+
+			oscillator.connect(gainNode)
+			gainNode.connect(audioContext.destination)
+
+			const start = audioContext.currentTime + index * 0.06
+			oscillator.frequency.setValueAtTime(freq, start)
+			oscillator.type = 'triangle'
+
+			gainNode.gain.setValueAtTime(0.025, start)
+			gainNode.gain.exponentialRampToValueAtTime(0.001, start + 0.05)
+
+			oscillator.start(start)
+			oscillator.stop(start + 0.05)
+		}
+	}, [initAudioContext])
+
 	// Easter egg discovery sound
 	const playDiscoverySound = useCallback(() => {
 		const audioContext = initAudioContext()
@@ -189,5 +216,6 @@ export const useSoundEffects = () => {
 		playErrorSound,
 		playStartupSound,
 		playDiscoverySound,
+		playChirpSound,
 	}
 }

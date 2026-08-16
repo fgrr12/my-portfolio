@@ -23,6 +23,9 @@ const EYES: Record<CompanionMood, Eyes> = {
 	dizzy: 'spiral',
 	sleep: 'closed',
 	held: 'wide',
+	watching: 'open',
+	muted: 'open',
+	yawn: 'closed',
 }
 
 /** Drawn around (0,0) and translated into place, so both eyes share one path. */
@@ -39,7 +42,13 @@ const MOUTHS: Record<CompanionMood, string> = {
 	dizzy: 'M40 64 q3-3 6 0 q3 3 6 0',
 	sleep: 'M43 63 q3-2.5 5 0 q2 2.5 5 0',
 	held: 'M43.5 62 q4.5 6 9 0',
+	watching: 'M43 62 q5 3.5 10 0',
+	muted: 'M42 63 h12',
+	yawn: 'M40 58.5 q8 15 16 0 q-8-7-16 0',
 }
+
+/** Moods whose mouth is a hole rather than a line. */
+const OPEN_MOUTHS: CompanionMood[] = ['wow', 'held', 'yawn']
 
 const EYE_Y = 50
 const LEFT = 37
@@ -110,13 +119,46 @@ export const CompanionFace = ({
 			<line x1="48" y1="17" x2="48" y2="8" stroke="var(--line-strong)" strokeWidth="2.5" />
 			<circle cx="48" cy="5" r="3.4" fill={ledColor} className="companion-led" />
 
-			{/* Hands, so a hop and a wave have something to move. */}
-			<rect className="companion-hand" x="1.5" y="50" width="8" height="14" rx="4" />
-			<rect className="companion-hand" x="86.5" y="50" width="8" height="14" rx="4" />
+			{/* Hands, so a hop, a wave and covering its ears have something to move. */}
+			<rect
+				className="companion-hand"
+				data-side="left"
+				x="1.5"
+				y="50"
+				width="8"
+				height="14"
+				rx="4"
+			/>
+			<rect
+				className="companion-hand"
+				data-side="right"
+				x="86.5"
+				y="50"
+				width="8"
+				height="14"
+				rx="4"
+			/>
 
-			{/* Feet stick out below the body, which is what makes it a creature. */}
-			<rect className="companion-foot" x="24" y="79" width="16" height="8" rx="4" />
-			<rect className="companion-foot" x="56" y="79" width="16" height="8" rx="4" />
+			{/* Feet stick out below the body, which is what makes it a creature —
+			    and they are what alternate when it walks somewhere. */}
+			<rect
+				className="companion-foot"
+				data-side="left"
+				x="24"
+				y="79"
+				width="16"
+				height="8"
+				rx="4"
+			/>
+			<rect
+				className="companion-foot"
+				data-side="right"
+				x="56"
+				y="79"
+				width="16"
+				height="8"
+				rx="4"
+			/>
 
 			{/* The window itself. */}
 			<rect
@@ -163,7 +205,7 @@ export const CompanionFace = ({
 
 					<path
 						d={MOUTHS[mood]}
-						fill={mood === 'wow' || mood === 'held' ? faceColor : 'none'}
+						fill={OPEN_MOUTHS.includes(mood) ? faceColor : 'none'}
 						stroke={faceColor}
 						strokeWidth={2.6}
 						strokeLinecap="round"

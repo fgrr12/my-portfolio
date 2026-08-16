@@ -136,6 +136,7 @@ export const App = () => {
 					<Companion
 						visible={companionVisible}
 						isProcessing={isProcessing}
+						currentInput={currentInput}
 						commandHistory={commandHistory}
 						selectedProject={selectedProject}
 						digitalRainMode={digitalRainMode}
